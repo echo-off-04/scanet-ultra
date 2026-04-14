@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { toSnakeCase } from "@/lib/apiMappers";
+import { normalizeSequencePayload } from "@/lib/emailSequences";
 
 // GET /api/email/sequences/[id]
 export async function GET(
@@ -20,7 +21,17 @@ export async function GET(
     });
     if (!sequence)
       return NextResponse.json({ error: "Not found" }, { status: 404 });
-    return NextResponse.json(toSnakeCase(sequence));
+    return NextResponse.json(
+      toSnakeCase({
+        ...sequence,
+        status:
+          sequence.status === "draft" && sequence.isActive
+            ? "active"
+            : sequence.status,
+        triggerStatus: sequence.triggerStatus ?? "lead",
+        excludeStatuses: sequence.excludeStatuses ?? [],
+      }),
+    );
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(
@@ -30,8 +41,7 @@ export async function GET(
   }
 }
 
-// PUT /api/email/sequences/[id]
-export async function PUT(
+async function updateSequence(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -49,26 +59,13 @@ export async function PUT(
 
     const body = await request.json();
 
-    // Handle toggle active action
-    if (body.action === "toggle_active") {
-      const sequence = await prisma.emailSequence.update({
-        where: { id },
-        data: { isActive: !existing.isActive },
-      });
-      return NextResponse.json(toSnakeCase(sequence));
-    }
-
     const { steps, ...sequenceData } = body;
+    const normalized = normalizeSequencePayload(sequenceData, existing);
 
     // Update sequence
     const sequence = await prisma.emailSequence.update({
       where: { id },
-      data: {
-        name: sequenceData.name,
-        description: sequenceData.description,
-        triggerType: sequenceData.trigger_type || sequenceData.triggerType,
-        isActive: sequenceData.is_active ?? sequenceData.isActive,
-      },
+      data: normalized,
     });
 
     // Update steps if provided
@@ -102,6 +99,22 @@ export async function PUT(
       { status: 500 },
     );
   }
+}
+
+// PUT /api/email/sequences/[id]
+export async function PUT(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
+  return updateSequence(request, context);
+}
+
+// PATCH /api/email/sequences/[id]
+export async function PATCH(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
+  return updateSequence(request, context);
 }
 
 // DELETE /api/email/sequences/[id]

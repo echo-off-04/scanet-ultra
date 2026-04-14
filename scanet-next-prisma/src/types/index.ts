@@ -133,8 +133,13 @@ export interface EmailSequence {
   user_id: string;
   name: string;
   description: string | null;
+  trigger_status: string | null;
+  source_filter: string | null;
+  exclude_statuses: string[];
+  is_active: boolean;
   status: string;
   created_at: string;
+  updated_at?: string;
   steps?: EmailSequenceStep[];
   _count?: { enrollments: number };
 }
@@ -145,7 +150,10 @@ export interface EmailSequenceStep {
   subject: string;
   body: string;
   delay_days: number;
+  delay_hours: number;
   step_order: number;
+  channel: "email" | "whatsapp";
+  include_offer_id: string | null;
   created_at: string;
 }
 

@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { notifyContactCreated } from "@/lib/notifications";
 import { syncEventKpis } from "@/lib/eventKpis";
 import { mapContact } from "@/lib/apiMappers";
+import { enrollContactInMatchingSequences } from "@/lib/emailSequences";
 
 export async function GET(request: NextRequest) {
   const session = await auth();
@@ -13,6 +14,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const eventId = searchParams.get("eventId");
+    const hasEmail = searchParams.get("has_email") === "true";
 
     let contacts;
     if (eventId) {
@@ -39,7 +41,10 @@ export async function GET(request: NextRequest) {
       contacts = contactEvents.map((ce) => ce.contact);
     } else {
       contacts = await prisma.contact.findMany({
-        where: { userId: session.user.id },
+        where: {
+          userId: session.user.id,
+          ...(hasEmail ? { email: { not: null } } : {}),
+        },
         orderBy: { createdAt: "desc" },
         include: {
           contactEvents: {
@@ -138,6 +143,17 @@ export async function POST(request: NextRequest) {
           skipDuplicates: true,
         });
       }
+
+      await enrollContactInMatchingSequences(tx, {
+        id: createdContact.id,
+        userId: createdContact.userId,
+        fullName: createdContact.fullName,
+        email: createdContact.email,
+        company: createdContact.company,
+        jobTitle: createdContact.jobTitle,
+        source: createdContact.source,
+        status: createdContact.status,
+      });
 
       return createdContact;
     });

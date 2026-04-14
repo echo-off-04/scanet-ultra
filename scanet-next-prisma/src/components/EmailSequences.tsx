@@ -17,6 +17,7 @@ interface EnrollmentDetail {
     status: string;
     current_step: number;
     enrolled_at: string;
+    sends?: Array<{ id: string; step_id: string; status: string; scheduled_for: string | null; sent_at: string | null }>;
 }
 
 export default function EmailSequences({ onCreateNew, onEdit }: EmailSequencesProps) {
@@ -166,6 +167,12 @@ export default function EmailSequences({ onCreateNew, onEdit }: EmailSequencesPr
                                 <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${seq.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'}`}>
                                     {seq.status === 'active' ? 'Actif' : 'En pause'}
                                 </span>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2 mb-3 text-xs text-gray-500">
+                                {seq.trigger_status && <span className="px-2 py-1 bg-gray-100 rounded-full">Déclencheur: {seq.trigger_status}</span>}
+                                {seq.source_filter && <span className="px-2 py-1 bg-gray-100 rounded-full">Source: {seq.source_filter}</span>}
+                                {seq.exclude_statuses?.length ? <span className="px-2 py-1 bg-gray-100 rounded-full">Exclut: {seq.exclude_statuses.join(', ')}</span> : null}
                             </div>
 
                             <button onClick={() => loadEnrollments(seq.id)} className="flex items-center gap-1.5 text-sm text-[#0E3A5D] font-medium hover:underline">

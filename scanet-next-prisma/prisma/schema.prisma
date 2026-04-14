@@ -634,6 +634,9 @@ model EmailSequence {
   name        String
   description String?
   triggerType  SequenceTriggerType @default(manual) @map("trigger_type")
+  triggerStatus String?            @map("trigger_status")
+  sourceFilter  String?            @map("source_filter")
+  excludeStatuses String[]         @default([]) @map("exclude_statuses")
   isActive    Boolean             @default(false) @map("is_active")
   status      SequenceStatus      @default(draft)
   createdAt   DateTime            @default(now()) @map("created_at")
@@ -676,6 +679,7 @@ enum EnrollmentStatus {
   active
   paused
   completed
+  cancelled
 }
 
 model EmailSequenceEnrollment {
@@ -708,6 +712,7 @@ model EmailSequenceSend {
   scheduledFor  DateTime?            @map("scheduled_for")
   sentAt        DateTime?            @map("sent_at")
   emailLogId    String?              @map("email_log_id")
+  errorMessage  String?              @map("error_message")
   createdAt     DateTime             @default(now()) @map("created_at")
 
   enrollment EmailSequenceEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)

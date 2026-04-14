@@ -37,7 +37,11 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
     const { user } = useAuth();
     const [name, setName] = useState(editSequence?.name || '');
     const [description, setDescription] = useState(editSequence?.description || '');
-    const [triggerStatus, setTriggerStatus] = useState('lead');
+    const [triggerStatus, setTriggerStatus] = useState(editSequence?.trigger_status || 'lead');
+    const [sourceFilter, setSourceFilter] = useState(editSequence?.source_filter || '');
+    const [excludeStatuses, setExcludeStatuses] = useState<string[]>(
+        (editSequence?.exclude_statuses || []).filter((status) => status !== (editSequence?.trigger_status || 'lead')),
+    );
     const [steps, setSteps] = useState<StepDraft[]>([
         { step_order: 1, delay_days: 1, delay_hours: 0, subject: '', body: '', channel: 'email', include_offer_id: null },
     ]);
@@ -52,14 +56,18 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                 id: s.id,
                 step_order: s.step_order,
                 delay_days: s.delay_days,
-                delay_hours: 0,
+                delay_hours: s.delay_hours,
                 subject: s.subject,
                 body: s.body,
-                channel: 'email' as const,
-                include_offer_id: null,
+                channel: s.channel,
+                include_offer_id: s.include_offer_id,
             })));
         }
     }, [editSequence]);
+
+    useEffect(() => {
+        setExcludeStatuses((current) => current.filter((status) => status !== triggerStatus));
+    }, [triggerStatus]);
 
     const loadOffers = async () => {
         try {
@@ -97,6 +105,14 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
         setSteps(steps.map((s, i) => i === index ? { ...s, ...updates } : s));
     };
 
+    const toggleExcludeStatus = (status: string) => {
+        setExcludeStatuses((current) =>
+            current.includes(status)
+                ? current.filter((value) => value !== status)
+                : [...current, status],
+        );
+    };
+
     const handleSave = async () => {
         if (!name.trim()) { toast.error('Nom requis'); return; }
         if (steps.some(s => !s.subject.trim() || !s.body.trim())) { toast.error('Tous les emails doivent avoir un objet et un contenu'); return; }
@@ -107,11 +123,17 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                 name,
                 description,
                 trigger_status: triggerStatus,
+                source_filter: sourceFilter || null,
+                exclude_statuses: excludeStatuses,
+                status: editSequence?.status === 'archived' ? 'archived' : 'active',
                 steps: steps.map(s => ({
                     step_order: s.step_order,
                     delay_days: s.delay_days,
+                    delay_hours: s.delay_hours,
                     subject: s.subject,
                     body: s.body,
+                    channel: s.channel,
+                    include_offer_id: s.include_offer_id,
                 })),
             };
 
@@ -136,7 +158,19 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
     };
 
     const getCumulativeDelay = (index: number) => {
-        return steps.slice(0, index + 1).reduce((sum, s) => sum + s.delay_days, 0);
+        const totals = steps.slice(0, index + 1).reduce((acc, step) => {
+            acc.days += step.delay_days;
+            acc.hours += step.delay_hours;
+            acc.days += Math.floor(acc.hours / 24);
+            acc.hours = acc.hours % 24;
+            return acc;
+        }, { days: 0, hours: 0 });
+
+        if (totals.days === 0 && totals.hours === 0) {
+            return 'Immédiat';
+        }
+
+        return `${totals.days > 0 ? `J+${totals.days}` : ''}${totals.hours > 0 ? `${totals.days > 0 ? ' ' : ''}+${totals.hours}h` : ''}`;
     };
 
     return (
@@ -160,6 +194,10 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                                 <option value="lead">Nouveau lead</option>
                                 <option value="prospect">Nouveau prospect</option>
                                 <option value="client">Nouveau client</option>
+                                <option value="partner">Nouveau partenaire</option>
+                                <option value="collaborateur">Nouveau collaborateur</option>
+                                <option value="ami">Nouveau contact ami</option>
+                                <option value="fournisseur">Nouveau fournisseur</option>
                                 <option value="all">Tout nouveau contact</option>
                             </select>
                         </div>
@@ -167,6 +205,39 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                     <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-1.5">Description</label>
                         <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D]" placeholder="Courte description..." />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Source du contact</label>
+                            <select value={sourceFilter} onChange={(e) => setSourceFilter(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D]">
+                                <option value="">Toutes les sources</option>
+                                <option value="event">Événement</option>
+                                <option value="referral">Recommandation</option>
+                                <option value="cold_outreach">Prospection</option>
+                                <option value="team">Équipe</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Exclure ces statuts</label>
+                            <div className="flex flex-wrap gap-2 rounded-xl border border-gray-200 p-3">
+                                {['lead', 'prospect', 'client', 'partner', 'collaborateur', 'ami', 'fournisseur']
+                                    .filter((status) => status !== triggerStatus)
+                                    .map((status) => (
+                                        <button
+                                            key={status}
+                                            type="button"
+                                            onClick={() => toggleExcludeStatus(status)}
+                                            className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${excludeStatuses.includes(status)
+                                                ? 'bg-red-100 text-red-700'
+                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                            }`}
+                                        >
+                                            {status}
+                                        </button>
+                                    ))}
+                            </div>
+                        </div>
                     </div>
 
                     {/* Template Variables */}
@@ -201,7 +272,7 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                                             <p className="text-sm font-medium text-gray-900">{step.subject || `Étape ${index + 1}`}</p>
                                             <p className="text-xs text-gray-500">
                                                 <Clock className="w-3 h-3 inline mr-1" />
-                                                J+{getCumulativeDelay(index)} ({step.delay_days}j après étape précédente)
+                                                {getCumulativeDelay(index)} ({step.delay_days}j / {step.delay_hours}h après étape précédente)
                                             </p>
                                         </div>
                                         <Mail className="w-4 h-4 text-gray-400" />
@@ -214,6 +285,11 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                                                 <div>
                                                     <label className="block text-sm font-medium text-gray-700 mb-1">Délai (jours)</label>
                                                     <input type="number" min={0} value={step.delay_days} onChange={(e) => updateStep(index, { delay_days: Number(e.target.value) })}
+                                                        className="w-full px-4 py-2 border border-gray-300 rounded-xl" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Délai (heures)</label>
+                                                    <input type="number" min={0} value={step.delay_hours} onChange={(e) => updateStep(index, { delay_hours: Number(e.target.value) })}
                                                         className="w-full px-4 py-2 border border-gray-300 rounded-xl" />
                                                 </div>
                                                 <div>

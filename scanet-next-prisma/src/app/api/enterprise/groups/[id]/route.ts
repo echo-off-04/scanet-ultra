@@ -16,8 +16,15 @@ export async function PUT(
   try {
     const body = await request.json();
 
+    const existingGroup = await prisma.customGroup.findFirst({
+      where: { id, enterprise: { ownerId: session.user.id } },
+      select: { id: true },
+    });
+    if (!existingGroup)
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     // Handle member operations
-    if (body.action === "add_member") {
+    if (body.action === "add_member" || body.action === "addMember") {
       await prisma.customGroupMember.create({
         data: {
           groupId: id,
@@ -27,7 +34,7 @@ export async function PUT(
       return NextResponse.json({ success: true });
     }
 
-    if (body.action === "remove_member") {
+    if (body.action === "remove_member" || body.action === "removeMember") {
       await prisma.customGroupMember.delete({
         where: { id: body.member_id },
       });
@@ -64,12 +71,19 @@ export async function GET(
   const { id } = await params;
 
   try {
+    const existingGroup = await prisma.customGroup.findFirst({
+      where: { id, enterprise: { ownerId: session.user.id } },
+      select: { id: true },
+    });
+    if (!existingGroup)
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     const members = await prisma.customGroupMember.findMany({
       where: { groupId: id },
       include: { contact: true },
     });
 
-    return NextResponse.json(members.map(toSnakeCase));
+    return NextResponse.json({ members: members.map(toSnakeCase) });
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(
@@ -90,6 +104,13 @@ export async function DELETE(
   const { id } = await params;
 
   try {
+    const existingGroup = await prisma.customGroup.findFirst({
+      where: { id, enterprise: { ownerId: session.user.id } },
+      select: { id: true },
+    });
+    if (!existingGroup)
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     await prisma.customGroup.delete({ where: { id } });
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {

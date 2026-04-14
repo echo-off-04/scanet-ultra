@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { notifyContactUpdated } from "@/lib/notifications";
-import { mapContact, toSnakeCase } from "@/lib/apiMappers";
+import { mapContact } from "@/lib/apiMappers";
+import { enrollContactInMatchingSequences } from "@/lib/emailSequences";
 
 export async function GET(
   _request: NextRequest,
@@ -71,35 +72,50 @@ export async function PUT(
       return NextResponse.json({ error: "Contact not found" }, { status: 404 });
 
     const body = await request.json();
-    const contact = await prisma.contact.update({
-      where: { id },
-      data: {
-        fullName: body.fullName ?? body.full_name,
-        email: body.email,
-        phone: body.phone,
-        company: body.company,
-        jobTitle: body.jobTitle ?? body.job_title,
-        linkedinUrl: body.linkedinUrl ?? body.linkedin_url ?? body.linkedin,
-        avatarUrl: body.avatarUrl ?? body.avatar_url,
-        rating: body.rating,
-        tags: body.tags,
-        notes: body.notes,
-        status: body.status,
-        source: body.source,
-        isMember: body.isMember ?? body.is_member,
-        city: body.city,
-        region: body.region,
-        country: body.country,
-        industry: body.industry,
-        companySize: body.companySize ?? body.company_size,
-        address: body.address,
-        website: body.website,
-        twitter: body.twitter,
-        relationship: body.relationship,
-        isFavorite: body.isFavorite ?? body.is_favorite,
-        opportunityAmount: body.opportunityAmount ?? body.opportunity_amount,
-        followUpRequired: body.followUpRequired ?? body.follow_up_required,
-      },
+    const contact = await prisma.$transaction(async (tx) => {
+      const updatedContact = await tx.contact.update({
+        where: { id },
+        data: {
+          fullName: body.fullName ?? body.full_name,
+          email: body.email,
+          phone: body.phone,
+          company: body.company,
+          jobTitle: body.jobTitle ?? body.job_title,
+          linkedinUrl: body.linkedinUrl ?? body.linkedin_url ?? body.linkedin,
+          avatarUrl: body.avatarUrl ?? body.avatar_url,
+          rating: body.rating,
+          tags: body.tags,
+          notes: body.notes,
+          status: body.status,
+          source: body.source,
+          isMember: body.isMember ?? body.is_member,
+          city: body.city,
+          region: body.region,
+          country: body.country,
+          industry: body.industry,
+          companySize: body.companySize ?? body.company_size,
+          address: body.address,
+          website: body.website,
+          twitter: body.twitter,
+          relationship: body.relationship,
+          isFavorite: body.isFavorite ?? body.is_favorite,
+          opportunityAmount: body.opportunityAmount ?? body.opportunity_amount,
+          followUpRequired: body.followUpRequired ?? body.follow_up_required,
+        },
+      });
+
+      await enrollContactInMatchingSequences(tx, {
+        id: updatedContact.id,
+        userId: updatedContact.userId,
+        fullName: updatedContact.fullName,
+        email: updatedContact.email,
+        company: updatedContact.company,
+        jobTitle: updatedContact.jobTitle,
+        source: updatedContact.source,
+        status: updatedContact.status,
+      });
+
+      return updatedContact;
     });
 
     await notifyContactUpdated(session.user.id, contact.fullName, contact.id);

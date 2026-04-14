@@ -42,7 +42,7 @@ export default function ScheduleEmailModal({ onClose, onSuccess }: ScheduleEmail
             const res = await fetch('/api/contacts?has_email=true');
             if (res.ok) {
                 const data = await res.json();
-                setContacts(data.filter((c: any) => c.email));
+                setContacts((data.contacts || []).filter((c: any) => c.email));
             }
         } catch (error) {
             console.error('Error loading contacts:', error);

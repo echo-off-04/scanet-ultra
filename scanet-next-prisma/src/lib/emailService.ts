@@ -64,9 +64,10 @@ export async function sendEmail({
           templateType: templateType || "custom",
           status: "failed",
           trackingToken,
-          metadata: (metadata ?? undefined) as
-            | Prisma.InputJsonValue
-            | undefined,
+          metadata: {
+            ...(metadata ?? {}),
+            error_message: error.message,
+          } as Prisma.InputJsonValue,
           sentAt: new Date(),
         },
       });

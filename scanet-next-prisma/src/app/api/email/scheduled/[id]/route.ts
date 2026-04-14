@@ -3,8 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { toSnakeCase } from "@/lib/apiMappers";
 
-// PUT /api/email/scheduled/[id]
-export async function PUT(
+async function updateScheduledEmail(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -23,7 +22,7 @@ export async function PUT(
     const body = await request.json();
 
     // Handle cancel action
-    if (body.action === "cancel") {
+    if (body.action === "cancel" || body.status === "cancelled") {
       const email = await prisma.scheduledEmail.update({
         where: { id },
         data: { status: "cancelled" },
@@ -49,6 +48,22 @@ export async function PUT(
       { status: 500 },
     );
   }
+}
+
+// PUT /api/email/scheduled/[id]
+export async function PUT(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
+  return updateScheduledEmail(request, context);
+}
+
+// PATCH /api/email/scheduled/[id]
+export async function PATCH(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
+  return updateScheduledEmail(request, context);
 }
 
 // DELETE /api/email/scheduled/[id]

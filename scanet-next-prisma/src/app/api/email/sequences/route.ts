@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { toSnakeCase } from "@/lib/apiMappers";
+import { normalizeSequencePayload } from "@/lib/emailSequences";
 
 // GET /api/email/sequences
 export async function GET() {
@@ -31,6 +32,10 @@ export async function GET() {
         ]);
         return {
           ...seq,
+          status:
+            seq.status === "draft" && seq.isActive ? "active" : seq.status,
+          triggerStatus: seq.triggerStatus ?? "lead",
+          excludeStatuses: seq.excludeStatuses ?? [],
           enrollments_count: totalCount,
           active_enrollments: activeCount,
         };
@@ -56,15 +61,12 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { steps, ...sequenceData } = body;
+    const normalized = normalizeSequencePayload(sequenceData);
 
     const sequence = await prisma.emailSequence.create({
       data: {
         userId: session.user.id,
-        name: sequenceData.name,
-        description: sequenceData.description,
-        triggerType:
-          sequenceData.trigger_type || sequenceData.triggerType || "manual",
-        isActive: sequenceData.is_active ?? true,
+        ...normalized,
         steps: steps?.length
           ? {
               create: steps.map((step: any, index: number) => ({

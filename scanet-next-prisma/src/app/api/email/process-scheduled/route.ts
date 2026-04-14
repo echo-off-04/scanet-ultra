@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/emailService";
+import { buildTemplateVariables, renderTemplate } from "@/lib/emailSequences";
 
 // POST /api/email/process-scheduled - Process all pending scheduled emails (cron replacement)
 export async function POST(request: NextRequest) {
@@ -45,25 +46,41 @@ export async function POST(request: NextRequest) {
               subject: email.subject,
               html: email.body,
               userId: email.userId,
+              templateType: "scheduled",
+              metadata: {
+                email_type: "scheduled",
+                body_html: email.body,
+                body_text: email.body,
+                scheduled_email_id: email.id,
+                recipient_id: recipient.id,
+              },
             });
 
             if (result.success) {
               await prisma.scheduledEmailRecipient.update({
                 where: { id: recipient.id },
-                data: { status: "sent", sentAt: new Date() },
+                data: {
+                  status: "sent",
+                  sentAt: new Date(),
+                  emailLogId: result.emailLogId,
+                  errorMessage: null,
+                },
               });
               sent++;
             } else {
               await prisma.scheduledEmailRecipient.update({
                 where: { id: recipient.id },
-                data: { status: "failed" },
+                data: {
+                  status: "failed",
+                  errorMessage: result.error ?? "Unknown error",
+                },
               });
               failed++;
             }
           } catch {
             await prisma.scheduledEmailRecipient.update({
               where: { id: recipient.id },
-              data: { status: "failed" },
+              data: { status: "failed", errorMessage: "Unknown error" },
             });
             failed++;
           }
@@ -84,19 +101,6 @@ export async function POST(request: NextRequest) {
           where: { id: email.id },
           data: {
             status: allSent ? "sent" : anyFailed ? "failed" : "sent",
-            sentAt: new Date(),
-          },
-        });
-
-        // Log the email
-        await prisma.emailLog.create({
-          data: {
-            userId: email.userId,
-            toEmail: email.recipients
-              .map((r: { email: string }) => r.email)
-              .join(", "),
-            subject: email.subject,
-            status: allSent ? "sent" : "failed",
             sentAt: new Date(),
           },
         });
@@ -129,7 +133,7 @@ export async function POST(request: NextRequest) {
                 steps: { orderBy: { stepOrder: "asc" } },
                 user: {
                   select: {
-                    profile: { select: { fullName: true, email: true } },
+                    profile: { select: { fullName: true, email: true, company: true } },
                   },
                 },
               },
@@ -151,65 +155,61 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Replace template variables
-        let subject = send.step.subject;
-        let body = send.step.body;
-        const firstName =
-          contact.fullName?.split(" ")[0] || contact.fullName || "";
         const senderName =
           send.enrollment.sequence.user?.profile?.fullName || "";
-
-        subject = subject.replace(/\{\{prenom\}\}/g, firstName);
-        subject = subject.replace(
-          /\{\{nom_complet\}\}/g,
-          contact.fullName || "",
-        );
-        body = body.replace(/\{\{prenom\}\}/g, firstName);
-        body = body.replace(/\{\{nom_complet\}\}/g, contact.fullName || "");
-        body = body.replace(/\{\{entreprise\}\}/g, contact.company || "");
-        body = body.replace(/\{\{expediteur\}\}/g, senderName);
+        const senderCompany =
+          send.enrollment.sequence.user?.profile?.company || "";
+        const templateVariables = buildTemplateVariables({
+          contact: {
+            fullName: contact.fullName,
+            email: contact.email,
+            company: contact.company,
+            jobTitle: contact.jobTitle,
+            source: contact.source,
+          },
+          senderName,
+          senderCompany,
+        });
+        const subject = renderTemplate(send.step.subject, templateVariables);
+        const body = renderTemplate(send.step.body, templateVariables);
 
         const result = await sendEmail({
           to: contact.email,
           subject,
           html: body,
           userId: send.enrollment.sequence.userId,
+          templateType: "follow_up",
+          metadata: {
+            email_type: "sequence",
+            body_html: body,
+            body_text: body,
+            sequence_id: send.enrollment.sequenceId,
+            enrollment_id: send.enrollmentId,
+            step_order: send.step.stepOrder,
+          },
         });
 
         if (result.success) {
           await prisma.emailSequenceSend.update({
             where: { id: send.id },
-            data: { status: "sent", sentAt: new Date() },
+            data: {
+              status: "sent",
+              sentAt: new Date(),
+              emailLogId: result.emailLogId,
+              errorMessage: null,
+            },
           });
 
-          // Check if all steps are completed
-          const allSteps = send.enrollment.sequence.steps;
-          const currentStepIndex = allSteps.findIndex(
-            (s: { id: string }) => s.id === send.stepId,
-          );
-          const nextStep = allSteps[currentStepIndex + 1];
+          await prisma.emailSequenceEnrollment.update({
+            where: { id: send.enrollmentId },
+            data: { currentStep: send.step.stepOrder },
+          });
 
-          if (nextStep) {
-            // Schedule next step
-            const nextDate = new Date();
-            nextDate.setDate(nextDate.getDate() + nextStep.delayDays);
-            nextDate.setHours(nextDate.getHours() + nextStep.delayHours);
+          const remainingSends = await prisma.emailSequenceSend.count({
+            where: { enrollmentId: send.enrollmentId, status: "pending" },
+          });
 
-            await prisma.emailSequenceSend.create({
-              data: {
-                enrollmentId: send.enrollmentId,
-                stepId: nextStep.id,
-                status: "pending",
-                scheduledFor: nextDate,
-              },
-            });
-
-            await prisma.emailSequenceEnrollment.update({
-              where: { id: send.enrollmentId },
-              data: { currentStep: currentStepIndex + 2 },
-            });
-          } else {
-            // Sequence completed
+          if (remainingSends === 0) {
             await prisma.emailSequenceEnrollment.update({
               where: { id: send.enrollmentId },
               data: { status: "completed", completedAt: new Date() },
@@ -220,7 +220,10 @@ export async function POST(request: NextRequest) {
         } else {
           await prisma.emailSequenceSend.update({
             where: { id: send.id },
-            data: { status: "failed" },
+            data: {
+              status: "failed",
+              errorMessage: result.error ?? "Unknown error",
+            },
           });
           failed++;
         }
@@ -228,7 +231,11 @@ export async function POST(request: NextRequest) {
         console.error(`Error processing sequence send ${send.id}:`, error);
         await prisma.emailSequenceSend.update({
           where: { id: send.id },
-          data: { status: "failed" },
+          data: {
+            status: "failed",
+            errorMessage:
+              error instanceof Error ? error.message : "Unknown error",
+          },
         });
         failed++;
       }

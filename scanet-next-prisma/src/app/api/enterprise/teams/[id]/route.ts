@@ -16,8 +16,15 @@ export async function PUT(
   try {
     const body = await request.json();
 
+    const existingTeam = await prisma.team.findFirst({
+      where: { id, enterprise: { ownerId: session.user.id } },
+      select: { id: true },
+    });
+    if (!existingTeam)
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     // Handle team member operations
-    if (body.action === "add_member") {
+    if (body.action === "add_member" || body.action === "addMember") {
       await prisma.teamMember.create({
         data: {
           teamId: id,
@@ -29,14 +36,14 @@ export async function PUT(
       return NextResponse.json({ success: true });
     }
 
-    if (body.action === "remove_member") {
+    if (body.action === "remove_member" || body.action === "removeMember") {
       await prisma.teamMember.delete({
         where: { id: body.member_id },
       });
       return NextResponse.json({ success: true });
     }
 
-    if (body.action === "update_role") {
+    if (body.action === "update_role" || body.action === "updateMemberRole") {
       await prisma.teamMember.update({
         where: { id: body.member_id },
         data: { role: body.role || null },
@@ -75,6 +82,13 @@ export async function GET(
   const { id } = await params;
 
   try {
+    const existingTeam = await prisma.team.findFirst({
+      where: { id, enterprise: { ownerId: session.user.id } },
+      select: { id: true },
+    });
+    if (!existingTeam)
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     const members = await prisma.teamMember.findMany({
       where: { teamId: id },
       include: {
@@ -87,7 +101,10 @@ export async function GET(
       orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json({ members, objectives });
+    return NextResponse.json({
+      members: members.map(toSnakeCase),
+      objectives: objectives.map(toSnakeCase),
+    });
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(
@@ -108,6 +125,13 @@ export async function DELETE(
   const { id } = await params;
 
   try {
+    const existingTeam = await prisma.team.findFirst({
+      where: { id, enterprise: { ownerId: session.user.id } },
+      select: { id: true },
+    });
+    if (!existingTeam)
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+
     await prisma.team.delete({ where: { id } });
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {

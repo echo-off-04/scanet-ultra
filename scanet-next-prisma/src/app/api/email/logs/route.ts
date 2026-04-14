@@ -23,7 +23,30 @@ export async function GET(request: NextRequest) {
       take: limit,
     });
 
-    return NextResponse.json(logs.map(toSnakeCase));
+    return NextResponse.json(
+      logs.map((log) => {
+        const metadata =
+          log.metadata && typeof log.metadata === "object" && !Array.isArray(log.metadata)
+            ? (log.metadata as Record<string, unknown>)
+            : {};
+
+        return {
+          ...toSnakeCase(log),
+          body_html:
+            typeof metadata.body_html === "string" ? metadata.body_html : null,
+          body_text:
+            typeof metadata.body_text === "string" ? metadata.body_text : null,
+          email_type:
+            typeof metadata.email_type === "string"
+              ? metadata.email_type
+              : log.templateType ?? "direct",
+          error_message:
+            typeof metadata.error_message === "string"
+              ? metadata.error_message
+              : null,
+        };
+      }),
+    );
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json(
