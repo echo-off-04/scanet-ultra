@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { extractScanCardImages, normalizeScanCardData } from "@/lib/scanCard";
 
 // POST /api/scan-card - Scan business card using OpenAI Vision
 export async function POST(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
-    const { frontImage, backImage } = body;
+    const { frontImage, backImage } = extractScanCardImages(body);
 
     if (!frontImage) {
       return NextResponse.json(
@@ -111,7 +112,9 @@ Retourne UNIQUEMENT le JSON, sans commentaire ni markdown.`,
       );
     }
 
-    return NextResponse.json(extractedData);
+    const normalizedData = normalizeScanCardData(extractedData);
+
+    return NextResponse.json({ data: normalizedData });
   } catch (error) {
     console.error("Error scanning card:", error);
     return NextResponse.json(

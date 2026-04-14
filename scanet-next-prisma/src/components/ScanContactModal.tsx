@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { Camera, Upload, X, RotateCcw, Check, Tag, Plus, Loader2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { compressImage } from '@/lib/imageProcessing';
 import { toast } from 'sonner';
 
 interface ScanContactModalProps {
@@ -21,15 +22,53 @@ interface ExtractedData {
     linkedin: string;
 }
 
+const EMPTY_EXTRACTED_DATA: ExtractedData = {
+    full_name: '',
+    email: '',
+    phone: '',
+    company: '',
+    job_title: '',
+    website: '',
+    address: '',
+    linkedin: '',
+};
+
+function mapScannedData(payload: Record<string, unknown>): ExtractedData {
+    const firstName = typeof payload.firstName === 'string' ? payload.firstName.trim() : '';
+    const lastName = typeof payload.lastName === 'string' ? payload.lastName.trim() : '';
+    const fullName = typeof payload.full_name === 'string'
+        ? payload.full_name.trim()
+        : typeof payload.fullName === 'string'
+            ? payload.fullName.trim()
+            : [firstName, lastName].filter(Boolean).join(' ').trim();
+
+    return {
+        full_name: fullName,
+        email: typeof payload.email === 'string' ? payload.email.trim() : '',
+        phone: typeof payload.phone === 'string' ? payload.phone.trim() : '',
+        company: typeof payload.company === 'string' ? payload.company.trim() : '',
+        job_title: typeof payload.job_title === 'string'
+            ? payload.job_title.trim()
+            : typeof payload.jobTitle === 'string'
+                ? payload.jobTitle.trim()
+                : '',
+        website: typeof payload.website === 'string' ? payload.website.trim() : '',
+        address: typeof payload.address === 'string' ? payload.address.trim() : '',
+        linkedin: typeof payload.linkedin === 'string'
+            ? payload.linkedin.trim()
+            : typeof payload.linkedin_url === 'string'
+                ? payload.linkedin_url.trim()
+                : '',
+    };
+}
+
 export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalProps) {
     const { user } = useAuth();
     const [step, setStep] = useState<'capture' | 'captureBack' | 'review'>('capture');
     const [image, setImage] = useState<string | null>(null);
     const [backImage, setBackImage] = useState<string | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
-    const [extractedData, setExtractedData] = useState<ExtractedData>({
-        full_name: '', email: '', phone: '', company: '', job_title: '', website: '', address: '', linkedin: '',
-    });
+    const [extractedData, setExtractedData] = useState<ExtractedData>(EMPTY_EXTRACTED_DATA);
     const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState('');
     const [stream, setStream] = useState<MediaStream | null>(null);
@@ -110,28 +149,26 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
     const processImages = async (frontImage: string, backImg: string | null) => {
         setIsProcessing(true);
         try {
+            const processedFrontImage = await compressImage(frontImage, 800);
+            const processedBackImage = backImg ? await compressImage(backImg, 800) : null;
+
             const res = await fetch('/api/scan-card', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ front_image: frontImage, back_image: backImg }),
+                body: JSON.stringify({ image: processedFrontImage, backImage: processedBackImage }),
             });
 
-            if (!res.ok) throw new Error('Erreur de traitement');
-            const data = await res.json();
-            setExtractedData({
-                full_name: data.full_name || '',
-                email: data.email || '',
-                phone: data.phone || '',
-                company: data.company || '',
-                job_title: data.job_title || '',
-                website: data.website || '',
-                address: data.address || '',
-                linkedin: data.linkedin || '',
-            });
+            const result = await res.json();
+            if (!res.ok) {
+                throw new Error(result.error || 'Erreur de traitement');
+            }
+
+            const data = result?.data && typeof result.data === 'object' ? result.data as Record<string, unknown> : result as Record<string, unknown>;
+            setExtractedData(mapScannedData(data));
             setStep('review');
         } catch (error) {
             console.error('Error processing card:', error);
-            toast.error('Erreur lors du traitement de la carte');
+            toast.error(error instanceof Error ? error.message : 'Erreur lors du traitement de la carte');
             setStep('capture');
             setImage(null);
             setBackImage(null);
@@ -186,7 +223,7 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
         setImage(null);
         setBackImage(null);
         setStep('capture');
-        setExtractedData({ full_name: '', email: '', phone: '', company: '', job_title: '', website: '', address: '', linkedin: '' });
+        setExtractedData(EMPTY_EXTRACTED_DATA);
         setTags([]);
     };
 
