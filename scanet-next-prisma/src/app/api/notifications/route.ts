@@ -1,34 +1,61 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
+const DEFAULT_LIMIT = 50;
+const MAX_LIMIT = 100;
+
+function parseLimit(rawLimit: string | null) {
+  const parsed = Number.parseInt(rawLimit ?? "", 10);
+  if (!Number.isFinite(parsed) || parsed < 1) {
+    return DEFAULT_LIMIT;
+  }
+
+  return Math.min(parsed, MAX_LIMIT);
+}
+
+function isTransientNotificationReadError(error: unknown) {
+  return (
+    error instanceof Prisma.PrismaClientInitializationError ||
+    error instanceof Prisma.PrismaClientUnknownRequestError
+  );
+}
+
 // GET /api/notifications
 export async function GET(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const { searchParams } = new URL(request.url);
-  const unreadOnly = searchParams.get("unread") === "true";
-  const limit = parseInt(searchParams.get("limit") || "50");
-
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const unreadOnly = searchParams.get("unread") === "true";
+    const limit = parseLimit(searchParams.get("limit"));
+
     const where: Record<string, unknown> = { userId: session.user.id };
     if (unreadOnly) where.read = false;
 
-    const notifications = await prisma.notification.findMany({
-      where,
-      orderBy: { createdAt: "desc" },
-      take: limit,
-    });
-
-    const unreadCount = await prisma.notification.count({
-      where: { userId: session.user.id, read: false },
-    });
+    const [notifications, unreadCount] = await Promise.all([
+      prisma.notification.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        take: limit,
+      }),
+      prisma.notification.count({
+        where: { userId: session.user.id, read: false },
+      }),
+    ]);
 
     return NextResponse.json({ notifications, unreadCount });
   } catch (error) {
-    console.error("Error:", error);
+    if (isTransientNotificationReadError(error)) {
+      console.warn("Notifications unavailable during startup:", error);
+      return NextResponse.json({ notifications: [], unreadCount: 0 });
+    }
+
+    console.error("Error fetching notifications:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },
@@ -38,11 +65,12 @@ export async function GET(request: NextRequest) {
 
 // POST /api/notifications - Mark as read
 export async function POST(request: NextRequest) {
-  const session = await auth();
-  if (!session?.user?.id)
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const { action, id, ids } = body;
 
@@ -68,7 +96,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error updating notifications:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },
