@@ -1,0 +1,1089 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== USER & AUTH ====================
+
+model User {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  hashedPassword String   @map("hashed_password")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  profile                 Profile?
+  contacts                Contact[]
+  events                  Event[]
+  interactions            Interaction[]
+  followUps               FollowUp[]
+  contactOpportunities    ContactOpportunity[]
+  contactGroups           ContactGroup[]
+  offers                  Offer[]
+  offerPacks              OfferPack[]
+  offerSends              OfferSend[]
+  scheduledEmails         ScheduledEmail[]
+  emailSequences          EmailSequence[]
+  emailSequenceEnrollments EmailSequenceEnrollment[]
+  emailLogs               EmailLog[]
+  notifications           Notification[]
+  notificationPreferences NotificationPreference?
+  personalObjectives      PersonalObjective[]
+  enterprises             Enterprise[]
+  teamMembers             TeamMember[]
+  emailPreferences        EmailPreference?
+  contactNotes            ContactNote[]
+  contactActivities       ContactActivity[]
+  contactRelationships    ContactRelationship[]
+
+  @@map("users")
+}
+
+model Profile {
+  id                String   @id @default(uuid())
+  userId            String   @unique @map("user_id")
+  email             String
+  fullName          String?  @map("full_name")
+  company           String?
+  jobTitle          String?  @map("job_title")
+  avatarUrl         String?  @map("avatar_url")
+  preferredCurrency String?  @default("EUR") @map("preferred_currency")
+  phone             String?
+  bio               String?
+  website           String?
+  linkedin          String?
+  country           String?
+  city              String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+// ==================== CONTACTS ====================
+
+enum ContactStatus {
+  lead
+  prospect
+  client
+  partner
+  collaborateur
+  ami
+  fournisseur
+}
+
+enum ContactSource {
+  event
+  referral
+  cold_outreach
+  team
+}
+
+model Contact {
+  id          String        @id @default(uuid())
+  userId      String        @map("user_id")
+  fullName    String        @map("full_name")
+  email       String?
+  phone       String?
+  company     String?
+  jobTitle    String?       @map("job_title")
+  linkedinUrl String?       @map("linkedin_url")
+  avatarUrl   String?       @map("avatar_url")
+  rating      Int?
+  tags        String[]      @default([])
+  notes             String?
+  status      ContactStatus @default(lead)
+  source      ContactSource?
+  isMember    Boolean       @default(false) @map("is_member")
+  city        String?
+  region      String?
+  country     String?
+  industry    String?
+  companySize String?       @map("company_size")
+  address     String?
+  website     String?
+  relationship String?
+  opportunityAmount Float?  @map("opportunity_amount")
+  followUpRequired  Boolean @default(false) @map("follow_up_required")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contactEvents     ContactEvent[]
+  interactions      Interaction[]
+  followUps         FollowUp[]
+  opportunities     ContactOpportunity[]
+  groupMembers      ContactGroupMember[]
+  customGroupMembers CustomGroupMember[]
+  teamMembers       TeamMember[]
+  offerSends        OfferSend[]
+  scheduledEmailRecipients ScheduledEmailRecipient[]
+  emailSequenceEnrollments EmailSequenceEnrollment[]
+  contactNotes      ContactNote[]
+  activities        ContactActivity[]
+  relationshipsFrom ContactRelationship[] @relation("ContactRelFrom")
+  relationshipsTo   ContactRelationship[] @relation("ContactRelTo")
+
+  @@index([userId])
+  @@index([status])
+  @@index([userId, status])
+  @@map("contacts")
+}
+
+// ==================== EVENTS ====================
+
+enum EventType {
+  salon
+  meeting
+  conference
+  networking
+  seminar
+  gala
+  meetup
+
+  @@map("event_type_enum")
+}
+
+enum EventFormat {
+  presentiel
+  online
+  hybride
+
+  @@map("event_format_enum")
+}
+
+enum EventStatus {
+  upcoming
+  ongoing
+  completed
+
+  @@map("event_status_enum")
+}
+
+model Event {
+  id                  String      @id @default(uuid())
+  userId              String      @map("user_id")
+  name                String
+  description         String?
+  category            String?     @default("networking")
+  eventType           String?     @default("presentiel") @map("event_type")
+  status              String?     @default("upcoming")
+  startDate           DateTime?   @map("start_date")
+  endDate             DateTime?   @map("end_date")
+  location            String?
+  imageUrl            String?     @map("image_url")
+  eventDate           DateTime?   @map("event_date")
+  targetParticipants  Int?        @default(0) @map("target_participants")
+  actualParticipants  Int?        @default(0) @map("actual_participants")
+  peopleApproached    Int?        @default(0) @map("people_approached")
+  primaryObjective    String?     @map("primary_objective")
+  secondaryObjectives String[]    @default([]) @map("secondary_objectives")
+  targetAudience      String[]    @default([]) @map("target_audience")
+  leadsGenerated      Int         @default(0) @map("leads_generated")
+  contactsAdded       Int         @default(0) @map("contacts_added")
+  conversionRate      Float       @default(0) @map("conversion_rate")
+  performanceScore    Float       @default(0) @map("performance_score")
+  budget              Float?      @default(0)
+  revenue             Float?      @default(0)
+  qrCodeToken         String?     @unique @map("qr_code_token")
+  createdAt           DateTime    @default(now()) @map("created_at")
+  updatedAt           DateTime    @updatedAt @map("updated_at")
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contactEvents   ContactEvent[]
+  teamEvents      TeamEvent[]
+  personalObjectives PersonalObjective[]
+  eventObjectives EventObjective[]
+
+  @@index([userId])
+  @@index([qrCodeToken])
+  @@map("events")
+}
+
+model ContactEvent {
+  id        String   @id @default(uuid())
+  contactId String   @map("contact_id")
+  eventId   String   @map("event_id")
+  source    String?  @default("event")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  event   Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([contactId, eventId])
+  @@index([eventId])
+  @@map("contact_events")
+}
+
+// ==================== EVENT OBJECTIVES ====================
+
+enum EventObjectiveType {
+  primary
+  secondary
+}
+
+enum MetricType {
+  people_count
+  opportunity_value
+  quality_score
+}
+
+model EventObjective {
+  id            String             @id @default(uuid())
+  eventId       String             @map("event_id")
+  userId        String             @map("user_id")
+  objectiveType EventObjectiveType @default(primary) @map("objective_type")
+  metricType    MetricType         @map("metric_type")
+  title         String
+  description   String?
+  targetValue   Float              @map("target_value")
+  currentValue  Float              @default(0) @map("current_value")
+  unit          String
+  achieved      Boolean            @default(false)
+  priority      Int                @default(2)
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@map("event_objectives")
+}
+
+// ==================== CONTACT NOTES & ACTIVITIES ====================
+
+model ContactNote {
+  id        String   @id @default(uuid())
+  contactId String   @map("contact_id")
+  userId    String   @map("user_id")
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([contactId])
+  @@map("contact_notes")
+}
+
+enum ActivityType {
+  call
+  email
+  message
+  meeting
+  other
+}
+
+model ContactActivity {
+  id           String       @id @default(uuid())
+  contactId    String       @map("contact_id")
+  userId       String       @map("user_id")
+  activityType ActivityType @map("activity_type")
+  description  String?
+  activityDate DateTime     @default(now()) @map("activity_date")
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([contactId])
+  @@map("contact_activities")
+}
+
+// ==================== CONTACT RELATIONSHIPS ====================
+
+model ContactRelationship {
+  id               String   @id @default(uuid())
+  contactId        String   @map("contact_id")
+  relatedContactId String   @map("related_contact_id")
+  userId           String   @map("user_id")
+  relationshipType String   @default("contact") @map("relationship_type")
+  notes            String?
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  contact        Contact @relation("ContactRelFrom", fields: [contactId], references: [id], onDelete: Cascade)
+  relatedContact Contact @relation("ContactRelTo", fields: [relatedContactId], references: [id], onDelete: Cascade)
+  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([contactId, relatedContactId, userId])
+  @@index([contactId])
+  @@index([relatedContactId])
+  @@map("contact_relationships")
+}
+
+// ==================== INTERACTIONS & FOLLOW-UPS ====================
+
+enum InteractionType {
+  call
+  email
+  meeting
+  note
+}
+
+model Interaction {
+  id              String          @id @default(uuid())
+  contactId       String          @map("contact_id")
+  userId          String          @map("user_id")
+  interactionType InteractionType @default(note) @map("interaction_type")
+  subject         String?
+  description     String?
+  interactionDate DateTime        @default(now()) @map("interaction_date")
+  createdAt       DateTime        @default(now()) @map("created_at")
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([contactId])
+  @@index([userId])
+  @@map("interactions")
+}
+
+enum Priority {
+  low
+  medium
+  high
+}
+
+model FollowUp {
+  id          String   @id @default(uuid())
+  contactId   String   @map("contact_id")
+  userId      String   @map("user_id")
+  title       String
+  description String?
+  dueDate     DateTime? @map("due_date")
+  completed   Boolean  @default(false)
+  priority    Priority @default(medium)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([contactId])
+  @@index([userId])
+  @@index([userId, completed])
+  @@map("follow_ups")
+}
+
+// ==================== OPPORTUNITIES ====================
+
+enum OpportunityStatus {
+  prospect
+  negotiation
+  won
+  lost
+}
+
+model ContactOpportunity {
+  id                String            @id @default(uuid())
+  userId            String            @map("user_id")
+  contactId         String            @map("contact_id")
+  title             String
+  description       String?
+  amount            Float?
+  currency          String?           @default("EUR")
+  status            OpportunityStatus @default(prospect)
+  expectedCloseDate DateTime?         @map("expected_close_date")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([contactId])
+  @@index([status])
+  @@map("contact_opportunities")
+}
+
+// ==================== CONTACT GROUPS ====================
+
+model ContactGroup {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  name        String
+  description String?
+  color       String   @default("#3B82F6")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user    User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  members ContactGroupMember[]
+  offerSends OfferSend[]
+
+  @@index([userId])
+  @@map("contact_groups")
+}
+
+model ContactGroupMember {
+  id        String   @id @default(uuid())
+  groupId   String   @map("group_id")
+  contactId String   @map("contact_id")
+  addedAt   DateTime @default(now()) @map("added_at")
+
+  group   ContactGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  contact Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, contactId])
+  @@map("contact_group_members")
+}
+
+// ==================== OFFERS ====================
+
+enum BillingType {
+  one_time
+  monthly
+  yearly
+  quarterly
+  hourly
+  daily
+  fixed
+  unit
+}
+
+enum OfferStatus {
+  active
+  inactive
+}
+
+model Offer {
+  id             String      @id @default(uuid())
+  userId         String      @map("user_id")
+  title          String
+  description    String?
+  category       String?
+  price          Float?
+  originalPrice  Float?      @map("original_price")
+  currency       String      @default("EUR")
+  billingType    BillingType @default(one_time) @map("billing_type")
+  duration       String?
+  hourlyRate     Float?      @map("hourly_rate")
+  estimatedHours Float?      @map("estimated_hours")
+  dailyRate      Float?      @map("daily_rate")
+  estimatedDays  Float?      @map("estimated_days")
+  unitPrice      Float?      @map("unit_price")
+  quantity       Int?
+  status         OfferStatus @default(active)
+  imageUrl       String?     @map("image_url")
+  features       String[]    @default([])
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offerPackItems OfferPackItem[]
+  offerSends     OfferSend[]
+  emailSequenceSteps EmailSequenceStep[]
+
+  @@index([userId])
+  @@map("offers")
+}
+
+model OfferPack {
+  id                 String      @id @default(uuid())
+  userId             String      @map("user_id")
+  name               String
+  description        String?
+  price              Float?
+  discountPercentage Float?      @map("discount_percentage")
+  status             OfferStatus @default(active)
+  imageUrl           String?     @map("image_url")
+  createdAt          DateTime    @default(now()) @map("created_at")
+  updatedAt          DateTime    @updatedAt @map("updated_at")
+
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items      OfferPackItem[]
+  offerSends OfferSend[]
+
+  @@index([userId])
+  @@map("offer_packs")
+}
+
+model OfferPackItem {
+  id       String @id @default(uuid())
+  packId   String @map("pack_id")
+  offerId  String @map("offer_id")
+  quantity Int    @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  pack  OfferPack @relation(fields: [packId], references: [id], onDelete: Cascade)
+  offer Offer     @relation(fields: [offerId], references: [id], onDelete: Cascade)
+
+  @@unique([packId, offerId])
+  @@map("offer_pack_items")
+}
+
+enum OfferSendStatus {
+  sent
+  viewed
+  accepted
+  declined
+}
+
+model OfferSend {
+  id             String          @id @default(uuid())
+  userId         String          @map("user_id")
+  offerId        String?         @map("offer_id")
+  packId         String?         @map("pack_id")
+  contactId      String?         @map("contact_id")
+  contactGroupId String?         @map("contact_group_id")
+  sentAt         DateTime        @default(now()) @map("sent_at")
+  status         OfferSendStatus @default(sent)
+  notes          String?
+  createdAt      DateTime        @default(now()) @map("created_at")
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offer        Offer?        @relation(fields: [offerId], references: [id], onDelete: SetNull)
+  pack         OfferPack?    @relation(fields: [packId], references: [id], onDelete: SetNull)
+  contact      Contact?      @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  contactGroup ContactGroup? @relation(fields: [contactGroupId], references: [id], onDelete: SetNull)
+  emailTracking OfferEmailTracking[]
+
+  @@index([userId])
+  @@map("offer_sends")
+}
+
+model OfferEmailTracking {
+  id            String   @id @default(uuid())
+  offerSendId   String   @map("offer_send_id")
+  emailLogId    String?  @map("email_log_id")
+  trackingToken String?  @unique @map("tracking_token")
+  opened        Boolean  @default(false)
+  clicked       Boolean  @default(false)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  offerSend OfferSend @relation(fields: [offerSendId], references: [id], onDelete: Cascade)
+  emailLog  EmailLog? @relation(fields: [emailLogId], references: [id], onDelete: SetNull)
+
+  @@map("offer_email_tracking")
+}
+
+// ==================== EMAIL SYSTEM ====================
+
+enum ScheduledEmailStatus {
+  pending
+  sent
+  failed
+  cancelled
+}
+
+model ScheduledEmail {
+  id           String               @id @default(uuid())
+  userId       String               @map("user_id")
+  subject      String
+  body         String
+  scheduledFor DateTime             @map("scheduled_for")
+  status       ScheduledEmailStatus @default(pending)
+  sentAt       DateTime?            @map("sent_at")
+  errorMessage String?              @map("error_message")
+  createdAt    DateTime             @default(now()) @map("created_at")
+  updatedAt    DateTime             @updatedAt @map("updated_at")
+
+  user       User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipients ScheduledEmailRecipient[]
+
+  @@index([userId])
+  @@index([status, scheduledFor])
+  @@map("scheduled_emails")
+}
+
+model ScheduledEmailRecipient {
+  id               String               @id @default(uuid())
+  scheduledEmailId String               @map("scheduled_email_id")
+  contactId        String?              @map("contact_id")
+  email            String
+  status           ScheduledEmailStatus @default(pending)
+  sentAt           DateTime?            @map("sent_at")
+  emailLogId       String?              @map("email_log_id")
+  errorMessage     String?              @map("error_message")
+  createdAt        DateTime             @default(now()) @map("created_at")
+
+  scheduledEmail ScheduledEmail @relation(fields: [scheduledEmailId], references: [id], onDelete: Cascade)
+  contact        Contact?       @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  emailLog       EmailLog?      @relation(fields: [emailLogId], references: [id], onDelete: SetNull)
+
+  @@index([scheduledEmailId])
+  @@map("scheduled_email_recipients")
+}
+
+enum SequenceTriggerType {
+  manual
+  on_event
+  on_status
+}
+
+enum SequenceStatus {
+  draft
+  active
+  paused
+  archived
+}
+
+model EmailSequence {
+  id          String              @id @default(uuid())
+  userId      String              @map("user_id")
+  name        String
+  description String?
+  triggerType  SequenceTriggerType @default(manual) @map("trigger_type")
+  isActive    Boolean             @default(false) @map("is_active")
+  status      SequenceStatus      @default(draft)
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+
+  user        User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  steps       EmailSequenceStep[]
+  enrollments EmailSequenceEnrollment[]
+
+  @@index([userId])
+  @@map("email_sequences")
+}
+
+enum StepChannel {
+  email
+  whatsapp
+}
+
+model EmailSequenceStep {
+  id             String      @id @default(uuid())
+  sequenceId     String      @map("sequence_id")
+  stepOrder      Int         @map("step_order")
+  delayDays      Int         @default(0) @map("delay_days")
+  delayHours     Int         @default(0) @map("delay_hours")
+  subject        String
+  body           String
+  channel        StepChannel @default(email)
+  includeOfferId String?     @map("include_offer_id")
+  createdAt      DateTime    @default(now()) @map("created_at")
+
+  sequence     EmailSequence       @relation(fields: [sequenceId], references: [id], onDelete: Cascade)
+  includeOffer Offer?              @relation(fields: [includeOfferId], references: [id], onDelete: SetNull)
+  sends        EmailSequenceSend[]
+
+  @@index([sequenceId])
+  @@map("email_sequence_steps")
+}
+
+enum EnrollmentStatus {
+  active
+  paused
+  completed
+}
+
+model EmailSequenceEnrollment {
+  id             String           @id @default(uuid())
+  sequenceId     String           @map("sequence_id")
+  contactId      String           @map("contact_id")
+  userId         String           @map("user_id")
+  status         EnrollmentStatus @default(active)
+  currentStep    Int              @default(0) @map("current_step")
+  enrolledAt     DateTime         @default(now()) @map("enrolled_at")
+  completedAt    DateTime?        @map("completed_at")
+  triggerContext Json?            @map("trigger_context")
+  createdAt      DateTime         @default(now()) @map("created_at")
+
+  sequence EmailSequence       @relation(fields: [sequenceId], references: [id], onDelete: Cascade)
+  contact  Contact              @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  user     User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sends    EmailSequenceSend[]
+
+  @@index([sequenceId])
+  @@index([contactId])
+  @@map("email_sequence_enrollments")
+}
+
+model EmailSequenceSend {
+  id            String               @id @default(uuid())
+  enrollmentId  String               @map("enrollment_id")
+  stepId        String               @map("step_id")
+  status        ScheduledEmailStatus @default(pending)
+  scheduledFor  DateTime?            @map("scheduled_for")
+  sentAt        DateTime?            @map("sent_at")
+  emailLogId    String?              @map("email_log_id")
+  createdAt     DateTime             @default(now()) @map("created_at")
+
+  enrollment EmailSequenceEnrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  step       EmailSequenceStep       @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  emailLog   EmailLog?               @relation(fields: [emailLogId], references: [id], onDelete: SetNull)
+
+  @@index([enrollmentId])
+  @@index([status, scheduledFor])
+  @@map("email_sequence_sends")
+}
+
+enum EmailLogStatus {
+  sent
+  failed
+}
+
+model EmailLog {
+  id            String        @id @default(uuid())
+  userId        String        @map("user_id")
+  toEmail       String        @map("to_email")
+  fromEmail     String?       @map("from_email")
+  subject       String?
+  templateType  String?       @map("template_type")
+  status        EmailLogStatus @default(sent)
+  resendId      String?       @map("resend_id")
+  trackingToken String?       @unique @map("tracking_token")
+  metadata      Json?
+  sentAt        DateTime?     @map("sent_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+
+  user                      User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scheduledEmailRecipients  ScheduledEmailRecipient[]
+  emailSequenceSends        EmailSequenceSend[]
+  offerEmailTracking        OfferEmailTracking[]
+
+  @@index([userId])
+  @@map("email_logs")
+}
+
+model EmailPreference {
+  id                  String   @id @default(uuid())
+  userId              String   @unique @map("user_id")
+  welcomeEmails       Boolean  @default(true) @map("welcome_emails")
+  notificationEmails  Boolean  @default(true) @map("notification_emails")
+  marketingEmails     Boolean  @default(true) @map("marketing_emails")
+  opportunityEmails   Boolean  @default(true) @map("opportunity_emails")
+  eventEmails         Boolean  @default(true) @map("event_emails")
+  digestFrequency     String   @default("daily") @map("digest_frequency")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("email_preferences")
+}
+
+// ==================== NOTIFICATIONS ====================
+
+enum NotificationCategory {
+  contacts
+  opportunities
+  follow_ups
+  events
+  team_activity
+  system
+}
+
+enum NotificationPriority {
+  low
+  medium
+  high
+  urgent
+}
+
+model Notification {
+  id        String               @id @default(uuid())
+  userId    String               @map("user_id")
+  type      String
+  category  NotificationCategory
+  title     String
+  message   String
+  actionUrl String?              @map("action_url")
+  read      Boolean              @default(false)
+  priority  NotificationPriority @default(medium)
+  metadata  Json?
+  expiresAt DateTime?            @map("expires_at")
+  createdAt DateTime             @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, read])
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  id                  String  @id @default(uuid())
+  userId              String  @unique @map("user_id")
+  contactsEnabled     Boolean @default(true) @map("contacts_enabled")
+  opportunitiesEnabled Boolean @default(true) @map("opportunities_enabled")
+  remindersEnabled    Boolean @default(true) @map("reminders_enabled")
+  teamActivityEnabled Boolean @default(true) @map("team_activity_enabled")
+  quietHoursEnabled   Boolean @default(false) @map("quiet_hours_enabled")
+  quietHoursStart     String? @map("quiet_hours_start")
+  quietHoursEnd       String? @map("quiet_hours_end")
+  emailDigest         String  @default("daily") @map("email_digest")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+// ==================== PERSONAL OBJECTIVES ====================
+
+enum ObjectiveType {
+  revenue
+  new_contacts
+  contacts_by_status
+  win_rate
+  participation_rate
+}
+
+enum ObjectiveUnit {
+  currency
+  number
+  percentage
+}
+
+enum ObjectiveStatus {
+  active
+  achieved
+  failed
+  cancelled
+}
+
+enum PeriodType {
+  day
+  week
+  month
+  year
+  all_time
+  custom
+}
+
+model PersonalObjective {
+  id                  String          @id @default(uuid())
+  userId              String          @map("user_id")
+  objectiveType       ObjectiveType   @map("objective_type")
+  title               String
+  description         String?
+  targetValue         Float           @map("target_value")
+  currentValue        Float           @default(0) @map("current_value")
+  unit                ObjectiveUnit
+  currency            String          @default("EUR")
+  contactStatusFilter String?         @map("contact_status_filter")
+  periodType          PeriodType      @default(month) @map("period_type")
+  periodStart         DateTime?       @map("period_start")
+  periodEnd           DateTime?       @map("period_end")
+  eventId             String?         @map("event_id")
+  status              ObjectiveStatus @default(active)
+  achievedAt          DateTime?       @map("achieved_at")
+  notified            Boolean         @default(false)
+  priority            Priority        @default(medium)
+  createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event? @relation(fields: [eventId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([userId, status])
+  @@map("personal_objectives")
+}
+
+// ==================== ENTERPRISE MODULE ====================
+
+enum EnterpriseSize {
+  startup
+  pme
+  eti
+  grande_entreprise
+}
+
+model Enterprise {
+  id          String          @id @default(uuid())
+  ownerId     String          @map("owner_id")
+  name        String
+  description String?
+  logoUrl     String?         @map("logo_url")
+  industry    String?
+  size        EnterpriseSize?
+  vision      String?
+  mission     String?
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  owner             User                  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  teams             Team[]
+  customGroups      CustomGroup[]
+  enterpriseObjectives EnterpriseObjective[]
+
+  @@index([ownerId])
+  @@map("enterprises")
+}
+
+model Team {
+  id             String   @id @default(uuid())
+  enterpriseId   String   @map("enterprise_id")
+  parentTeamId   String?  @map("parent_team_id")
+  name           String
+  description    String?
+  color          String   @default("#3B82F6")
+  managerId      String?  @map("manager_id")
+  level          Int      @default(0)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  enterprise  Enterprise      @relation(fields: [enterpriseId], references: [id], onDelete: Cascade)
+  parentTeam  Team?           @relation("TeamHierarchy", fields: [parentTeamId], references: [id], onDelete: SetNull)
+  subTeams    Team[]          @relation("TeamHierarchy")
+  members     TeamMember[]
+  objectives  TeamObjective[]
+  teamEvents  TeamEvent[]
+
+  @@index([enterpriseId])
+  @@map("teams")
+}
+
+model TeamMember {
+  id        String   @id @default(uuid())
+  teamId    String   @map("team_id")
+  contactId String   @map("contact_id")
+  userId    String   @map("user_id")
+  role      String?
+  joinedAt  DateTime @default(now()) @map("joined_at")
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  team    Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, contactId])
+  @@map("team_members")
+}
+
+model TeamEvent {
+  id        String   @id @default(uuid())
+  teamId    String   @map("team_id")
+  eventId   String   @map("event_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  team  Team  @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, eventId])
+  @@map("team_events")
+}
+
+model CustomGroup {
+  id           String   @id @default(uuid())
+  enterpriseId String   @map("enterprise_id")
+  name         String
+  description  String?
+  color        String   @default("#3B82F6")
+  icon         String   @default("Users")
+  createdBy    String   @map("created_by")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  enterprise Enterprise          @relation(fields: [enterpriseId], references: [id], onDelete: Cascade)
+  members    CustomGroupMember[]
+
+  @@index([enterpriseId])
+  @@map("custom_groups")
+}
+
+model CustomGroupMember {
+  id        String   @id @default(uuid())
+  groupId   String   @map("group_id")
+  contactId String   @map("contact_id")
+  addedAt   DateTime @default(now()) @map("added_at")
+
+  group   CustomGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  contact Contact     @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, contactId])
+  @@map("custom_group_members")
+}
+
+enum EnterpriseObjectiveStatus {
+  not_started
+  in_progress
+  completed
+  cancelled
+}
+
+enum EnterpriseObjectivePriority {
+  low
+  medium
+  high
+  critical
+}
+
+model EnterpriseObjective {
+  id           String                      @id @default(uuid())
+  enterpriseId String                      @map("enterprise_id")
+  title        String
+  description  String?
+  targetValue  Float?                      @map("target_value")
+  currentValue Float                       @default(0) @map("current_value")
+  unit         String?
+  currency     String                      @default("EUR")
+  startDate    DateTime?                   @map("start_date")
+  endDate      DateTime?                   @map("end_date")
+  status       EnterpriseObjectiveStatus   @default(not_started)
+  priority     EnterpriseObjectivePriority @default(medium)
+  createdBy    String                      @map("created_by")
+  createdAt    DateTime                    @default(now()) @map("created_at")
+  updatedAt    DateTime                    @updatedAt @map("updated_at")
+
+  enterprise      Enterprise      @relation(fields: [enterpriseId], references: [id], onDelete: Cascade)
+  teamObjectives  TeamObjective[]
+
+  @@index([enterpriseId])
+  @@map("enterprise_objectives")
+}
+
+model TeamObjective {
+  id                     String                      @id @default(uuid())
+  teamId                 String                      @map("team_id")
+  enterpriseObjectiveId  String?                     @map("enterprise_objective_id")
+  title                  String
+  description            String?
+  targetValue            Float?                      @map("target_value")
+  currentValue           Float                       @default(0) @map("current_value")
+  unit                   String?
+  currency               String                      @default("EUR")
+  startDate              DateTime?                   @map("start_date")
+  endDate                DateTime?                   @map("end_date")
+  status                 EnterpriseObjectiveStatus   @default(not_started)
+  priority               EnterpriseObjectivePriority @default(medium)
+  assignedTo             String?                     @map("assigned_to")
+  createdBy              String                      @map("created_by")
+  createdAt              DateTime                    @default(now()) @map("created_at")
+  updatedAt              DateTime                    @updatedAt @map("updated_at")
+
+  team                  Team                 @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  enterpriseObjective   EnterpriseObjective? @relation(fields: [enterpriseObjectiveId], references: [id], onDelete: SetNull)
+
+  @@index([teamId])
+  @@map("team_objectives")
+}
+
+model MemberObjective {
+  id           String                      @id @default(uuid())
+  memberId     String                      @map("member_id")
+  enterpriseId String                      @map("enterprise_id")
+  title        String
+  description  String?
+  targetValue  Float?                      @map("target_value")
+  currentValue Float                       @default(0) @map("current_value")
+  unit         String?
+  currency     String                      @default("EUR")
+  startDate    DateTime?                   @map("start_date")
+  endDate      DateTime?                   @map("end_date")
+  status       EnterpriseObjectiveStatus   @default(not_started)
+  priority     EnterpriseObjectivePriority @default(medium)
+  linkedObjectiveType String?              @map("linked_objective_type")
+  linkedObjectiveId   String?              @map("linked_objective_id")
+  createdBy    String                      @map("created_by")
+  createdAt    DateTime                    @default(now()) @map("created_at")
+  updatedAt    DateTime                    @updatedAt @map("updated_at")
+
+  @@index([memberId])
+  @@index([enterpriseId])
+  @@map("member_objectives")
+}
