@@ -108,7 +108,9 @@ model Contact {
   companySize String?       @map("company_size")
   address     String?
   website     String?
+  twitter     String?
   relationship String?
+  isFavorite  Boolean       @default(false) @map("is_favorite")
   opportunityAmount Float?  @map("opportunity_amount")
   followUpRequired  Boolean @default(false) @map("follow_up_required")
   createdAt   DateTime      @default(now()) @map("created_at")

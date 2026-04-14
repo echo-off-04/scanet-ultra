@@ -76,6 +76,13 @@ export function Dashboard() {
     }, []);
 
     useEffect(() => {
+        if (view !== 'events' && view !== 'dashboard') return;
+
+        const interval = setInterval(loadEvents, 20000);
+        return () => clearInterval(interval);
+    }, [view]);
+
+    useEffect(() => {
         filterAndSortContacts();
     }, [contacts, searchTerm, filterStatus, sortBy, filters]);
 
@@ -126,7 +133,7 @@ export function Dashboard() {
         setAvailableTags(Array.from(tagsSet).sort());
     };
 
-    const filterAndSortContacts = useCallback(async () => {
+    const filterAndSortContacts = useCallback(() => {
         let filtered = contacts;
 
         if (searchTerm) {
@@ -150,6 +157,12 @@ export function Dashboard() {
 
         if (filterStatus !== 'all') {
             filtered = filtered.filter((c) => c.status === filterStatus);
+        }
+
+        if (filters.events.length > 0) {
+            filtered = filtered.filter((c) =>
+                c.events?.some((event) => filters.events.includes(event.id))
+            );
         }
 
         if (filters.tags.length > 0) {

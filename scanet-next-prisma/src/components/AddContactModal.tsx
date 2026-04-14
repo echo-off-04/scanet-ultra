@@ -71,7 +71,7 @@ export function AddContactModal({ onClose, onContactAdded, defaultIsMember = fal
                 const res = await fetch('/api/enterprise');
                 if (res.ok) {
                     const data = await res.json();
-                    setEnterpriseExists(!!data.enterprise);
+                    setEnterpriseExists(Array.isArray(data) ? data.length > 0 : !!data?.enterprise);
                 }
             } catch (error) {
                 console.error('Error checking enterprise:', error);

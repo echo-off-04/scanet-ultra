@@ -31,10 +31,35 @@ export function mapContact(c: any) {
   const mapped = toSnakeCase(c);
   // Add computed/aliased fields
   if (c.linkedinUrl !== undefined) mapped.linkedin = c.linkedinUrl;
+  if (mapped.linkedin === undefined) mapped.linkedin = mapped.linkedin_url ?? null;
+  if (mapped.twitter === undefined) mapped.twitter = null;
+  if (mapped.is_favorite === undefined) mapped.is_favorite = false;
+  if (mapped.opportunity_currency === undefined) {
+    mapped.opportunity_currency = null;
+  }
+  if (mapped.opportunity_status === undefined) {
+    mapped.opportunity_status = null;
+  }
   if (c.contactEvents) {
     mapped.events = c.contactEvents.map((ce: any) => ({
       id: ce.event?.id,
       name: ce.event?.name,
+    }));
+  }
+  if (c.relationshipsFrom) {
+    mapped.relationships = c.relationshipsFrom.map((relationship: any) => ({
+      id: relationship.id,
+      relationship_type: relationship.relationshipType,
+      notes: relationship.notes ?? null,
+      related_contact: relationship.relatedContact
+        ? {
+            id: relationship.relatedContact.id,
+            full_name: relationship.relatedContact.fullName,
+            company: relationship.relatedContact.company ?? null,
+            job_title: relationship.relatedContact.jobTitle ?? null,
+            avatar_url: relationship.relatedContact.avatarUrl ?? null,
+          }
+        : null,
     }));
   }
   if (c._count) {

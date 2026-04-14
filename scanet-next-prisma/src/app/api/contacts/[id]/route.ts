@@ -22,6 +22,20 @@ export async function GET(
         followUps: { orderBy: { dueDate: "asc" } },
         opportunities: { orderBy: { createdAt: "desc" } },
         contactEvents: { include: { event: true } },
+        relationshipsFrom: {
+          include: {
+            relatedContact: {
+              select: {
+                id: true,
+                fullName: true,
+                company: true,
+                jobTitle: true,
+                avatarUrl: true,
+              },
+            },
+          },
+          orderBy: { createdAt: "desc" },
+        },
         groupMembers: { include: { group: true } },
       },
     });
@@ -65,7 +79,7 @@ export async function PUT(
         phone: body.phone,
         company: body.company,
         jobTitle: body.jobTitle ?? body.job_title,
-        linkedinUrl: body.linkedinUrl ?? body.linkedin_url,
+        linkedinUrl: body.linkedinUrl ?? body.linkedin_url ?? body.linkedin,
         avatarUrl: body.avatarUrl ?? body.avatar_url,
         rating: body.rating,
         tags: body.tags,
@@ -80,7 +94,9 @@ export async function PUT(
         companySize: body.companySize ?? body.company_size,
         address: body.address,
         website: body.website,
+        twitter: body.twitter,
         relationship: body.relationship,
+        isFavorite: body.isFavorite ?? body.is_favorite,
         opportunityAmount: body.opportunityAmount ?? body.opportunity_amount,
         followUpRequired: body.followUpRequired ?? body.follow_up_required,
       },

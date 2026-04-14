@@ -43,6 +43,20 @@ interface Contact {
     status: string | null;
     relationship: string | null;
     is_member: boolean;
+    relationships?: Relationship[];
+}
+
+interface Relationship {
+    id: string;
+    relationship_type: string;
+    notes: string | null;
+    related_contact: {
+        id: string;
+        full_name: string;
+        company: string | null;
+        job_title: string | null;
+        avatar_url: string | null;
+    } | null;
 }
 
 interface Note {
@@ -142,7 +156,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                 const res = await fetch('/api/enterprise');
                 if (res.ok) {
                     const data = await res.json();
-                    setEnterpriseExists(Array.isArray(data) ? data.length > 0 : !!data);
+                    setEnterpriseExists(Array.isArray(data) ? data.length > 0 : !!data?.enterprise);
                 }
             } catch { /* ignore */ }
         };
@@ -259,6 +273,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                 body: JSON.stringify({ is_favorite: newIsFavorite }),
             });
             setContact({ ...contact, is_favorite: newIsFavorite });
+            setEditedContact((prev) => prev ? { ...prev, is_favorite: newIsFavorite } : prev);
         } catch {
             showToast('Erreur', 'Erreur lors de la mise à jour', 'error');
         }
@@ -293,7 +308,9 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                 }),
             });
             if (!res.ok) throw new Error();
-            setContact(editedContact);
+            const updatedContact = await res.json();
+            setContact(updatedContact);
+            setEditedContact(updatedContact);
             setIsEditing(false);
             refreshKpis();
         } catch {
@@ -827,6 +844,40 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                 {displayContact.tags.map(tag => (
                                     <span key={tag} className="px-3 py-1.5 bg-[#0E3A5D]/10 text-[#0E3A5D] rounded-full text-sm font-medium">{tag}</span>
                                 ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {displayContact.relationships && displayContact.relationships.length > 0 && (
+                        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
+                            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
+                                <div className="p-2 bg-blue-100 rounded-xl"><Users className="w-4 h-4 text-[#0E3A5D]" /></div>Relations ({displayContact.relationships.length})
+                            </h2>
+                            <div className="space-y-3">
+                                {displayContact.relationships.map((relationship) => {
+                                    if (!relationship.related_contact) return null;
+
+                                    return (
+                                        <div key={relationship.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl">
+                                            {relationship.related_contact.avatar_url ? (
+                                                <img src={relationship.related_contact.avatar_url} alt={relationship.related_contact.full_name} className="w-12 h-12 rounded-xl object-cover" />
+                                            ) : (
+                                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
+                                                    {relationship.related_contact.full_name.charAt(0).toUpperCase()}
+                                                </div>
+                                            )}
+                                            <div className="min-w-0 flex-1">
+                                                <p className="font-semibold text-gray-900 truncate">{relationship.related_contact.full_name}</p>
+                                                <p className="text-sm text-gray-500 truncate">
+                                                    {relationship.related_contact.company || relationship.related_contact.job_title || 'Relation'}
+                                                </p>
+                                            </div>
+                                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                                                {relationship.relationship_type}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     )}

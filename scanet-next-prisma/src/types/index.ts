@@ -25,6 +25,8 @@ export interface Contact {
   opportunity_currency: string | null;
   opportunity_status: string | null;
   is_favorite: boolean;
+  twitter?: string | null;
+  events?: Array<{ id: string; name: string }>;
   created_at: string;
   updated_at: string;
 }

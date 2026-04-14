@@ -73,39 +73,76 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { eventId, ...contactData } = body;
+    const { eventId, selectedRelations, relationshipType, ...contactData } = body;
 
-    const contact = await prisma.contact.create({
-      data: {
-        userId: session.user.id,
-        fullName: contactData.fullName || contactData.full_name,
-        email: contactData.email,
-        phone: contactData.phone,
-        company: contactData.company,
-        jobTitle: contactData.jobTitle || contactData.job_title,
-        linkedinUrl: contactData.linkedinUrl || contactData.linkedin_url,
-        avatarUrl: contactData.avatarUrl || contactData.avatar_url,
-        rating: contactData.rating,
-        tags: contactData.tags || [],
-        notes: contactData.notes,
-        status: contactData.status || "lead",
-        source: contactData.source,
-        isMember: contactData.isMember || contactData.is_member || false,
-        city: contactData.city,
-        region: contactData.region,
-        country: contactData.country,
-        industry: contactData.industry,
-        companySize: contactData.companySize || contactData.company_size,
-        address: contactData.address,
-        website: contactData.website,
-        relationship: contactData.relationship,
-      },
+    const relatedContactIds = Array.from(
+      new Set(
+        (Array.isArray(selectedRelations) ? selectedRelations : []).filter(
+          (value): value is string => typeof value === "string" && value.length > 0,
+        ),
+      ),
+    );
+
+    const contact = await prisma.$transaction(async (tx) => {
+      const createdContact = await tx.contact.create({
+        data: {
+          userId: session.user.id,
+          fullName: contactData.fullName || contactData.full_name,
+          email: contactData.email,
+          phone: contactData.phone,
+          company: contactData.company,
+          jobTitle: contactData.jobTitle || contactData.job_title,
+          linkedinUrl:
+            contactData.linkedinUrl ||
+            contactData.linkedin_url ||
+            contactData.linkedin,
+          avatarUrl: contactData.avatarUrl || contactData.avatar_url,
+          rating: contactData.rating,
+          tags: contactData.tags || [],
+          notes: contactData.notes,
+          status: contactData.status || "lead",
+          source: contactData.source,
+          isMember: Boolean(contactData.isMember ?? contactData.is_member),
+          city: contactData.city,
+          region: contactData.region,
+          country: contactData.country,
+          industry: contactData.industry,
+          companySize: contactData.companySize || contactData.company_size,
+          address: contactData.address,
+          website: contactData.website,
+          twitter: contactData.twitter,
+          relationship: contactData.relationship,
+          isFavorite: Boolean(contactData.isFavorite ?? contactData.is_favorite),
+          opportunityAmount:
+            contactData.opportunityAmount ?? contactData.opportunity_amount,
+        },
+      });
+
+      if (eventId) {
+        await tx.contactEvent.create({
+          data: { contactId: createdContact.id, eventId, source: "event" },
+        });
+      }
+
+      if (relatedContactIds.length > 0) {
+        await tx.contactRelationship.createMany({
+          data: relatedContactIds.map((relatedContactId) => ({
+            contactId: createdContact.id,
+            relatedContactId,
+            userId: session.user.id,
+            relationshipType:
+              typeof relationshipType === "string" && relationshipType.length > 0
+                ? relationshipType
+                : "contact",
+          })),
+          skipDuplicates: true,
+        });
+      }
+
+      return createdContact;
     });
 
     if (eventId) {
-      await prisma.contactEvent.create({
-        data: { contactId: contact.id, eventId, source: "event" },
-      });
       await syncEventKpis(eventId);
     }
 
