@@ -260,7 +260,7 @@ export function Dashboard() {
             />
 
             <div className="flex flex-1 flex-col overflow-hidden lg:ml-0">
-                <header className="sticky top-0 z-20 border-b border-slate-200 bg-slate-50 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
+                <header className="sticky top-0 z-20 border-slate-200 bg-slate-50 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
                     <div className="flex items-center justify-between">
                         <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
                             <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white text-xs font-semibold text-slate-900 lg:hidden">S</div>
