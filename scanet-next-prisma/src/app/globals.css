@@ -4,17 +4,21 @@
 
 @layer base {
   :root {
-    --primary-dark: #0e3a5d;
-    --primary-light: #eaf3f9;
-    --accent-blue: #1e5a8e;
-    --bg-white: #fafafa;
-    --bg-gray: #e5e9ee;
+    --primary-dark: #111827;
+    --primary-light: #f8fafc;
+    --accent-blue: #374151;
+    --bg-white: #ffffff;
+    --bg-gray: #e5e7eb;
     --text-gray: #6b7280;
-    --text-dark: #1f2937;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --purple: #8b5cf6;
-    --border-light: #e5e7eb;
+    --text-dark: #111827;
+    --success: #047857;
+    --warning: #b45309;
+    --purple: #52525b;
+    --border-light: #d1d5db;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 
   body {
@@ -25,89 +29,92 @@
       "Segoe UI",
       "Roboto",
       sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+    background: #f8fafc;
     color: var(--text-dark);
     min-height: 100vh;
+    line-height: 1.5;
   }
 }
 
 @layer components {
   .glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-    @apply rounded-3xl transition-all duration-300;
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+    @apply rounded-xl transition-colors duration-200;
   }
 
   .glass-card:hover {
-    background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 8px 40px 0 rgba(31, 38, 135, 0.25);
-    @apply transform -translate-y-1;
+    background: #fcfcfd;
+    border-color: #cbd5e1;
   }
 
   .card-premium {
-    @apply bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300;
+    @apply bg-white rounded-xl transition-colors duration-200;
     border: 1px solid var(--border-light);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
   }
 
   .btn-primary {
-    @apply px-6 py-3 rounded-full font-semibold text-white transition-all duration-300 shadow-md hover:shadow-lg;
+    @apply inline-flex items-center justify-center rounded-lg px-4 py-2.5 font-medium text-white transition-colors duration-200;
     background-color: var(--primary-dark);
   }
 
   .btn-primary:hover {
-    @apply transform -translate-y-0.5;
     background-color: var(--accent-blue);
   }
 
   .btn-secondary {
-    @apply px-6 py-3 rounded-full font-medium bg-white border-2 transition-all duration-300;
+    @apply inline-flex items-center justify-center rounded-lg border px-4 py-2.5 font-medium bg-white transition-colors duration-200;
     border-color: var(--bg-gray);
     color: var(--text-dark);
   }
 
   .btn-secondary:hover {
-    @apply transform -translate-y-0.5 shadow-md;
     border-color: var(--primary-dark);
+    background-color: #f8fafc;
   }
 
   .action-btn {
-    @apply w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer;
+    @apply flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border bg-white transition-colors duration-200;
+    border-color: var(--border-light);
   }
 
   .action-btn:hover {
-    @apply transform -translate-y-1;
+    background-color: #f8fafc;
   }
 
   .badge-status {
-    @apply px-4 py-1.5 rounded-full text-sm font-medium;
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium;
+    border-color: var(--border-light);
+    background-color: #f3f4f6;
+    color: #374151;
   }
 
   .input-modern {
-    @apply w-full px-4 py-3 rounded-2xl border-2 transition-all duration-200 focus:outline-none;
+    @apply w-full rounded-lg border px-3 py-2.5 transition-colors duration-200 focus:outline-none;
     border-color: var(--bg-gray);
     background-color: white;
   }
 
   .input-modern:focus {
     border-color: var(--primary-dark);
-    box-shadow: 0 0 0 3px rgba(14, 58, 93, 0.1);
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
   }
 
   .section-title {
-    @apply text-xl font-semibold mb-4;
+    @apply mb-3 text-lg font-semibold;
     color: var(--text-dark);
   }
 
   .stat-card {
-    @apply bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300;
+    @apply rounded-xl bg-white p-5 transition-colors duration-200;
     border: 1px solid var(--border-light);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
   }
 
   .stat-card:hover {
-    @apply transform -translate-y-1;
+    border-color: #cbd5e1;
   }
 }
 
@@ -135,6 +142,10 @@
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
   }
 }
 

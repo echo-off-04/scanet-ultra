@@ -228,39 +228,39 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={onClose}>
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-3xl z-10">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={onClose}>
+            <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm" onClick={e => e.stopPropagation()}>
+                <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-slate-200 bg-white px-6 py-4">
                     <div>
-                        <h2 className="text-xl font-bold text-gray-900">Scanner une carte de visite</h2>
-                        <p className="text-sm text-gray-500">
+                        <h2 className="text-xl font-semibold text-slate-900">Scanner une carte de visite</h2>
+                        <p className="text-sm text-slate-500">
                             {step === 'capture' ? 'Face avant' : step === 'captureBack' ? 'Face arrière (optionnel)' : 'Vérifier les informations'}
                         </p>
                     </div>
-                    <button onClick={onClose} className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center"><X className="w-5 h-5" /></button>
+                    <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"><X className="h-5 w-5" /></button>
                 </div>
 
                 <div className="p-6">
                     {isProcessing ? (
                         <div className="flex flex-col items-center justify-center py-16">
-                            <Loader2 className="w-12 h-12 text-[#0E3A5D] animate-spin mb-4" />
-                            <p className="text-lg font-semibold text-gray-900">Analyse de la carte en cours...</p>
-                            <p className="text-sm text-gray-500 mt-1">Extraction des informations par IA</p>
+                            <Loader2 className="mb-4 h-12 w-12 animate-spin text-slate-700" />
+                            <p className="text-lg font-semibold text-slate-900">Analyse de la carte en cours...</p>
+                            <p className="mt-1 text-sm text-slate-500">Extraction des informations par IA</p>
                         </div>
                     ) : step === 'capture' || step === 'captureBack' ? (
                         <div className="space-y-4">
                             {image && step === 'captureBack' && (
                                 <div className="mb-4">
-                                    <p className="text-sm font-medium text-gray-700 mb-2">Face avant capturée ✓</p>
-                                    <img src={image} alt="Face avant" className="w-32 h-20 object-cover rounded-lg border" />
+                                    <p className="mb-2 text-sm font-medium text-slate-700">Face avant capturée ✓</p>
+                                    <img src={image} alt="Face avant" className="h-20 w-32 rounded-lg border border-slate-200 object-cover" />
                                 </div>
                             )}
 
-                            <div className="relative aspect-video bg-gray-900 rounded-2xl overflow-hidden">
+                            <div className="relative aspect-video overflow-hidden rounded-2xl bg-slate-900">
                                 <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
                                 {!isVideoReady && (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
-                                        <Loader2 className="w-8 h-8 text-white animate-spin" />
+                                    <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
+                                        <Loader2 className="h-8 w-8 animate-spin text-white" />
                                     </div>
                                 )}
                                 <div className="absolute inset-4 border-2 border-white/40 rounded-xl pointer-events-none" />
@@ -270,15 +270,15 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
 
                             <div className="flex items-center justify-center gap-4">
                                 <button onClick={() => fileInputRef.current?.click()}
-                                    className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">
-                                    <Upload className="w-4 h-4" />Fichier
+                                    className="btn-secondary gap-2 px-4 py-2.5 text-slate-700">
+                                    <Upload className="h-4 w-4" />Fichier
                                 </button>
                                 <button onClick={captureImage} disabled={!isVideoReady}
-                                    className="flex items-center gap-2 px-6 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium hover:bg-[#1E5A8E] disabled:opacity-50">
-                                    <Camera className="w-5 h-5" />Capturer
+                                    className="btn-primary gap-2 px-6 py-3 disabled:opacity-50">
+                                    <Camera className="h-5 w-5" />Capturer
                                 </button>
                                 {step === 'captureBack' && (
-                                    <button onClick={skipBackCapture} className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">
+                                    <button onClick={skipBackCapture} className="btn-secondary px-4 py-2.5 text-slate-700">
                                         Passer
                                     </button>
                                 )}
@@ -288,10 +288,10 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
                     ) : (
                         <div className="space-y-4">
                             <div className="flex items-center gap-3 mb-4">
-                                {image && <img src={image} alt="Avant" className="w-24 h-16 object-cover rounded-lg border" />}
-                                {backImage && <img src={backImage} alt="Arrière" className="w-24 h-16 object-cover rounded-lg border" />}
-                                <button onClick={resetAll} className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-gray-800">
-                                    <RotateCcw className="w-4 h-4" />Rescanner
+                                {image && <img src={image} alt="Avant" className="h-16 w-24 rounded-lg border border-slate-200 object-cover" />}
+                                {backImage && <img src={backImage} alt="Arrière" className="h-16 w-24 rounded-lg border border-slate-200 object-cover" />}
+                                <button onClick={resetAll} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800">
+                                    <RotateCcw className="h-4 w-4" />Rescanner
                                 </button>
                             </div>
 
@@ -307,40 +307,40 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
                                     { key: 'address', label: 'Adresse', type: 'text' },
                                 ].map(field => (
                                     <div key={field.key}>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">{field.label}</label>
+                                        <label className="mb-1 block text-sm font-medium text-slate-700">{field.label}</label>
                                         <input
                                             type={field.type}
                                             value={(extractedData as any)[field.key]}
                                             onChange={(e) => setExtractedData({ ...extractedData, [field.key]: e.target.value })}
-                                            className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm"
+                                            className="input-modern text-sm"
                                         />
                                     </div>
                                 ))}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                                <label className="mb-2 block text-sm font-medium text-slate-700">Tags</label>
                                 <div className="flex flex-wrap gap-2 mb-2">
                                     {tags.map(tag => (
-                                        <span key={tag} className="flex items-center gap-1 px-3 py-1 bg-[#0E3A5D]/10 text-[#0E3A5D] rounded-full text-sm">
+                                        <span key={tag} className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700">
                                             {tag}
-                                            <button onClick={() => setTags(tags.filter(t => t !== tag))}><X className="w-3.5 h-3.5" /></button>
+                                            <button onClick={() => setTags(tags.filter(t => t !== tag))}><X className="h-3.5 w-3.5" /></button>
                                         </span>
                                     ))}
                                 </div>
                                 <div className="flex gap-2">
                                     <input type="text" value={tagInput} onChange={(e) => setTagInput(e.target.value)}
                                         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTag(); } }}
-                                        className="flex-1 px-4 py-2 border border-gray-300 rounded-xl text-sm" placeholder="Ajouter un tag..." />
-                                    <button onClick={addTag} className="p-2 bg-gray-100 rounded-xl hover:bg-gray-200"><Plus className="w-4 h-4" /></button>
+                                        className="input-modern flex-1 py-2 text-sm" placeholder="Ajouter un tag..." />
+                                    <button onClick={addTag} className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200"><Plus className="h-4 w-4" /></button>
                                 </div>
                             </div>
 
-                            <div className="flex gap-3 pt-4 border-t">
-                                <button onClick={onClose} className="flex-1 px-4 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">Annuler</button>
+                            <div className="flex gap-3 border-t border-slate-200 pt-4">
+                                <button onClick={onClose} className="btn-secondary flex-1">Annuler</button>
                                 <button onClick={handleSave} disabled={saving || !extractedData.full_name.trim()}
-                                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium hover:bg-[#1E5A8E] disabled:opacity-50">
-                                    <Check className="w-5 h-5" />{saving ? 'Enregistrement...' : 'Enregistrer le contact'}
+                                    className="btn-primary flex-1 gap-2 disabled:opacity-50">
+                                    <Check className="h-5 w-5" />{saving ? 'Enregistrement...' : 'Enregistrer le contact'}
                                 </button>
                             </div>
                         </div>

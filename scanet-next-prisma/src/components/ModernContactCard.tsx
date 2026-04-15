@@ -26,10 +26,10 @@ export function ModernContactCard({ contact, onClick }: ModernContactCardProps) 
     return (
         <div
             onClick={() => onClick(contact)}
-            className="glass-card p-4 cursor-pointer hover:shadow-xl transition-all group"
+            className="group cursor-pointer rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:bg-slate-50"
         >
             <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#0E3A5D] to-[#1E5A8E] flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-slate-300 bg-slate-200 text-lg font-semibold text-slate-900">
                     {contact.avatar_url ? (
                         <img src={contact.avatar_url} alt={contact.full_name} className="w-12 h-12 rounded-full object-cover" />
                     ) : (
@@ -38,29 +38,29 @@ export function ModernContactCard({ contact, onClick }: ModernContactCardProps) 
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-gray-900 truncate">{contact.full_name}</h3>
-                        {contact.is_favorite && <Star className="w-4 h-4 text-yellow-500 fill-yellow-500 flex-shrink-0" />}
+                        <h3 className="truncate font-semibold text-slate-900">{contact.full_name}</h3>
+                        {contact.is_favorite && <Star className="h-4 w-4 flex-shrink-0 fill-amber-400 text-amber-400" />}
                     </div>
                     {contact.company && (
-                        <p className="text-sm text-gray-500 flex items-center gap-1 truncate">
-                            <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
+                        <p className="flex items-center gap-1 truncate text-sm text-slate-500">
+                            <Building2 className="h-3.5 w-3.5 flex-shrink-0" />
                             {contact.company}
                         </p>
                     )}
                     {contact.city && (
-                        <p className="text-xs text-gray-400 flex items-center gap-1 mt-0.5">
-                            <MapPin className="w-3 h-3 flex-shrink-0" />
+                        <p className="mt-0.5 flex items-center gap-1 text-xs text-slate-400">
+                            <MapPin className="h-3 w-3 flex-shrink-0" />
                             {contact.city}
                         </p>
                     )}
                     <div className="flex items-center gap-2 mt-2">
                         {contact.status && (
-                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${statusColors[contact.status] || 'bg-gray-100 text-gray-700'}`}>
+                            <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${statusColors[contact.status] || 'bg-slate-100 text-slate-700'}`}>
                                 {statusLabels[contact.status] || contact.status}
                             </span>
                         )}
                         {contact.tags?.slice(0, 2).map((tag) => (
-                            <span key={tag} className="px-2 py-0.5 bg-gray-100 rounded-full text-[10px] text-gray-600 truncate max-w-[80px]">
+                            <span key={tag} className="max-w-[80px] truncate rounded-full bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600">
                                 {tag}
                             </span>
                         ))}
@@ -68,9 +68,9 @@ export function ModernContactCard({ contact, onClick }: ModernContactCardProps) 
                 </div>
                 <button
                     onClick={(e) => { e.stopPropagation(); if (contact.email) window.location.href = `mailto:${contact.email}`; }}
-                    className="w-9 h-9 rounded-full bg-[#0E3A5D]/10 text-[#0E3A5D] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-[#0E3A5D] hover:text-white flex-shrink-0"
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 opacity-0 transition-all group-hover:opacity-100 hover:bg-slate-900 hover:text-white"
                 >
-                    <Send className="w-4 h-4" />
+                    <Send className="h-4 w-4" />
                 </button>
             </div>
         </div>

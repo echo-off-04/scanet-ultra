@@ -20,10 +20,10 @@ function DashboardPage() {
 
     if (status === 'loading') {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center">
+            <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-teal-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600 text-lg">Chargement...</p>
+                    <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"></div>
+                    <p className="text-sm font-medium text-slate-600">Chargement...</p>
                 </div>
             </div>
         );

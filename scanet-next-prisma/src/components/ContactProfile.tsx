@@ -486,8 +486,8 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
             <div className="flex items-center justify-center h-screen bg-slate-50">
                 <div className="text-center">
                     <div className="relative">
-                        <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-[#0E3A5D] mx-auto" />
-                        <Sparkles className="w-6 h-6 text-[#0E3A5D] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                        <div className="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-slate-200 border-t-slate-700" />
+                        <Sparkles className="absolute top-1/2 left-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 text-slate-700" />
                     </div>
                     <p className="text-gray-600 font-medium mt-4">Chargement du profil...</p>
                 </div>
@@ -505,36 +505,31 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
         <div className="min-h-screen bg-slate-50">
             {/* Header */}
             <div className="relative">
-                <div className="h-56 sm:h-64 md:h-72 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e]" />
-                    <div className="absolute inset-0 opacity-30">
-                        <div className="absolute top-10 left-10 w-2 h-2 bg-yellow-300 rounded-full animate-pulse" />
-                        <div className="absolute top-20 right-20 w-3 h-3 bg-pink-300 rounded-full animate-pulse" />
-                    </div>
+                <div className="relative h-56 overflow-hidden border-b border-slate-200 bg-slate-100 sm:h-64 md:h-72">
                 </div>
 
                 <div className="absolute top-0 left-0 right-0 z-20">
                     <div className="flex items-center justify-between p-4 sm:p-6">
-                        <button onClick={onBack} className="p-2.5 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-white/30 border border-white/20">
-                            <ArrowLeft className="w-5 h-5 text-white" />
+                        <button onClick={onBack} className="rounded-2xl border border-slate-200 bg-white p-2.5 hover:bg-slate-50">
+                            <ArrowLeft className="w-5 h-5 text-slate-700" />
                         </button>
                         <div className="flex gap-2">
                             {isEditing ? (
                                 <>
-                                    <button onClick={handleCancelEdit} className="p-2.5 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-white/30 border border-white/20">
-                                        <X className="w-5 h-5 text-white" />
+                                    <button onClick={handleCancelEdit} className="rounded-2xl border border-slate-200 bg-white p-2.5 hover:bg-slate-50">
+                                        <X className="w-5 h-5 text-slate-700" />
                                     </button>
-                                    <button onClick={handleSaveEdit} className="p-2.5 bg-white rounded-2xl hover:bg-gray-100 shadow-lg">
-                                        <Save className="w-5 h-5 text-[#0E3A5D]" />
+                                    <button onClick={handleSaveEdit} className="rounded-2xl bg-slate-900 p-2.5 text-white hover:bg-slate-800">
+                                        <Save className="w-5 h-5" />
                                     </button>
                                 </>
                             ) : (
                                 <>
-                                    <button onClick={() => setIsEditing(true)} className="p-2.5 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-white/30 border border-white/20">
-                                        <Edit className="w-5 h-5 text-white" />
+                                    <button onClick={() => setIsEditing(true)} className="rounded-2xl border border-slate-200 bg-white p-2.5 hover:bg-slate-50">
+                                        <Edit className="w-5 h-5 text-slate-700" />
                                     </button>
-                                    <button onClick={() => setShowDeleteModal(true)} className="p-2.5 bg-white/20 backdrop-blur-md rounded-2xl hover:bg-red-500/50 border border-white/20">
-                                        <Trash2 className="w-5 h-5 text-white" />
+                                    <button onClick={() => setShowDeleteModal(true)} className="rounded-2xl border border-red-200 bg-white p-2.5 hover:bg-red-50">
+                                        <Trash2 className="w-5 h-5 text-red-600" />
                                     </button>
                                 </>
                             )}
@@ -545,19 +540,19 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                 {/* Avatar */}
                 <div className="absolute left-1/2 -translate-x-1/2 -bottom-16 sm:-bottom-20 z-30">
                     <div className="relative group">
-                        <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-white p-1.5 shadow-2xl shadow-blue-600/20">
-                            <div className="w-full h-full rounded-full overflow-hidden bg-[#0E3A5D] flex items-center justify-center">
+                        <div className="h-32 w-32 rounded-full border border-slate-200 bg-white p-1.5 shadow-sm sm:h-40 sm:w-40">
+                            <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-slate-200">
                                 {displayContact.avatar_url ? (
                                     <img src={displayContact.avatar_url} alt={displayContact.full_name} className="w-full h-full object-cover" />
                                 ) : (
-                                    <span className="text-white text-4xl sm:text-5xl font-bold">
+                                    <span className="text-4xl font-bold text-slate-700 sm:text-5xl">
                                         {displayContact.full_name?.charAt(0).toUpperCase() || '?'}
                                     </span>
                                 )}
                             </div>
                         </div>
-                        <label htmlFor="avatar-upload" className="absolute bottom-2 right-2 p-2.5 bg-white rounded-full shadow-lg hover:shadow-xl cursor-pointer hover:scale-110 border-2 border-gray-100">
-                            {uploadingPhoto ? <Loader2 className="w-4 h-4 animate-spin text-[#0E3A5D]" /> : <Camera className="w-4 h-4 text-[#0E3A5D]" />}
+                        <label htmlFor="avatar-upload" className="absolute bottom-2 right-2 cursor-pointer rounded-full border border-slate-200 bg-white p-2.5 hover:bg-slate-50">
+                            {uploadingPhoto ? <Loader2 className="w-4 h-4 animate-spin text-slate-700" /> : <Camera className="w-4 h-4 text-slate-700" />}
                         </label>
                         <input id="avatar-upload" type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" disabled={uploadingPhoto} />
                         {displayContact.is_favorite && (
@@ -575,7 +570,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                     {isEditing ? (
                         <input type="text" value={displayContact.full_name}
                             onChange={e => setEditedContact({ ...displayContact, full_name: e.target.value.slice(0, 100) })}
-                            className="text-2xl sm:text-3xl font-bold text-gray-900 bg-gray-100 rounded-2xl px-4 py-2 w-full max-w-md mx-auto text-center border-2 border-blue-200 focus:border-[#0E3A5D] focus:outline-none" />
+                            className="mx-auto w-full max-w-md rounded-2xl border border-slate-300 bg-white px-4 py-2 text-center text-2xl font-bold text-gray-900 focus:border-slate-500 focus:outline-none sm:text-3xl" />
                     ) : (
                         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">{displayContact.full_name}</h1>
                     )}
@@ -591,7 +586,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                             </span>
                         )}
                         {displayContact.status && (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#0E3A5D] text-white">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700">
                                 <Target className="w-3.5 h-3.5" />{displayContact.status.charAt(0).toUpperCase() + displayContact.status.slice(1)}
                             </span>
                         )}
@@ -627,7 +622,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                         <div className="flex justify-center gap-3 flex-wrap">
                             {displayContact.phone && (
                                 <>
-                                    <button onClick={handleCall} className="flex items-center gap-2 px-5 py-3 bg-[#0E3A5D] text-white rounded-2xl hover:bg-blue-800 shadow-lg font-semibold text-sm">
+                                    <button onClick={handleCall} className="flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800">
                                         <Phone className="w-4 h-4" /><span className="hidden sm:inline">Appeler</span>
                                     </button>
                                     <button onClick={handleWhatsApp} className="flex items-center gap-2 px-5 py-3 bg-emerald-600 text-white rounded-2xl hover:bg-emerald-700 shadow-lg font-semibold text-sm">
@@ -660,7 +655,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                                <div className="p-2 bg-blue-100 rounded-xl"><Star className="w-4 h-4 text-[#0E3A5D]" /></div>Évaluation
+                                <div className="rounded-xl bg-slate-100 p-2"><Star className="w-4 h-4 text-slate-700" /></div>Évaluation
                             </h2>
                             <span className={`text-sm font-semibold ${getQualityLabel(displayContact.rating || 0).color}`}>
                                 {getQualityLabel(displayContact.rating || 0).label}
@@ -679,7 +674,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                         {/* Coordonnées */}
                         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
-                                <div className="p-2 bg-blue-100 rounded-xl"><MapPin className="w-4 h-4 text-[#0E3A5D]" /></div>Coordonnées
+                                <div className="rounded-xl bg-slate-100 p-2"><MapPin className="w-4 h-4 text-slate-700" /></div>Coordonnées
                             </h2>
                             {isEditing ? (
                                 <div className="space-y-3">
@@ -687,7 +682,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                         <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Email</label>
                                         <input type="email" value={displayContact.email || ''}
                                             onChange={e => setEditedContact({ ...displayContact, email: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" placeholder="email@example.com" />
+                                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" placeholder="email@example.com" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Téléphone</label>
@@ -697,20 +692,20 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                         <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Adresse</label>
                                         <input type="text" value={displayContact.address || ''}
                                             onChange={e => setEditedContact({ ...displayContact, address: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                     </div>
                                     <div className="grid grid-cols-2 gap-2">
                                         <div>
                                             <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Ville</label>
                                             <input type="text" value={displayContact.city || ''}
                                                 onChange={e => setEditedContact({ ...displayContact, city: e.target.value })}
-                                                className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                         </div>
                                         <div>
                                             <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Pays</label>
                                             <select value={displayContact.country || ''}
                                                 onChange={e => setEditedContact({ ...displayContact, country: e.target.value })}
-                                                className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm">
+                                                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300">
                                                 <option value="">Sélectionner...</option>
                                                 {COUNTRIES.map(c => <option key={c.code} value={c.name}>{c.name}</option>)}
                                             </select>
@@ -720,8 +715,8 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                             ) : (
                                 <div className="space-y-3">
                                     {displayContact.email && (
-                                        <a href={`mailto:${displayContact.email}`} className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl hover:bg-blue-50 group">
-                                            <div className="p-2 bg-white rounded-xl shadow-sm"><Mail className="w-4 h-4 text-[#0E3A5D]" /></div>
+                                        <a href={`mailto:${displayContact.email}`} className="group flex items-center gap-3 rounded-2xl bg-gray-50 p-3 hover:bg-slate-100">
+                                            <div className="rounded-xl bg-white p-2 shadow-sm"><Mail className="w-4 h-4 text-slate-700" /></div>
                                             <div className="min-w-0 flex-1">
                                                 <p className="text-xs text-gray-500">Email</p>
                                                 <p className="font-medium text-gray-900 truncate">{displayContact.email}</p>
@@ -730,8 +725,8 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                         </a>
                                     )}
                                     {displayContact.phone && (
-                                        <a href={`tel:${displayContact.phone}`} className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl hover:bg-blue-50 group">
-                                            <div className="p-2 bg-white rounded-xl shadow-sm"><Phone className="w-4 h-4 text-[#0E3A5D]" /></div>
+                                        <a href={`tel:${displayContact.phone}`} className="group flex items-center gap-3 rounded-2xl bg-gray-50 p-3 hover:bg-slate-100">
+                                            <div className="rounded-xl bg-white p-2 shadow-sm"><Phone className="w-4 h-4 text-slate-700" /></div>
                                             <div className="min-w-0 flex-1">
                                                 <p className="text-xs text-gray-500">Téléphone</p>
                                                 <p className="font-medium text-gray-900">{displayContact.phone}</p>
@@ -741,7 +736,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                     )}
                                     {displayContact.city && (
                                         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl">
-                                            <div className="p-2 bg-white rounded-xl shadow-sm"><MapPin className="w-4 h-4 text-[#0E3A5D]" /></div>
+                                            <div className="rounded-xl bg-white p-2 shadow-sm"><MapPin className="w-4 h-4 text-slate-700" /></div>
                                             <div>
                                                 <p className="text-xs text-gray-500">Localisation</p>
                                                 <p className="font-medium text-gray-900">{displayContact.city}{displayContact.country ? `, ${displayContact.country}` : ''}</p>
@@ -756,7 +751,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                                    <div className="p-2 bg-blue-100 rounded-xl"><TrendingUp className="w-4 h-4 text-[#0E3A5D]" /></div>Professionnel
+                                    <div className="rounded-xl bg-slate-100 p-2"><TrendingUp className="w-4 h-4 text-slate-700" /></div>Professionnel
                                 </h2>
                             </div>
                             {isEditing ? (
@@ -765,31 +760,31 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                         <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Entreprise</label>
                                         <input type="text" value={displayContact.company || ''}
                                             onChange={e => setEditedContact({ ...displayContact, company: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Poste</label>
                                         <input type="text" value={displayContact.job_title || ''}
                                             onChange={e => setEditedContact({ ...displayContact, job_title: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Secteur</label>
                                         <input type="text" value={displayContact.industry || ''}
                                             onChange={e => setEditedContact({ ...displayContact, industry: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">LinkedIn</label>
                                         <input type="url" value={displayContact.linkedin || ''}
                                             onChange={e => setEditedContact({ ...displayContact, linkedin: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Statut</label>
                                         <select value={displayContact.status || ''}
                                             onChange={e => setEditedContact({ ...displayContact, status: e.target.value })}
-                                            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm">
+                                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300">
                                             <option value="">Sélectionner...</option>
                                             <option value="lead">Lead</option>
                                             <option value="prospect">Prospect</option>
@@ -802,7 +797,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                 <div className="space-y-3">
                                     {displayContact.company && (
                                         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl">
-                                            <div className="p-2 bg-white rounded-xl shadow-sm"><Building2 className="w-4 h-4 text-[#0E3A5D]" /></div>
+                                            <div className="rounded-xl bg-white p-2 shadow-sm"><Building2 className="w-4 h-4 text-slate-700" /></div>
                                             <div>
                                                 <p className="text-xs text-gray-500">Entreprise</p>
                                                 <p className="font-medium text-gray-900">{displayContact.company}</p>
@@ -811,7 +806,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                     )}
                                     {displayContact.job_title && (
                                         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl">
-                                            <div className="p-2 bg-white rounded-xl shadow-sm"><Briefcase className="w-4 h-4 text-[#0E3A5D]" /></div>
+                                            <div className="rounded-xl bg-white p-2 shadow-sm"><Briefcase className="w-4 h-4 text-slate-700" /></div>
                                             <div>
                                                 <p className="text-xs text-gray-500">Poste</p>
                                                 <p className="font-medium text-gray-900">{displayContact.job_title}</p>
@@ -820,11 +815,11 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                     )}
                                     {displayContact.linkedin && (
                                         <a href={displayContact.linkedin} target="_blank" rel="noopener noreferrer"
-                                            className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl hover:bg-blue-50 group">
-                                            <div className="p-2 bg-white rounded-xl shadow-sm"><TrendingUp className="w-4 h-4 text-[#0E3A5D]" /></div>
+                                            className="group flex items-center gap-3 rounded-2xl bg-gray-50 p-3 hover:bg-slate-100">
+                                            <div className="rounded-xl bg-white p-2 shadow-sm"><TrendingUp className="w-4 h-4 text-slate-700" /></div>
                                             <div className="min-w-0 flex-1">
                                                 <p className="text-xs text-gray-500">LinkedIn</p>
-                                                <p className="font-medium text-blue-600 truncate">{displayContact.linkedin}</p>
+                                                <p className="truncate font-medium text-slate-700">{displayContact.linkedin}</p>
                                             </div>
                                             <ChevronRight className="w-4 h-4 text-gray-400" />
                                         </a>
@@ -838,11 +833,11 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                     {(displayContact.tags && displayContact.tags.length > 0) && (
                         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
-                                <div className="p-2 bg-blue-100 rounded-xl"><Tag className="w-4 h-4 text-[#0E3A5D]" /></div>Tags
+                                <div className="rounded-xl bg-slate-100 p-2"><Tag className="w-4 h-4 text-slate-700" /></div>Tags
                             </h2>
                             <div className="flex flex-wrap gap-2">
                                 {displayContact.tags.map(tag => (
-                                    <span key={tag} className="px-3 py-1.5 bg-[#0E3A5D]/10 text-[#0E3A5D] rounded-full text-sm font-medium">{tag}</span>
+                                    <span key={tag} className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700">{tag}</span>
                                 ))}
                             </div>
                         </div>
@@ -851,7 +846,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                     {displayContact.relationships && displayContact.relationships.length > 0 && (
                         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
-                                <div className="p-2 bg-blue-100 rounded-xl"><Users className="w-4 h-4 text-[#0E3A5D]" /></div>Relations ({displayContact.relationships.length})
+                                <div className="rounded-xl bg-slate-100 p-2"><Users className="w-4 h-4 text-slate-700" /></div>Relations ({displayContact.relationships.length})
                             </h2>
                             <div className="space-y-3">
                                 {displayContact.relationships.map((relationship) => {
@@ -862,7 +857,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                             {relationship.related_contact.avatar_url ? (
                                                 <img src={relationship.related_contact.avatar_url} alt={relationship.related_contact.full_name} className="w-12 h-12 rounded-xl object-cover" />
                                             ) : (
-                                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold">
+                                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-200 font-semibold text-slate-700">
                                                     {relationship.related_contact.full_name.charAt(0).toUpperCase()}
                                                 </div>
                                             )}
@@ -872,7 +867,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                                     {relationship.related_contact.company || relationship.related_contact.job_title || 'Relation'}
                                                 </p>
                                             </div>
-                                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                                            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
                                                 {relationship.relationship_type}
                                             </span>
                                         </div>
@@ -886,9 +881,9 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                                <div className="p-2 bg-blue-100 rounded-xl"><StickyNote className="w-4 h-4 text-[#0E3A5D]" /></div>Notes ({notes.length})
+                                <div className="rounded-xl bg-slate-100 p-2"><StickyNote className="w-4 h-4 text-slate-700" /></div>Notes ({notes.length})
                             </h2>
-                            <button onClick={() => setShowNoteInput(!showNoteInput)} className="text-[#0E3A5D] hover:text-blue-800 text-sm font-semibold">
+                            <button onClick={() => setShowNoteInput(!showNoteInput)} className="text-sm font-semibold text-slate-700 hover:text-slate-900">
                                 <Plus className="w-5 h-5" />
                             </button>
                         </div>
@@ -896,12 +891,12 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                         {showNoteInput && (
                             <div className="mb-4">
                                 <textarea value={newNote} onChange={e => setNewNote(e.target.value)} rows={3} placeholder="Ajouter une note..."
-                                    className="w-full px-4 py-3 bg-gray-50 border-0 rounded-2xl focus:ring-2 focus:ring-[#0E3A5D] text-sm resize-none" />
+                                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                 <div className="flex justify-end gap-2 mt-2">
                                     <button onClick={() => { setShowNoteInput(false); setNewNote(''); }}
                                         className="px-4 py-2 text-gray-600 rounded-xl hover:bg-gray-100 text-sm">Annuler</button>
                                     <button onClick={handleAddNote} disabled={!newNote.trim()}
-                                        className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl text-sm disabled:opacity-50">Ajouter</button>
+                                        className="rounded-xl bg-slate-900 px-4 py-2 text-sm text-white disabled:opacity-50">Ajouter</button>
                                 </div>
                             </div>
                         )}
@@ -917,7 +912,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                                 className="w-full px-3 py-2 bg-white border rounded-xl text-sm" />
                                             <div className="flex justify-end gap-2 mt-2">
                                                 <button onClick={() => setEditingNoteId(null)} className="px-3 py-1.5 text-gray-600 rounded-lg text-sm">Annuler</button>
-                                                <button onClick={() => handleEditNote(note.id)} className="px-3 py-1.5 bg-[#0E3A5D] text-white rounded-lg text-sm">Sauver</button>
+                                                <button onClick={() => handleEditNote(note.id)} className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm text-white">Sauver</button>
                                             </div>
                                         </div>
                                     ) : (
@@ -926,7 +921,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                                 {note.content}
                                             </p>
                                             {note.content.length > 150 && (
-                                                <button onClick={() => toggleNoteExpansion(note.id)} className="text-xs text-[#0E3A5D] mt-1">
+                                                <button onClick={() => toggleNoteExpansion(note.id)} className="mt-1 text-xs text-slate-700">
                                                     {expandedNotes.has(note.id) ? 'Voir moins' : 'Voir plus'}
                                                 </button>
                                             )}
@@ -950,9 +945,9 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                                <div className="p-2 bg-blue-100 rounded-xl"><History className="w-4 h-4 text-[#0E3A5D]" /></div>Activités ({activities.length})
+                                <div className="rounded-xl bg-slate-100 p-2"><History className="w-4 h-4 text-slate-700" /></div>Activités ({activities.length})
                             </h2>
-                            <button onClick={() => setShowActivityForm(!showActivityForm)} className="text-[#0E3A5D] hover:text-blue-800 text-sm font-semibold">
+                            <button onClick={() => setShowActivityForm(!showActivityForm)} className="text-sm font-semibold text-slate-700 hover:text-slate-900">
                                 <Plus className="w-5 h-5" />
                             </button>
                         </div>
@@ -962,7 +957,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                 <div className="flex gap-2 flex-wrap">
                                     {ACTIVITY_TYPES.map(type => (
                                         <button key={type.value} onClick={() => setActivityType(type.value)}
-                                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm ${activityType === type.value ? 'bg-[#0E3A5D] text-white' : 'bg-white text-gray-600 border'}`}>
+                                            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${activityType === type.value ? 'bg-slate-900 text-white' : 'border bg-white text-gray-600'}`}>
                                             <type.icon className="w-3.5 h-3.5" />{type.label}
                                         </button>
                                     ))}
@@ -974,7 +969,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                 <div className="flex justify-end gap-2">
                                     <button onClick={() => setShowActivityForm(false)} className="px-4 py-2 text-gray-600 rounded-xl text-sm">Annuler</button>
                                     <button onClick={handleAddActivity} disabled={!activityDescription.trim()}
-                                        className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl text-sm disabled:opacity-50">Ajouter</button>
+                                        className="rounded-xl bg-slate-900 px-4 py-2 text-sm text-white disabled:opacity-50">Ajouter</button>
                                 </div>
                             </div>
                         )}
@@ -987,7 +982,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                 const Icon = typeInfo?.icon || History;
                                 return (
                                     <div key={activity.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-2xl">
-                                        <div className="p-2 bg-white rounded-xl shadow-sm"><Icon className="w-4 h-4 text-[#0E3A5D]" /></div>
+                                        <div className="rounded-xl bg-white p-2 shadow-sm"><Icon className="w-4 h-4 text-slate-700" /></div>
                                         <div className="flex-1 min-w-0">
                                             <p className="text-sm text-gray-900">{activity.description}</p>
                                             <p className="text-xs text-gray-400 mt-1">{fmtDateTime(activity.activity_date)}</p>
@@ -1002,9 +997,9 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                                <div className="p-2 bg-blue-100 rounded-xl"><TrendingUp className="w-4 h-4 text-[#0E3A5D]" /></div>Opportunités ({opportunities.length})
+                                <div className="rounded-xl bg-slate-100 p-2"><TrendingUp className="w-4 h-4 text-slate-700" /></div>Opportunités ({opportunities.length})
                             </h2>
-                            <button onClick={() => setShowOpportunityForm(!showOpportunityForm)} className="text-[#0E3A5D] hover:text-blue-800 text-sm font-semibold">
+                            <button onClick={() => setShowOpportunityForm(!showOpportunityForm)} className="text-sm font-semibold text-slate-700 hover:text-slate-900">
                                 <Plus className="w-5 h-5" />
                             </button>
                         </div>
@@ -1032,7 +1027,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                 <div className="flex justify-end gap-2">
                                     <button onClick={() => setShowOpportunityForm(false)} className="px-4 py-2 text-gray-600 rounded-xl text-sm">Annuler</button>
                                     <button onClick={handleAddOpportunity} disabled={!oppTitle.trim()}
-                                        className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl text-sm disabled:opacity-50">Ajouter</button>
+                                        className="rounded-xl bg-slate-900 px-4 py-2 text-sm text-white disabled:opacity-50">Ajouter</button>
                                 </div>
                             </div>
                         )}
@@ -1075,12 +1070,12 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                     {events.length > 0 && (
                         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
-                                <div className="p-2 bg-blue-100 rounded-xl"><Calendar className="w-4 h-4 text-[#0E3A5D]" /></div>Événements ({events.length})
+                                <div className="rounded-xl bg-slate-100 p-2"><Calendar className="w-4 h-4 text-slate-700" /></div>Événements ({events.length})
                             </h2>
                             <div className="space-y-2">
                                 {events.map(event => (
                                     <div key={event.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-2xl">
-                                        <div className="p-2 bg-white rounded-xl shadow-sm"><Calendar className="w-4 h-4 text-[#0E3A5D]" /></div>
+                                        <div className="rounded-xl bg-white p-2 shadow-sm"><Calendar className="w-4 h-4 text-slate-700" /></div>
                                         <div>
                                             <p className="font-medium text-gray-900">{event.name}</p>
                                             <p className="text-xs text-gray-500">{fmtDate(event.start_date)}{event.location ? ` • ${event.location}` : ''}</p>
@@ -1119,7 +1114,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                         <div className="flex gap-3">
                             <button onClick={() => setShowEnterpriseWarning(false)} className="flex-1 px-4 py-3 border rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button>
                             <button onClick={() => { setShowEnterpriseWarning(false); onNavigateToEnterprise?.(); }}
-                                className="flex-1 px-4 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium hover:bg-[#0c2d47]">Créer une entreprise</button>
+                                className="flex-1 rounded-xl bg-slate-900 px-4 py-3 font-medium text-white hover:bg-slate-800">Créer une entreprise</button>
                         </div>
                     </div>
                 </div>

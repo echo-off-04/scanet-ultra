@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Target, Plus, Edit2, Trash2, Users, DollarSign, Award, ChevronUp, ChevronDown, X } from 'lucide-react';
+import { Target, Plus, Edit2, Trash2, Users, DollarSign, Award, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
@@ -135,30 +135,30 @@ export function EventObjectives({ eventId }: EventObjectivesProps) {
     };
 
     if (loading) {
-        return <div className="flex items-center justify-center h-32"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0E3A5D]"></div></div>;
+        return <div className="flex h-32 items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"></div></div>;
     }
 
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                    <Target className="w-5 h-5 text-[#0E3A5D]" />
+                <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-900">
+                    <Target className="h-5 w-5 text-slate-700" />
                     Objectifs ({objectives.length})
                 </h3>
                 <button
                     onClick={() => { resetForm(); setShowAddModal(true); }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-[#0E3A5D] text-white rounded-lg hover:bg-[#1E5A8E]"
+                    className="btn-primary gap-1.5 px-3 py-1.5 text-sm"
                 >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="h-4 w-4" />
                     Ajouter
                 </button>
             </div>
 
             {objectives.length === 0 ? (
-                <div className="text-center py-8 bg-gray-50 rounded-xl">
-                    <Target className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                    <p className="text-gray-500">Aucun objectif défini</p>
-                    <button onClick={() => setShowAddModal(true)} className="mt-3 text-sm text-[#0E3A5D] font-medium hover:underline">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 py-8 text-center">
+                    <Target className="mx-auto mb-3 h-10 w-10 text-slate-300" />
+                    <p className="text-slate-500">Aucun objectif défini</p>
+                    <button onClick={() => setShowAddModal(true)} className="mt-3 text-sm font-medium text-slate-700 hover:underline">
                         Définir un objectif
                     </button>
                 </div>
@@ -168,37 +168,37 @@ export function EventObjectives({ eventId }: EventObjectivesProps) {
                         const progress = obj.target_value > 0 ? Math.min(100, (obj.current_value / obj.target_value) * 100) : 0;
                         const MetricIcon = getMetricIcon(obj.metric_type);
                         return (
-                            <div key={obj.id} className={`p-4 rounded-xl border ${obj.achieved ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-gray-200'}`}>
+                            <div key={obj.id} className="rounded-xl border border-slate-200 bg-white p-4">
                                 <div className="flex items-start justify-between mb-3">
                                     <div className="flex items-center gap-3">
-                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${obj.achieved ? 'bg-emerald-100' : 'bg-blue-100'}`}>
-                                            <MetricIcon className={`w-5 h-5 ${obj.achieved ? 'text-emerald-600' : 'text-blue-600'}`} />
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700">
+                                            <MetricIcon className="h-5 w-5" />
                                         </div>
                                         <div>
-                                            <h4 className="font-semibold text-gray-900">{obj.title}</h4>
-                                            {obj.description && <p className="text-xs text-gray-500 mt-0.5">{obj.description}</p>}
-                                            <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full mt-1 inline-block ${obj.objective_type === 'primary' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'}`}>
+                                            <h4 className="font-semibold text-slate-900">{obj.title}</h4>
+                                            {obj.description && <p className="mt-0.5 text-xs text-slate-500">{obj.description}</p>}
+                                            <span className="mt-1 inline-block rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-700">
                                                 {obj.objective_type === 'primary' ? 'Principal' : 'Secondaire'}
                                             </span>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                        <button onClick={() => startEdit(obj)} className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center">
-                                            <Edit2 className="w-4 h-4 text-gray-400" />
+                                        <button onClick={() => startEdit(obj)} className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600">
+                                            <Edit2 className="h-4 w-4" />
                                         </button>
-                                        <button onClick={() => handleDelete(obj.id)} className="w-8 h-8 rounded-full hover:bg-red-50 flex items-center justify-center">
-                                            <Trash2 className="w-4 h-4 text-red-400" />
+                                        <button onClick={() => handleDelete(obj.id)} className="flex h-8 w-8 items-center justify-center rounded-full text-red-400 transition-colors hover:bg-red-50 hover:text-red-600">
+                                            <Trash2 className="h-4 w-4" />
                                         </button>
                                     </div>
                                 </div>
                                 <div className="space-y-2">
                                     <div className="flex items-center justify-between text-sm">
-                                        <span className="text-gray-600">{obj.current_value} / {obj.target_value} {obj.unit || ''}</span>
-                                        <span className={`font-semibold ${obj.achieved ? 'text-emerald-600' : 'text-gray-900'}`}>{Math.round(progress)}%</span>
+                                        <span className="text-slate-600">{obj.current_value} / {obj.target_value} {obj.unit || ''}</span>
+                                        <span className="font-semibold text-slate-900">{Math.round(progress)}%</span>
                                     </div>
-                                    <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                    <div className="h-2 overflow-hidden rounded-full bg-slate-200">
                                         <div
-                                            className={`h-full rounded-full transition-all ${obj.achieved ? 'bg-emerald-500' : progress >= 75 ? 'bg-blue-500' : progress >= 50 ? 'bg-amber-500' : 'bg-gray-400'}`}
+                                            className="h-full rounded-full bg-slate-700 transition-all"
                                             style={{ width: `${progress}%` }}
                                         />
                                     </div>
@@ -210,35 +210,35 @@ export function EventObjectives({ eventId }: EventObjectivesProps) {
             )}
 
             {showAddModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={resetForm}>
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={resetForm}>
+                    <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" onClick={e => e.stopPropagation()}>
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-xl font-bold text-gray-900">{editingId ? 'Modifier l\'objectif' : 'Nouvel objectif'}</h3>
-                            <button onClick={resetForm} className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center">
-                                <X className="w-5 h-5" />
+                            <h3 className="text-xl font-semibold text-slate-900">{editingId ? 'Modifier l\'objectif' : 'Nouvel objectif'}</h3>
+                            <button onClick={resetForm} className="flex h-8 w-8 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700">
+                                <X className="h-5 w-5" />
                             </button>
                         </div>
 
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Titre *</label>
-                                <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D]" />
+                                <label className="mb-1 block text-sm font-medium text-slate-700">Titre *</label>
+                                <input type="text" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="input-modern" />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                                <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={2} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] resize-none" />
+                                <label className="mb-1 block text-sm font-medium text-slate-700">Description</label>
+                                <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={2} className="input-modern resize-none" />
                             </div>
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
-                                    <select value={formData.objective_type} onChange={(e) => setFormData({ ...formData, objective_type: e.target.value as any })} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl">
+                                    <label className="mb-1 block text-sm font-medium text-slate-700">Type</label>
+                                    <select value={formData.objective_type} onChange={(e) => setFormData({ ...formData, objective_type: e.target.value as any })} className="input-modern">
                                         <option value="primary">Principal</option>
                                         <option value="secondary">Secondaire</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Métrique</label>
-                                    <select value={formData.metric_type} onChange={(e) => setFormData({ ...formData, metric_type: e.target.value as any })} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl">
+                                    <label className="mb-1 block text-sm font-medium text-slate-700">Métrique</label>
+                                    <select value={formData.metric_type} onChange={(e) => setFormData({ ...formData, metric_type: e.target.value as any })} className="input-modern">
                                         <option value="people_count">Nombre de personnes</option>
                                         <option value="opportunity_value">Valeur opportunité</option>
                                         <option value="quality_score">Score qualité</option>
@@ -247,23 +247,23 @@ export function EventObjectives({ eventId }: EventObjectivesProps) {
                             </div>
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Valeur cible</label>
-                                    <input type="number" value={formData.target_value} onChange={(e) => setFormData({ ...formData, target_value: Number(e.target.value) })} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl" />
+                                    <label className="mb-1 block text-sm font-medium text-slate-700">Valeur cible</label>
+                                    <input type="number" value={formData.target_value} onChange={(e) => setFormData({ ...formData, target_value: Number(e.target.value) })} className="input-modern" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Valeur actuelle</label>
-                                    <input type="number" value={formData.current_value} onChange={(e) => setFormData({ ...formData, current_value: Number(e.target.value) })} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl" />
+                                    <label className="mb-1 block text-sm font-medium text-slate-700">Valeur actuelle</label>
+                                    <input type="number" value={formData.current_value} onChange={(e) => setFormData({ ...formData, current_value: Number(e.target.value) })} className="input-modern" />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Unité</label>
-                                <input type="text" value={formData.unit} onChange={(e) => setFormData({ ...formData, unit: e.target.value })} className="w-full px-4 py-2.5 border border-gray-300 rounded-xl" placeholder="ex: contacts, €, %" />
+                                <label className="mb-1 block text-sm font-medium text-slate-700">Unité</label>
+                                <input type="text" value={formData.unit} onChange={(e) => setFormData({ ...formData, unit: e.target.value })} className="input-modern" placeholder="ex: contacts, €, %" />
                             </div>
                         </div>
 
                         <div className="flex gap-3 mt-6">
-                            <button onClick={resetForm} className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl hover:bg-gray-50">Annuler</button>
-                            <button onClick={handleSubmit} disabled={!formData.title.trim()} className="flex-1 px-4 py-2.5 bg-[#0E3A5D] text-white rounded-xl hover:bg-[#1E5A8E] disabled:opacity-50">
+                            <button onClick={resetForm} className="btn-secondary flex-1">Annuler</button>
+                            <button onClick={handleSubmit} disabled={!formData.title.trim()} className="btn-primary flex-1 disabled:opacity-50">
                                 {editingId ? 'Modifier' : 'Créer'}
                             </button>
                         </div>

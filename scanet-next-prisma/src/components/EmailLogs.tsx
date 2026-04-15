@@ -64,17 +64,17 @@ export function EmailLogs() {
         }
     };
 
-    if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0E3A5D]" /></div>;
+    if (loading) return <div className="flex h-64 items-center justify-center"><div className="h-12 w-12 animate-spin rounded-full border-b-2 border-slate-700" /></div>;
 
     return (
         <div className="space-y-4">
             <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                     <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Rechercher par email ou objet..." className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-xl text-sm" />
+                        placeholder="Rechercher par email ou objet..." className="input-modern py-2.5 pl-10 text-sm" />
                 </div>
-                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="px-4 py-2.5 border border-gray-300 rounded-xl text-sm">
+                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="input-modern text-sm">
                     <option value="all">Tous les statuts</option>
                     <option value="sent">Envoyés</option>
                     <option value="failed">Échoués</option>
@@ -83,52 +83,52 @@ export function EmailLogs() {
             </div>
 
             {filteredLogs.length === 0 ? (
-                <div className="text-center py-12 bg-gray-50 rounded-xl">
-                    <Mail className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                    <p className="text-gray-500">Aucun email trouvé</p>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 py-12 text-center">
+                    <Mail className="mx-auto mb-3 h-12 w-12 text-slate-300" />
+                    <p className="text-slate-500">Aucun email trouvé</p>
                 </div>
             ) : (
                 <div className="space-y-2">
                     {filteredLogs.map(log => (
-                        <div key={log.id} className="flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-xl hover:shadow-md transition-all cursor-pointer" onClick={() => setSelectedLog(log)}>
+                        <div key={log.id} className="flex cursor-pointer items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:bg-slate-50" onClick={() => setSelectedLog(log)}>
                             {statusIcon(log.status)}
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-gray-900 truncate">{log.subject}</p>
-                                <p className="text-xs text-gray-500 truncate">À: {log.to_email}</p>
+                                <p className="truncate text-sm font-medium text-slate-900">{log.subject}</p>
+                                <p className="truncate text-xs text-slate-500">À: {log.to_email}</p>
                             </div>
                             <div className="text-right flex-shrink-0">
-                                <p className="text-xs text-gray-400">{new Date(log.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
-                                <span className={`text-xs px-2 py-0.5 rounded-full ${log.email_type === 'scheduled' ? 'bg-blue-100 text-blue-700' : log.email_type === 'sequence' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'}`}>
+                                <p className="text-xs text-slate-400">{new Date(log.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+                                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
                                     {log.email_type || 'direct'}
                                 </span>
                             </div>
-                            <Eye className="w-4 h-4 text-gray-400" />
+                            <Eye className="h-4 w-4 text-slate-400" />
                         </div>
                     ))}
                 </div>
             )}
 
             {selectedLog && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={() => setSelectedLog(null)}>
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                        <div className="flex items-center justify-between p-4 border-b">
-                            <h3 className="font-bold text-gray-900">Détail de l'email</h3>
-                            <button onClick={() => setSelectedLog(null)} className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center"><X className="w-5 h-5" /></button>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={() => setSelectedLog(null)}>
+                    <div className="max-h-[80vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm" onClick={e => e.stopPropagation()}>
+                        <div className="flex items-center justify-between border-b border-slate-200 p-4">
+                            <h3 className="font-semibold text-slate-900">Détail de l'email</h3>
+                            <button onClick={() => setSelectedLog(null)} className="flex h-8 w-8 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"><X className="h-5 w-5" /></button>
                         </div>
                         <div className="p-6 space-y-4">
                             <div className="grid grid-cols-2 gap-4 text-sm">
-                                <div><span className="text-gray-500">De:</span> <span className="font-medium">{selectedLog.from_email}</span></div>
-                                <div><span className="text-gray-500">À:</span> <span className="font-medium">{selectedLog.to_email}</span></div>
-                                <div><span className="text-gray-500">Statut:</span> <span className="flex items-center gap-1">{statusIcon(selectedLog.status)} {selectedLog.status}</span></div>
-                                <div><span className="text-gray-500">Date:</span> <span>{new Date(selectedLog.created_at).toLocaleString('fr-FR')}</span></div>
+                                <div><span className="text-slate-500">De:</span> <span className="font-medium">{selectedLog.from_email}</span></div>
+                                <div><span className="text-slate-500">À:</span> <span className="font-medium">{selectedLog.to_email}</span></div>
+                                <div><span className="text-slate-500">Statut:</span> <span className="flex items-center gap-1">{statusIcon(selectedLog.status)} {selectedLog.status}</span></div>
+                                <div><span className="text-slate-500">Date:</span> <span>{new Date(selectedLog.created_at).toLocaleString('fr-FR')}</span></div>
                             </div>
-                            <div><h4 className="font-semibold text-gray-900 mb-1">Objet</h4><p>{selectedLog.subject}</p></div>
+                            <div><h4 className="mb-1 font-semibold text-slate-900">Objet</h4><p>{selectedLog.subject}</p></div>
                             {selectedLog.body_html ? (
-                                <div><h4 className="font-semibold text-gray-900 mb-1">Contenu</h4>
-                                    <iframe srcDoc={selectedLog.body_html} className="w-full h-64 border border-gray-200 rounded-xl" sandbox="" />
+                                <div><h4 className="mb-1 font-semibold text-slate-900">Contenu</h4>
+                                    <iframe srcDoc={selectedLog.body_html} className="h-64 w-full rounded-xl border border-slate-200" sandbox="" />
                                 </div>
                             ) : selectedLog.body_text ? (
-                                <div><h4 className="font-semibold text-gray-900 mb-1">Contenu</h4><p className="whitespace-pre-wrap text-sm text-gray-700">{selectedLog.body_text}</p></div>
+                                <div><h4 className="mb-1 font-semibold text-slate-900">Contenu</h4><p className="whitespace-pre-wrap text-sm text-slate-700">{selectedLog.body_text}</p></div>
                             ) : null}
                             {selectedLog.error_message && (
                                 <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700"><strong>Erreur:</strong> {selectedLog.error_message}</div>

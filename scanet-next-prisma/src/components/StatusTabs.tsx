@@ -17,47 +17,38 @@ interface StatusTabsProps {
 
 export function StatusTabs({ currentStatus, counts, onStatusChange }: StatusTabsProps) {
     const tabs = [
-        { id: 'lead', label: 'Leads', count: counts.lead, color: 'orange' },
-        { id: 'prospect', label: 'Prospects', count: counts.prospect, color: 'blue' },
-        { id: 'client', label: 'Clients', count: counts.client, color: 'emerald' },
-        { id: 'partner', label: 'Partenaires', count: counts.partner, color: 'violet' },
-        { id: 'collaborateur', label: 'Collaborateurs', count: counts.collaborateur || 0, color: 'cyan' },
-        { id: 'ami', label: 'Ami(e)s', count: counts.ami || 0, color: 'pink' },
-        { id: 'fournisseur', label: 'Fournisseurs', count: counts.fournisseur || 0, color: 'amber' },
+        { id: 'lead', label: 'Leads', count: counts.lead },
+        { id: 'prospect', label: 'Prospects', count: counts.prospect },
+        { id: 'client', label: 'Clients', count: counts.client },
+        { id: 'partner', label: 'Partenaires', count: counts.partner },
+        { id: 'collaborateur', label: 'Collaborateurs', count: counts.collaborateur || 0 },
+        { id: 'ami', label: 'Ami(e)s', count: counts.ami || 0 },
+        { id: 'fournisseur', label: 'Fournisseurs', count: counts.fournisseur || 0 },
     ];
 
-    const getTabClasses = (tabId: string, color: string) => {
+    const getTabClasses = (tabId: string) => {
         const isActive = currentStatus === tabId;
-        const colorClasses: Record<string, string> = {
-            orange: isActive ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-lg shadow-orange-200' : 'text-gray-600 hover:bg-orange-50/50 backdrop-blur-sm',
-            blue: isActive ? 'bg-gradient-to-r from-blue-400 to-blue-500 text-white shadow-lg shadow-blue-200' : 'text-gray-600 hover:bg-blue-50/50 backdrop-blur-sm',
-            emerald: isActive ? 'bg-gradient-to-r from-emerald-400 to-emerald-500 text-white shadow-lg shadow-emerald-200' : 'text-gray-600 hover:bg-emerald-50/50 backdrop-blur-sm',
-            violet: isActive ? 'bg-gradient-to-r from-violet-400 to-violet-500 text-white shadow-lg shadow-violet-200' : 'text-gray-600 hover:bg-violet-50/50 backdrop-blur-sm',
-            cyan: isActive ? 'bg-gradient-to-r from-cyan-400 to-cyan-500 text-white shadow-lg shadow-cyan-200' : 'text-gray-600 hover:bg-cyan-50/50 backdrop-blur-sm',
-            pink: isActive ? 'bg-gradient-to-r from-pink-400 to-pink-500 text-white shadow-lg shadow-pink-200' : 'text-gray-600 hover:bg-pink-50/50 backdrop-blur-sm',
-            amber: isActive ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-white shadow-lg shadow-amber-200' : 'text-gray-600 hover:bg-amber-50/50 backdrop-blur-sm',
-        };
-        return `px-3 sm:px-4 lg:px-5 py-2 lg:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${colorClasses[color] || ''}`;
+        return `whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium transition-colors sm:px-4 sm:text-sm lg:px-5 lg:py-2.5 ${isActive ? 'border border-slate-300 bg-white text-slate-900' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'}`;
     };
 
     return (
-        <div className="mb-6 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-            <div className="flex items-center gap-2 min-w-max pb-1">
+        <div className="-mx-4 mb-6 overflow-x-auto px-4 scrollbar-hide sm:mx-0 sm:px-0">
+            <div className="flex min-w-max items-center gap-2 pb-1">
                 <button
                     onClick={() => onStatusChange('all')}
-                    className={`px-3 sm:px-4 lg:px-5 py-2 lg:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${currentStatus === 'all'
-                            ? 'bg-gradient-to-r from-slate-600 to-slate-700 text-white shadow-lg shadow-slate-200'
-                            : 'text-gray-600 hover:bg-white/50 backdrop-blur-sm'
+                    className={`whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium transition-colors sm:px-4 sm:text-sm lg:px-5 lg:py-2.5 ${currentStatus === 'all'
+                        ? 'border border-slate-300 bg-white text-slate-900'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
                         }`}
                 >
                     Tous
-                    <span className="ml-1.5 sm:ml-2 px-1.5 sm:px-2 py-0.5 bg-white/20 rounded-full text-[10px] sm:text-xs">{counts.all}</span>
+                    <span className={`ml-1.5 rounded-full px-1.5 py-0.5 text-[10px] sm:ml-2 sm:px-2 sm:text-xs ${currentStatus === 'all' ? 'bg-slate-100 text-slate-700' : 'bg-white text-slate-600'}`}>{counts.all}</span>
                 </button>
                 {tabs.map((tab) => (
-                    <button key={tab.id} onClick={() => onStatusChange(tab.id)} className={getTabClasses(tab.id, tab.color)}>
+                    <button key={tab.id} onClick={() => onStatusChange(tab.id)} className={getTabClasses(tab.id)}>
                         <span className="hidden sm:inline">{tab.label}</span>
                         <span className="inline sm:hidden">{tab.label.length > 6 ? tab.label.substring(0, 5) + '.' : tab.label}</span>
-                        <span className={`ml-1.5 sm:ml-2 px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-xs ${currentStatus === tab.id ? 'bg-white/20' : 'bg-gray-100'}`}>
+                        <span className={`ml-1.5 rounded-full px-1.5 py-0.5 text-[10px] sm:ml-2 sm:px-2 sm:text-xs ${currentStatus === tab.id ? 'bg-slate-100 text-slate-700' : 'bg-white text-slate-600'}`}>
                             {tab.count}
                         </span>
                     </button>

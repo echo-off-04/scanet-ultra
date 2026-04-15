@@ -102,205 +102,150 @@ export default function AuthPage() {
     const passwordStrength = getPasswordStrength(password);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex">
-            {/* Left side - Branding (hidden on mobile) */}
-            <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0E3A5D 0%, #1e5a8e 100%)' }}>
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-20 left-20 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-20 right-20 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-                </div>
-
-                <div className="relative z-10 flex flex-col justify-center px-12 text-white">
-                    <div className="mb-8">
-                        <img
-                            src="https://i.ibb.co/q3YDjGLC/Scanetwork.png"
-                            alt="Scanetwork"
-                            className="h-16 object-contain"
-                        />
-                    </div>
-
-                    <h2 className="text-4xl font-bold mb-4 leading-tight">
-                        Transformez vos rencontres<br />en opportunités
-                    </h2>
-                    <p className="text-xl text-blue-100 mb-12 max-w-md">
-                        La plateforme de networking qui centralise vos contacts professionnels et automatise vos suivis commerciaux.
-                    </p>
-
-                    <div className="grid grid-cols-3 gap-6">
-                        <div className="bg-white/10 backdrop-blur rounded-2xl p-4">
-                            <p className="text-3xl font-bold">+150%</p>
-                            <p className="text-sm text-blue-100">Conversions</p>
+        <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-10">
+            <div className="w-full max-w-md">
+                <div className={`rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all ${formShake ? 'animate-shake' : ''}`}>
+                    <div className="mb-8 text-center">
+                        <div className="mx-auto mb-4 inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+                            Scanet
                         </div>
-                        <div className="bg-white/10 backdrop-blur rounded-2xl p-4">
-                            <p className="text-3xl font-bold">10k+</p>
-                            <p className="text-sm text-blue-100">Utilisateurs</p>
-                        </div>
-                        <div className="bg-white/10 backdrop-blur rounded-2xl p-4">
-                            <p className="text-3xl font-bold">98%</p>
-                            <p className="text-sm text-blue-100">Satisfaction</p>
-                        </div>
-                    </div>
-
-                    <div className="mt-12 bg-white/10 backdrop-blur rounded-2xl p-6">
-                        <p className="text-blue-50 italic mb-4">
-                            &ldquo;Scanetwork a révolutionné ma façon de gérer mes contacts. Je n&apos;oublie plus jamais de relancer un prospect !&rdquo;
-                        </p>
-                        <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold">M</div>
-                            <div>
-                                <p className="font-semibold">Marie Dupont</p>
-                                <p className="text-sm text-blue-200">Directrice Commerciale</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Right side - Form */}
-            <div className="flex-1 flex items-center justify-center p-4 lg:p-8">
-                <div className="w-full max-w-md">
-                    <div className={`bg-white rounded-3xl shadow-xl p-8 transition-all ${formShake ? 'animate-shake' : ''}`}>
-                        <div className="flex justify-center mb-6">
-                            <img src="https://i.ibb.co/q3YDjGLC/Scanetwork.png" alt="Scanetwork" className="h-14 object-contain" />
-                        </div>
-
-                        <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
+                        <h1 className="mb-2 text-3xl font-semibold text-slate-900">
                             {isSignUp ? 'Créer un compte' : 'Bienvenue'}
                         </h1>
-                        <p className="text-center text-gray-500 mb-8">
+                        <p className="text-sm text-slate-500">
                             {isSignUp ? 'Commencez à gérer votre réseau professionnel' : 'Connectez-vous pour accéder à vos contacts'}
                         </p>
+                    </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            {isSignUp && (
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Nom complet</label>
-                                    <div className="relative">
-                                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                        <input
-                                            type="text"
-                                            value={fullName}
-                                            onChange={(e) => setFullName(e.target.value)}
-                                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent transition-all"
-                                            placeholder="Jean Dupont"
-                                            required={isSignUp}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        {isSignUp && (
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <label className="mb-2 block text-sm font-medium text-slate-700">Nom complet</label>
                                 <div className="relative">
-                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                    <User className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                                     <input
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent transition-all"
-                                        placeholder="vous@exemple.com"
-                                        required
+                                        type="text"
+                                        value={fullName}
+                                        onChange={(e) => setFullName(e.target.value)}
+                                        className="input-modern pl-10 pr-4"
+                                        placeholder="Jean Dupont"
+                                        required={isSignUp}
                                     />
                                 </div>
                             </div>
+                        )}
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
-                                <div className="relative">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                    <input
-                                        type={showPassword ? 'text' : 'password'}
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent transition-all"
-                                        placeholder="••••••••"
-                                        required
-                                        minLength={6}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-lg transition-colors"
-                                        tabIndex={-1}
-                                    >
-                                        {showPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}
-                                    </button>
-                                </div>
-
-                                {isSignUp && password.length > 0 && (
-                                    <div className="mt-2">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                                                <div className={`h-full transition-all duration-300 ${passwordStrength.color}`} style={{ width: `${(passwordStrength.score / 5) * 100}%` }} />
-                                            </div>
-                                            <span className={`text-xs font-medium ${passwordStrength.score <= 1 ? 'text-red-500' : passwordStrength.score <= 2 ? 'text-yellow-500' : passwordStrength.score <= 3 ? 'text-blue-500' : 'text-green-500'}`}>
-                                                {passwordStrength.label}
-                                            </span>
-                                        </div>
-                                        <div className="flex flex-wrap gap-2 text-xs text-gray-500">
-                                            <span className={password.length >= 8 ? 'text-green-500' : ''}>
-                                                {password.length >= 8 ? <CheckCircle className="w-3 h-3 inline mr-1" /> : '○'} 8+ caractères
-                                            </span>
-                                            <span className={/[A-Z]/.test(password) ? 'text-green-500' : ''}>
-                                                {/[A-Z]/.test(password) ? <CheckCircle className="w-3 h-3 inline mr-1" /> : '○'} Majuscule
-                                            </span>
-                                            <span className={/[0-9]/.test(password) ? 'text-green-500' : ''}>
-                                                {/[0-9]/.test(password) ? <CheckCircle className="w-3 h-3 inline mr-1" /> : '○'} Chiffre
-                                            </span>
-                                        </div>
-                                    </div>
-                                )}
+                        <div>
+                            <label className="mb-2 block text-sm font-medium text-slate-700">Email</label>
+                            <div className="relative">
+                                <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="input-modern pl-10 pr-4"
+                                    placeholder="vous@exemple.com"
+                                    required
+                                />
                             </div>
-
-                            {!isSignUp && (
-                                <div className="text-right">
-                                    <Link href="/forgot-password" className="text-sm text-[#0E3A5D] hover:text-[#1e5a8e] font-medium transition-colors">
-                                        Mot de passe oublié ?
-                                    </Link>
-                                </div>
-                            )}
-
-                            {error && (
-                                <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm flex items-center gap-2">
-                                    <div className="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-                                        <span className="text-red-500 text-xs">!</span>
-                                    </div>
-                                    {error}
-                                </div>
-                            )}
-
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white py-3 rounded-xl font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
-                            >
-                                {loading ? (
-                                    <>
-                                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                        Chargement...
-                                    </>
-                                ) : (
-                                    isSignUp ? "S'inscrire" : 'Se connecter'
-                                )}
-                            </button>
-                        </form>
-
-                        <div className="mt-6 text-center">
-                            <button
-                                onClick={() => { setIsSignUp(!isSignUp); setError(''); setPassword(''); }}
-                                className="text-[#0E3A5D] hover:text-[#1e5a8e] font-medium transition-colors"
-                            >
-                                {isSignUp ? 'Déjà un compte ? Connectez-vous' : "Pas encore de compte ? Inscrivez-vous"}
-                            </button>
                         </div>
 
-                        <p className="mt-8 text-center text-xs text-gray-400">
-                            En continuant, vous acceptez nos{' '}
-                            <a href="#" className="text-[#0E3A5D] hover:underline">Conditions d&apos;utilisation</a>{' '}
-                            et notre{' '}
-                            <a href="#" className="text-[#0E3A5D] hover:underline">Politique de confidentialité</a>
-                        </p>
+                        <div>
+                            <label className="mb-2 block text-sm font-medium text-slate-700">Mot de passe</label>
+                            <div className="relative">
+                                <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="input-modern pl-10 pr-12"
+                                    placeholder="••••••••"
+                                    required
+                                    minLength={6}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                </button>
+                            </div>
+
+                            {isSignUp && password.length > 0 && (
+                                <div className="mt-2">
+                                    <div className="mb-1 flex items-center gap-2">
+                                        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200">
+                                            <div className={`h-full transition-all duration-300 ${passwordStrength.color}`} style={{ width: `${(passwordStrength.score / 5) * 100}%` }} />
+                                        </div>
+                                        <span className={`text-xs font-medium ${passwordStrength.score <= 1 ? 'text-red-500' : passwordStrength.score <= 2 ? 'text-yellow-600' : passwordStrength.score <= 3 ? 'text-blue-600' : 'text-green-600'}`}>
+                                            {passwordStrength.label}
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 text-xs text-slate-500">
+                                        <span className={password.length >= 8 ? 'text-green-600' : ''}>
+                                            {password.length >= 8 ? <CheckCircle className="mr-1 inline h-3 w-3" /> : '○'} 8+ caractères
+                                        </span>
+                                        <span className={/[A-Z]/.test(password) ? 'text-green-600' : ''}>
+                                            {/[A-Z]/.test(password) ? <CheckCircle className="mr-1 inline h-3 w-3" /> : '○'} Majuscule
+                                        </span>
+                                        <span className={/[0-9]/.test(password) ? 'text-green-600' : ''}>
+                                            {/[0-9]/.test(password) ? <CheckCircle className="mr-1 inline h-3 w-3" /> : '○'} Chiffre
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {!isSignUp && (
+                            <div className="text-right">
+                                <Link href="/forgot-password" className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
+                                    Mot de passe oublié ?
+                                </Link>
+                            </div>
+                        )}
+
+                        {error && (
+                            <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                                <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-red-100 text-xs text-red-500">
+                                    !
+                                </div>
+                                {error}
+                            </div>
+                        )}
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="btn-primary w-full justify-center py-3 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            {loading ? (
+                                <>
+                                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                                    Chargement...
+                                </>
+                            ) : (
+                                isSignUp ? "S'inscrire" : 'Se connecter'
+                            )}
+                        </button>
+                    </form>
+
+                    <div className="mt-6 text-center">
+                        <button
+                            onClick={() => { setIsSignUp(!isSignUp); setError(''); setPassword(''); }}
+                            className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
+                        >
+                            {isSignUp ? 'Déjà un compte ? Connectez-vous' : "Pas encore de compte ? Inscrivez-vous"}
+                        </button>
                     </div>
+
+                    <p className="mt-8 text-center text-xs text-slate-400">
+                        En continuant, vous acceptez nos{' '}
+                        <a href="#" className="font-medium text-slate-500 hover:text-slate-900 hover:underline">Conditions d&apos;utilisation</a>{' '}
+                        et notre{' '}
+                        <a href="#" className="font-medium text-slate-500 hover:text-slate-900 hover:underline">Politique de confidentialité</a>
+                    </p>
                 </div>
             </div>
         </div>

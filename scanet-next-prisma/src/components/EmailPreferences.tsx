@@ -75,9 +75,9 @@ export function EmailPreferences({ onClose }: EmailPreferencesProps) {
     const Toggle = ({ enabled, onChange }: { enabled: boolean; onChange: () => void }) => (
         <button onClick={onChange} className="flex-shrink-0">
             {enabled ? (
-                <ToggleRight className="w-10 h-6 text-[#0E3A5D]" />
+                <ToggleRight className="h-10 w-10 text-slate-700" />
             ) : (
-                <ToggleLeft className="w-10 h-6 text-gray-300" />
+                <ToggleLeft className="h-10 w-10 text-slate-300" />
             )}
         </button>
     );
@@ -90,18 +90,18 @@ export function EmailPreferences({ onClose }: EmailPreferencesProps) {
         { key: 'marketing_emails' as const, label: 'Marketing', desc: 'Nouveautés et offres spéciales' },
     ];
 
-    if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0E3A5D]" /></div>;
+    if (loading) return <div className="flex h-64 items-center justify-center"><div className="h-12 w-12 animate-spin rounded-full border-b-2 border-slate-700" /></div>;
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-xl w-fit">
+            <div className="flex w-fit items-center gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1">
                 <button onClick={() => setActiveTab('preferences')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'preferences' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}>
-                    <Settings className="w-4 h-4" />Préférences
+                    className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${activeTab === 'preferences' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>
+                    <Settings className="h-4 w-4" />Préférences
                 </button>
                 <button onClick={() => setActiveTab('history')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}>
-                    <History className="w-4 h-4" />Historique
+                    className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>
+                    <History className="h-4 w-4" />Historique
                 </button>
             </div>
 
@@ -109,16 +109,16 @@ export function EmailPreferences({ onClose }: EmailPreferencesProps) {
                 <EmailLogs />
             ) : (
                 <div className="space-y-6">
-                    <div className="glass-card p-6">
-                        <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <Mail className="w-5 h-5 text-[#0E3A5D]" />Catégories d'emails
+                    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                        <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900">
+                            <Mail className="h-5 w-5 text-slate-700" />Catégories d'emails
                         </h3>
                         <div className="space-y-4">
                             {categories.map(cat => (
-                                <div key={cat.key} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                                <div key={cat.key} className="flex items-center justify-between border-b border-slate-100 py-3 last:border-0">
                                     <div>
-                                        <p className="font-medium text-gray-900">{cat.label}</p>
-                                        <p className="text-sm text-gray-500">{cat.desc}</p>
+                                        <p className="font-medium text-slate-900">{cat.label}</p>
+                                        <p className="text-sm text-slate-500">{cat.desc}</p>
                                     </div>
                                     <Toggle enabled={preferences[cat.key]} onChange={() => savePreferences({ [cat.key]: !preferences[cat.key] })} />
                                 </div>
@@ -126,14 +126,14 @@ export function EmailPreferences({ onClose }: EmailPreferencesProps) {
                         </div>
                     </div>
 
-                    <div className="glass-card p-6">
-                        <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <Clock className="w-5 h-5 text-[#0E3A5D]" />Fréquence du digest
+                    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                        <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900">
+                            <Clock className="h-5 w-5 text-slate-700" />Fréquence du digest
                         </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                             {(['never', 'daily', 'weekly', 'monthly'] as const).map(freq => (
                                 <button key={freq} onClick={() => savePreferences({ digest_frequency: freq })}
-                                    className={`px-4 py-3 rounded-xl text-sm font-medium transition-all ${preferences.digest_frequency === freq ? 'bg-[#0E3A5D] text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                                    className={`rounded-xl px-4 py-3 text-sm font-medium transition-colors ${preferences.digest_frequency === freq ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}>
                                     {freq === 'never' ? 'Jamais' : freq === 'daily' ? 'Quotidien' : freq === 'weekly' ? 'Hebdomadaire' : 'Mensuel'}
                                 </button>
                             ))}

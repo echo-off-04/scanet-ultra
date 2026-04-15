@@ -107,84 +107,84 @@ export function ContactFormModal({ onClose, onSuccess, eventId, mode = 'create',
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={onClose}>
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-3xl z-10">
-                    <h2 className="text-2xl font-bold text-gray-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={onClose}>
+            <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm" onClick={e => e.stopPropagation()}>
+                <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-slate-200 bg-white px-6 py-4">
+                    <h2 className="text-2xl font-semibold text-slate-900">
                         {mode === 'edit' ? 'Modifier le contact' : 'Nouveau contact'}
                     </h2>
-                    <button onClick={onClose} className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center">
-                        <X className="w-5 h-5" />
+                    <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700">
+                        <X className="h-5 w-5" />
                     </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-5">
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1.5">Nom complet *</label>
+                        <label className="mb-1.5 block text-sm font-semibold text-slate-700">Nom complet *</label>
                         <input
                             type="text"
                             value={formData.full_name}
                             onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                            className="input-modern"
                             required
                         />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Email</label>
                             <input
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                className="input-modern"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Téléphone</label>
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Téléphone</label>
                             <PhoneInput value={formData.phone} onChange={(val) => setFormData({ ...formData, phone: val })} />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Entreprise</label>
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Entreprise</label>
                             <input
                                 type="text"
                                 value={formData.company}
                                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                className="input-modern"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Poste</label>
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Poste</label>
                             <input
                                 type="text"
                                 value={formData.job_title}
                                 onChange={(e) => setFormData({ ...formData, job_title: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                className="input-modern"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1.5">LinkedIn</label>
+                        <label className="mb-1.5 block text-sm font-semibold text-slate-700">LinkedIn</label>
                         <input
                             type="url"
                             value={formData.linkedin_url}
                             onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                            className="input-modern"
                             placeholder="https://linkedin.com/in/..."
                         />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Statut</label>
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Statut</label>
                             <select
                                 value={formData.status}
                                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                className="input-modern"
                             >
                                 <option value="lead">Lead</option>
                                 <option value="prospect">Prospect</option>
@@ -193,11 +193,11 @@ export function ContactFormModal({ onClose, onSuccess, eventId, mode = 'create',
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Source</label>
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Source</label>
                             <select
                                 value={formData.source}
                                 onChange={(e) => setFormData({ ...formData, source: e.target.value })}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                className="input-modern"
                             >
                                 <option value="manual">Manuel</option>
                                 <option value="event">Événement</option>
@@ -210,7 +210,7 @@ export function ContactFormModal({ onClose, onSuccess, eventId, mode = 'create',
                     </div>
 
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1.5">Note</label>
+                        <label className="mb-1.5 block text-sm font-semibold text-slate-700">Note</label>
                         <div className="flex items-center gap-1">
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <button
@@ -219,20 +219,20 @@ export function ContactFormModal({ onClose, onSuccess, eventId, mode = 'create',
                                     onClick={() => setFormData({ ...formData, rating: formData.rating === star ? 0 : star })}
                                     className="p-1"
                                 >
-                                    <Star className={`w-6 h-6 ${star <= formData.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} />
+                                    <Star className={`h-6 w-6 ${star <= formData.rating ? 'fill-amber-400 text-amber-400' : 'fill-slate-300 text-slate-300'}`} />
                                 </button>
                             ))}
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1.5">Tags</label>
+                        <label className="mb-1.5 block text-sm font-semibold text-slate-700">Tags</label>
                         <div className="flex flex-wrap gap-2 mb-2">
                             {formData.tags.map((tag) => (
-                                <span key={tag} className="flex items-center gap-1 px-3 py-1 bg-[#0E3A5D]/10 text-[#0E3A5D] rounded-full text-sm">
+                                <span key={tag} className="flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700">
                                     {tag}
                                     <button type="button" onClick={() => removeTag(tag)} className="hover:text-red-600">
-                                        <X className="w-3.5 h-3.5" />
+                                        <X className="h-3.5 w-3.5" />
                                     </button>
                                 </span>
                             ))}
@@ -243,22 +243,22 @@ export function ContactFormModal({ onClose, onSuccess, eventId, mode = 'create',
                                 value={tagInput}
                                 onChange={(e) => setTagInput(e.target.value)}
                                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTag(); } }}
-                                className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent text-sm"
+                                className="input-modern flex-1 text-sm"
                                 placeholder="Ajouter un tag..."
                             />
-                            <button type="button" onClick={addTag} className="p-2 bg-gray-100 rounded-xl hover:bg-gray-200">
-                                <Plus className="w-4 h-4" />
+                            <button type="button" onClick={addTag} className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200">
+                                <Plus className="h-4 w-4" />
                             </button>
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1.5">Notes</label>
+                        <label className="mb-1.5 block text-sm font-semibold text-slate-700">Notes</label>
                         <textarea
                             value={formData.notes}
                             onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                             rows={3}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent resize-none"
+                            className="input-modern resize-none"
                         />
                     </div>
 
@@ -267,19 +267,19 @@ export function ContactFormModal({ onClose, onSuccess, eventId, mode = 'create',
                             type="checkbox"
                             checked={formData.is_member}
                             onChange={(e) => setFormData({ ...formData, is_member: e.target.checked })}
-                            className="w-4 h-4 text-[#0E3A5D] rounded"
+                            className="h-4 w-4 rounded border-slate-300 text-slate-900"
                         />
-                        <span className="text-sm text-gray-700">Membre de mon entreprise</span>
+                        <span className="text-sm text-slate-700">Membre de mon entreprise</span>
                     </label>
 
-                    <div className="flex items-center gap-3 pt-4 border-t border-gray-200">
-                        <button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50">
+                    <div className="flex items-center gap-3 border-t border-slate-200 pt-4">
+                        <button type="button" onClick={onClose} className="btn-secondary flex-1">
                             Annuler
                         </button>
                         <button
                             type="submit"
                             disabled={loading || !formData.full_name.trim()}
-                            className="flex-1 px-6 py-3 bg-gradient-to-r from-[#0E3A5D] to-[#1E5A8E] text-white rounded-xl font-medium hover:shadow-lg disabled:opacity-50"
+                            className="btn-primary flex-1 disabled:opacity-50"
                         >
                             {loading ? 'Enregistrement...' : mode === 'edit' ? 'Modifier' : 'Créer le contact'}
                         </button>

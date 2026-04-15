@@ -9,24 +9,20 @@ interface HeroProps {
     imageAlt: string;
 }
 
-export function Hero({ label, children, imageUrl, imageAlt }: HeroProps) {
+export function Hero({ label, children }: HeroProps) {
     return (
-        <div className="relative h-[280px] lg:h-[320px] rounded-3xl overflow-hidden mb-8 shadow-2xl">
-            <img src={imageUrl} alt={imageAlt} className="w-full h-full object-cover brightness-75" />
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="absolute inset-0 flex flex-col justify-center items-start p-6 lg:p-12">
-                <div className="max-w-4xl">
-                    {label && (
-                        <div className="inline-block mb-3">
-                            <span className="px-3 py-1.5 bg-white/95 text-gray-900 text-[10px] lg:text-xs font-bold uppercase tracking-wider rounded-md">
-                                {label}
-                            </span>
-                        </div>
-                    )}
-                    <div className="space-y-2 lg:space-y-3">{children}</div>
-                </div>
+        <section className="mb-6 rounded-xl border border-slate-200 bg-white p-6 lg:p-8">
+            <div className="max-w-4xl space-y-3">
+                {label && (
+                    <div>
+                        <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600 lg:text-xs">
+                            {label}
+                        </span>
+                    </div>
+                )}
+                <div className="space-y-2">{children}</div>
             </div>
-        </div>
+        </section>
     );
 }
 
@@ -37,17 +33,17 @@ interface HeroTextProps {
 }
 
 export function HeroText({ children, highlight = false, highlightColor = 'blue' }: HeroTextProps) {
-    const colorClasses = {
-        blue: 'bg-blue-400/95',
-        purple: 'bg-purple-400/95',
-        green: 'bg-emerald-400/95',
-        orange: 'bg-orange-400/95',
+    const highlightClasses = {
+        blue: 'border-slate-300 bg-slate-100 text-slate-900',
+        purple: 'border-slate-300 bg-slate-100 text-slate-900',
+        green: 'border-slate-300 bg-slate-100 text-slate-900',
+        orange: 'border-slate-300 bg-slate-100 text-slate-900',
     };
 
     if (highlight) {
         return (
             <div className="inline-block">
-                <span className={`${colorClasses[highlightColor]} px-3 py-1.5 text-gray-900 text-2xl lg:text-3xl xl:text-4xl font-bold uppercase tracking-tight`}>
+                <span className={`${highlightClasses[highlightColor]} inline-flex rounded-lg border px-3 py-1.5 text-2xl font-semibold tracking-tight text-slate-900 lg:text-3xl xl:text-4xl`}>
                     {children}
                 </span>
             </div>
@@ -56,7 +52,7 @@ export function HeroText({ children, highlight = false, highlightColor = 'blue' 
 
     return (
         <div className="inline-block">
-            <span className="text-white text-2xl lg:text-3xl xl:text-4xl font-bold uppercase tracking-tight drop-shadow-2xl">
+            <span className="text-2xl font-semibold tracking-tight text-slate-900 lg:text-3xl xl:text-4xl">
                 {children}
             </span>
         </div>

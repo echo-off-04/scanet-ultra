@@ -37,28 +37,30 @@ export default function ForgotPasswordPage() {
 
     if (emailSent) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center p-4">
+            <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
                 <div className="w-full max-w-md">
-                    <div className="bg-white rounded-3xl shadow-xl p-8">
-                        <div className="flex justify-center mb-6">
-                            <img src="https://i.ibb.co/q3YDjGLC/Scanetwork.png" alt="Scanetwork" className="h-14 object-contain" />
-                        </div>
-                        <div className="text-center mb-8">
-                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Mail className="w-8 h-8 text-green-600" />
+                    <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+                        <div className="mb-6 flex justify-center">
+                            <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+                                Scanet
                             </div>
-                            <h1 className="text-3xl font-bold text-gray-800 mb-2">Email envoyé !</h1>
-                            <p className="text-gray-600">
+                        </div>
+                        <div className="mb-8 text-center">
+                            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                                <Mail className="h-8 w-8 text-green-600" />
+                            </div>
+                            <h1 className="mb-2 text-3xl font-semibold text-slate-900">Email envoyé !</h1>
+                            <p className="text-slate-600">
                                 Consultez votre boîte mail <span className="font-semibold">{email}</span> et cliquez sur le lien pour réinitialiser votre mot de passe.
                             </p>
                         </div>
-                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
-                            <p className="text-sm text-blue-800">
+                        <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                            <p className="text-sm text-slate-600">
                                 <strong>Note :</strong> Le lien de réinitialisation est valide pendant 1 heure. Si vous ne voyez pas l&apos;email, vérifiez votre dossier spam.
                             </p>
                         </div>
-                        <Link href="/auth" className="flex items-center justify-center gap-2 text-[#0E3A5D] hover:text-[#1e5a8e] font-medium transition-colors">
-                            <ArrowLeft className="w-4 h-4" />
+                        <Link href="/auth" className="flex items-center justify-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
+                            <ArrowLeft className="h-4 w-4" />
                             Retour à la connexion
                         </Link>
                     </div>
@@ -68,27 +70,29 @@ export default function ForgotPasswordPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center p-4">
+        <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
             <div className="w-full max-w-md">
-                <div className="bg-white rounded-3xl shadow-xl p-8">
-                    <div className="flex justify-center mb-6">
-                        <img src="https://i.ibb.co/q3YDjGLC/Scanetwork.png" alt="Scanetwork" className="h-14 object-contain" />
+                <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+                    <div className="mb-6 flex justify-center">
+                        <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+                            Scanet
+                        </div>
                     </div>
-                    <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">Mot de passe oublié ?</h1>
-                    <p className="text-center text-gray-500 mb-8">
+                    <h1 className="mb-2 text-center text-3xl font-semibold text-slate-900">Mot de passe oublié ?</h1>
+                    <p className="mb-8 text-center text-sm text-slate-500">
                         Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <label className="mb-2 block text-sm font-medium text-slate-700">Email</label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <Mail className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent transition-all"
+                                    className="input-modern pl-10 pr-4"
                                     placeholder="vous@exemple.com"
                                     required
                                 />
@@ -98,11 +102,11 @@ export default function ForgotPasswordPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white py-3 rounded-xl font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
+                            className="btn-primary w-full justify-center py-3 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             {loading ? (
                                 <>
-                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
                                     Envoi en cours...
                                 </>
                             ) : (
@@ -112,8 +116,8 @@ export default function ForgotPasswordPage() {
                     </form>
 
                     <div className="mt-6 text-center">
-                        <Link href="/auth" className="flex items-center justify-center gap-2 text-[#0E3A5D] hover:text-[#1e5a8e] font-medium transition-colors">
-                            <ArrowLeft className="w-4 h-4" />
+                        <Link href="/auth" className="flex items-center justify-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
+                            <ArrowLeft className="h-4 w-4" />
                             Retour à la connexion
                         </Link>
                     </div>

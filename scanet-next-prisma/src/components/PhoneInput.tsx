@@ -117,26 +117,26 @@ export function PhoneInput({
                     <button
                         type="button"
                         onClick={() => setIsOpen(!isOpen)}
-                        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-3 border-2 border-gray-200 rounded-xl hover:border-gray-300 transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent bg-white"
+                        className="flex items-center gap-1 rounded-xl border border-slate-300 bg-white px-2 py-3 transition-colors hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 sm:gap-2 sm:px-3"
                     >
                         <span className="text-lg sm:text-xl">{selectedCountry.flag}</span>
-                        <span className="text-gray-900 font-medium text-xs sm:text-sm">{selectedCountry.dialCode}</span>
-                        <ChevronDown className={`w-3 h-3 sm:w-4 sm:h-4 text-gray-600 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                        <span className="text-xs font-medium text-slate-900 sm:text-sm">{selectedCountry.dialCode}</span>
+                        <ChevronDown className={`h-3 w-3 text-slate-600 transition-transform sm:h-4 sm:w-4 ${isOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {isOpen && (
-                        <div className="fixed sm:absolute top-1/2 left-1/2 sm:top-full sm:left-0 -translate-x-1/2 -translate-y-1/2 sm:translate-x-0 sm:translate-y-0 sm:mt-2 w-[90vw] max-w-sm sm:w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
-                            <div className="p-3 border-b border-gray-200">
-                                <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Rechercher un pays..." className="w-full px-4 py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm" autoFocus />
+                        <div className="fixed left-1/2 top-1/2 z-50 w-[90vw] max-w-sm -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:absolute sm:left-0 sm:top-full sm:mt-2 sm:w-80 sm:translate-x-0 sm:translate-y-0">
+                            <div className="border-b border-slate-200 p-3">
+                                <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Rechercher un pays..." className="input-modern py-2 text-sm" autoFocus />
                             </div>
                             <div className="max-h-64 sm:max-h-64 overflow-y-auto custom-scrollbar">
                                 {filteredCountries.map((country) => (
-                                    <button key={country.code} type="button" onClick={() => handleCountrySelect(country)} className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-colors text-left ${selectedCountry.code === country.code ? 'bg-blue-100' : ''}`}>
+                                    <button key={country.code} type="button" onClick={() => handleCountrySelect(country)} className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-slate-50 ${selectedCountry.code === country.code ? 'bg-slate-100' : ''}`}>
                                         <span className="text-xl sm:text-2xl">{country.flag}</span>
-                                        <span className="flex-1 text-gray-900 font-medium text-sm sm:text-base">{country.name}</span>
-                                        <span className="text-gray-600 text-xs sm:text-sm">{country.dialCode}</span>
+                                        <span className="flex-1 text-sm font-medium text-slate-900 sm:text-base">{country.name}</span>
+                                        <span className="text-xs text-slate-600 sm:text-sm">{country.dialCode}</span>
                                     </button>
                                 ))}
-                                {filteredCountries.length === 0 && <div className="px-4 py-6 text-center text-gray-500">Aucun pays trouvé</div>}
+                                {filteredCountries.length === 0 && <div className="px-4 py-6 text-center text-slate-500">Aucun pays trouvé</div>}
                             </div>
                         </div>
                     )}
@@ -147,7 +147,7 @@ export function PhoneInput({
                     onChange={handlePhoneChange}
                     placeholder={placeholder || selectedCountry.format || `${selectedCountry.maxLength || 10} chiffres`}
                     maxLength={selectedCountry.maxLength ? (selectedCountry.format?.length || selectedCountry.maxLength + 5) : undefined}
-                    className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder-gray-400 text-gray-900 transition-all"
+                    className="flex-1 rounded-xl border border-slate-300 px-4 py-3 text-slate-900 placeholder-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-200"
                 />
             </div>
             <style>{`

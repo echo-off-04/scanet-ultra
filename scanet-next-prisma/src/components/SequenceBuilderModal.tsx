@@ -174,23 +174,23 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={onClose}>
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-                <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-3xl z-10">
-                    <h2 className="text-2xl font-bold text-gray-900">{editSequence ? 'Modifier la séquence' : 'Nouvelle séquence'}</h2>
-                    <button onClick={onClose} className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center"><X className="w-5 h-5" /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={onClose}>
+            <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm" onClick={e => e.stopPropagation()}>
+                <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-slate-200 bg-white px-6 py-4">
+                    <h2 className="text-2xl font-semibold text-slate-900">{editSequence ? 'Modifier la séquence' : 'Nouvelle séquence'}</h2>
+                    <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"><X className="h-5 w-5" /></button>
                 </div>
 
                 <div className="p-6 space-y-6">
                     {/* Metadata */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Nom de la séquence *</label>
-                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D]" placeholder="Ex: Suivi après événement" />
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Nom de la séquence *</label>
+                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="input-modern" placeholder="Ex: Suivi après événement" />
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Déclencheur</label>
-                            <select value={triggerStatus} onChange={(e) => setTriggerStatus(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D]">
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Déclencheur</label>
+                            <select value={triggerStatus} onChange={(e) => setTriggerStatus(e.target.value)} className="input-modern">
                                 <option value="lead">Nouveau lead</option>
                                 <option value="prospect">Nouveau prospect</option>
                                 <option value="client">Nouveau client</option>
@@ -203,14 +203,14 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                         </div>
                     </div>
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-1.5">Description</label>
-                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D]" placeholder="Courte description..." />
+                        <label className="mb-1.5 block text-sm font-semibold text-slate-700">Description</label>
+                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} className="input-modern" placeholder="Courte description..." />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Source du contact</label>
-                            <select value={sourceFilter} onChange={(e) => setSourceFilter(e.target.value)} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D]">
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Source du contact</label>
+                            <select value={sourceFilter} onChange={(e) => setSourceFilter(e.target.value)} className="input-modern">
                                 <option value="">Toutes les sources</option>
                                 <option value="event">Événement</option>
                                 <option value="referral">Recommandation</option>
@@ -219,8 +219,8 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Exclure ces statuts</label>
-                            <div className="flex flex-wrap gap-2 rounded-xl border border-gray-200 p-3">
+                            <label className="mb-1.5 block text-sm font-semibold text-slate-700">Exclure ces statuts</label>
+                            <div className="flex flex-wrap gap-2 rounded-xl border border-slate-200 p-3">
                                 {['lead', 'prospect', 'client', 'partner', 'collaborateur', 'ami', 'fournisseur']
                                     .filter((status) => status !== triggerStatus)
                                     .map((status) => (
@@ -229,9 +229,9 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                                             type="button"
                                             onClick={() => toggleExcludeStatus(status)}
                                             className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors ${excludeStatuses.includes(status)
-                                                ? 'bg-red-100 text-red-700'
-                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                            }`}
+                                                ? 'bg-slate-900 text-white'
+                                                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                                }`}
                                         >
                                             {status}
                                         </button>
@@ -241,11 +241,11 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                     </div>
 
                     {/* Template Variables */}
-                    <div className="bg-blue-50 rounded-xl p-4">
-                        <h4 className="text-sm font-semibold text-blue-900 mb-2">Variables disponibles</h4>
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <h4 className="mb-2 text-sm font-semibold text-slate-900">Variables disponibles</h4>
                         <div className="flex flex-wrap gap-2">
                             {TEMPLATE_VARS.map(v => (
-                                <span key={v.var} className="px-2 py-1 bg-white rounded-lg text-xs font-mono text-blue-700 border border-blue-200 cursor-pointer hover:bg-blue-100" title={v.label}>
+                                <span key={v.var} className="cursor-pointer rounded-lg border border-slate-200 bg-white px-2 py-1 font-mono text-xs text-slate-700 hover:bg-slate-100" title={v.label}>
                                     {v.var}
                                 </span>
                             ))}
@@ -255,65 +255,65 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                     {/* Steps */}
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-bold text-gray-900">Étapes ({steps.length})</h3>
-                            <button onClick={addStep} className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-[#0E3A5D] text-white rounded-lg hover:bg-[#1E5A8E]">
-                                <Plus className="w-4 h-4" />Ajouter une étape
+                            <h3 className="text-lg font-semibold text-slate-900">Étapes ({steps.length})</h3>
+                            <button onClick={addStep} className="btn-primary px-3 py-1.5 text-sm">
+                                <Plus className="h-4 w-4" />Ajouter une étape
                             </button>
                         </div>
 
                         <div className="space-y-3">
                             {steps.map((step, index) => (
-                                <div key={index} className={`border rounded-xl overflow-hidden ${activeStepIndex === index ? 'border-[#0E3A5D] shadow-md' : 'border-gray-200'}`}>
+                                <div key={index} className={`overflow-hidden rounded-xl border ${activeStepIndex === index ? 'border-slate-400 shadow-sm' : 'border-slate-200'}`}>
                                     <button onClick={() => setActiveStepIndex(activeStepIndex === index ? -1 : index)}
-                                        className="w-full flex items-center gap-3 px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors">
-                                        <GripVertical className="w-4 h-4 text-gray-400" />
-                                        <div className="w-8 h-8 rounded-full bg-[#0E3A5D] text-white flex items-center justify-center text-sm font-bold">{index + 1}</div>
+                                        className="flex w-full items-center gap-3 bg-slate-50 px-4 py-3 transition-colors hover:bg-slate-100">
+                                        <GripVertical className="h-4 w-4 text-slate-400" />
+                                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">{index + 1}</div>
                                         <div className="flex-1 text-left">
-                                            <p className="text-sm font-medium text-gray-900">{step.subject || `Étape ${index + 1}`}</p>
-                                            <p className="text-xs text-gray-500">
-                                                <Clock className="w-3 h-3 inline mr-1" />
+                                            <p className="text-sm font-medium text-slate-900">{step.subject || `Étape ${index + 1}`}</p>
+                                            <p className="text-xs text-slate-500">
+                                                <Clock className="mr-1 inline h-3 w-3" />
                                                 {getCumulativeDelay(index)} ({step.delay_days}j / {step.delay_hours}h après étape précédente)
                                             </p>
                                         </div>
-                                        <Mail className="w-4 h-4 text-gray-400" />
-                                        {activeStepIndex === index ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                        <Mail className="h-4 w-4 text-slate-400" />
+                                        {activeStepIndex === index ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                                     </button>
 
                                     {activeStepIndex === index && (
-                                        <div className="p-4 space-y-4 border-t border-gray-200">
+                                        <div className="space-y-4 border-t border-slate-200 p-4">
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Délai (jours)</label>
+                                                    <label className="mb-1 block text-sm font-medium text-slate-700">Délai (jours)</label>
                                                     <input type="number" min={0} value={step.delay_days} onChange={(e) => updateStep(index, { delay_days: Number(e.target.value) })}
-                                                        className="w-full px-4 py-2 border border-gray-300 rounded-xl" />
+                                                        className="input-modern py-2" />
                                                 </div>
                                                 <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Délai (heures)</label>
+                                                    <label className="mb-1 block text-sm font-medium text-slate-700">Délai (heures)</label>
                                                     <input type="number" min={0} value={step.delay_hours} onChange={(e) => updateStep(index, { delay_hours: Number(e.target.value) })}
-                                                        className="w-full px-4 py-2 border border-gray-300 rounded-xl" />
+                                                        className="input-modern py-2" />
                                                 </div>
                                                 <div>
-                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Offre jointe</label>
+                                                    <label className="mb-1 block text-sm font-medium text-slate-700">Offre jointe</label>
                                                     <select value={step.include_offer_id || ''} onChange={(e) => updateStep(index, { include_offer_id: e.target.value || null })}
-                                                        className="w-full px-4 py-2 border border-gray-300 rounded-xl">
+                                                        className="input-modern py-2">
                                                         <option value="">Aucune</option>
                                                         {offers.map(o => <option key={o.id} value={o.id}>{o.title}</option>)}
                                                     </select>
                                                 </div>
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Objet *</label>
+                                                <label className="mb-1 block text-sm font-medium text-slate-700">Objet *</label>
                                                 <input type="text" value={step.subject} onChange={(e) => updateStep(index, { subject: e.target.value })}
-                                                    className="w-full px-4 py-2 border border-gray-300 rounded-xl" placeholder="Objet de l'email" />
+                                                    className="input-modern py-2" placeholder="Objet de l'email" />
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">Contenu *</label>
+                                                <label className="mb-1 block text-sm font-medium text-slate-700">Contenu *</label>
                                                 <textarea value={step.body} onChange={(e) => updateStep(index, { body: e.target.value })}
-                                                    rows={5} className="w-full px-4 py-2 border border-gray-300 rounded-xl resize-none" placeholder="Contenu de l'email..." />
+                                                    rows={5} className="input-modern resize-none py-2" placeholder="Contenu de l'email..." />
                                             </div>
                                             {steps.length > 1 && (
                                                 <button onClick={() => removeStep(index)} className="flex items-center gap-1.5 text-sm text-red-600 hover:text-red-700">
-                                                    <Trash2 className="w-4 h-4" />Supprimer cette étape
+                                                    <Trash2 className="h-4 w-4" />Supprimer cette étape
                                                 </button>
                                             )}
                                         </div>
@@ -324,10 +324,10 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                     </div>
                 </div>
 
-                <div className="sticky bottom-0 bg-gray-50 px-6 py-4 flex gap-3 justify-end border-t rounded-b-3xl">
-                    <button onClick={onClose} className="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-100">Annuler</button>
+                <div className="sticky bottom-0 flex justify-end gap-3 rounded-b-2xl border-t border-slate-200 bg-slate-50 px-6 py-4">
+                    <button onClick={onClose} className="btn-secondary">Annuler</button>
                     <button onClick={handleSave} disabled={saving || !name.trim()}
-                        className="px-6 py-3 bg-gradient-to-r from-[#0E3A5D] to-[#1E5A8E] text-white rounded-xl font-medium hover:shadow-lg disabled:opacity-50">
+                        className="btn-primary disabled:opacity-50">
                         {saving ? 'Enregistrement...' : editSequence ? 'Modifier' : 'Créer la séquence'}
                     </button>
                 </div>
