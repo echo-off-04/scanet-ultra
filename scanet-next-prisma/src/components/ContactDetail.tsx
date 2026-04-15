@@ -5,6 +5,8 @@ import { X, Edit2, Trash2, Star, Mail, Phone, Building2, MapPin, Linkedin, Messa
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import type { Contact, Interaction } from '@/types';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface ContactDetailProps {
     contact: Contact;
@@ -140,15 +142,9 @@ export function ContactDetail({ contact, onClose, onUpdate }: ContactDetailProps
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <button onClick={() => setIsEditing(!isEditing)} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700">
-                            <Edit2 className="h-5 w-5" />
-                        </button>
-                        <button onClick={handleDelete} className="flex h-10 w-10 items-center justify-center rounded-full text-red-600 transition-colors hover:bg-red-50">
-                            <Trash2 className="h-5 w-5" />
-                        </button>
-                        <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700">
-                            <X className="h-5 w-5" />
-                        </button>
+                        <MaterialIconButton ariaLabel="Modifier" onClick={() => setIsEditing(!isEditing)} icon={<Edit2 className="h-5 w-5" />} />
+                        <MaterialIconButton ariaLabel="Supprimer" onClick={handleDelete} variant="outlined" icon={<Trash2 className="h-5 w-5 text-red-600" />} />
+                        <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-5 w-5" />} />
                     </div>
                 </div>
 
@@ -214,12 +210,12 @@ export function ContactDetail({ contact, onClose, onUpdate }: ContactDetailProps
                                 placeholder="Notes"
                             />
                             <div className="flex gap-3">
-                                <button onClick={() => setIsEditing(false)} className="btn-secondary flex-1">
+                                <MaterialButton onClick={() => setIsEditing(false)} variant="outlined" className="flex-1 justify-center">
                                     Annuler
-                                </button>
-                                <button onClick={handleSave} disabled={loading} className="btn-primary flex-1 disabled:opacity-50">
+                                </MaterialButton>
+                                <MaterialButton onClick={handleSave} disabled={loading} className="flex-1 justify-center">
                                     {loading ? 'Enregistrement...' : 'Enregistrer'}
-                                </button>
+                                </MaterialButton>
                             </div>
                         </div>
                     ) : (
@@ -273,13 +269,9 @@ export function ContactDetail({ contact, onClose, onUpdate }: ContactDetailProps
                     <div>
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-lg font-semibold text-slate-900">Interactions</h3>
-                            <button
-                                onClick={() => setShowAddInteraction(!showAddInteraction)}
-                                className="btn-primary gap-1.5 px-3 py-1.5 text-sm"
-                            >
-                                <Plus className="h-4 w-4" />
+                            <MaterialButton onClick={() => setShowAddInteraction(!showAddInteraction)} icon={<Plus className="h-4 w-4" />} className="text-sm">
                                 Ajouter
-                            </button>
+                            </MaterialButton>
                         </div>
 
                         {showAddInteraction && (
@@ -302,16 +294,12 @@ export function ContactDetail({ contact, onClose, onUpdate }: ContactDetailProps
                                     placeholder="Détails de l'interaction..."
                                 />
                                 <div className="flex gap-2">
-                                    <button onClick={() => setShowAddInteraction(false)} className="btn-secondary">
+                                    <MaterialButton onClick={() => setShowAddInteraction(false)} variant="outlined">
                                         Annuler
-                                    </button>
-                                    <button
-                                        onClick={handleAddInteraction}
-                                        disabled={!newInteraction.notes.trim()}
-                                        className="btn-primary disabled:opacity-50"
-                                    >
+                                    </MaterialButton>
+                                    <MaterialButton onClick={handleAddInteraction} disabled={!newInteraction.notes.trim()}>
                                         Enregistrer
-                                    </button>
+                                    </MaterialButton>
                                 </div>
                             </div>
                         )}

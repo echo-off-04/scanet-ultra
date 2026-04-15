@@ -107,7 +107,7 @@ export default function AuthPage() {
                 <div className={`rounded-2xl border border-slate-200 bg-white p-8 shadow-sm transition-all ${formShake ? 'animate-shake' : ''}`}>
                     <div className="mb-8 text-center">
                         <div className="mx-auto mb-4 inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                            Scanet
+                            Scanetwork
                         </div>
                         <h1 className="mb-2 text-3xl font-semibold text-slate-900">
                             {isSignUp ? 'Créer un compte' : 'Bienvenue'}

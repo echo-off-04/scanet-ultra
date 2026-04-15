@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { X, Upload, Calendar as CalendarIcon } from 'lucide-react';
 import { toast } from 'sonner';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 const CATEGORIES = [
     { value: 'conference', label: 'Conférence' },
@@ -150,7 +152,7 @@ export function AddEventModal({ onClose, onSuccess }: AddEventModalProps) {
                         <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Créer un événement</h2>
                         <p className="mt-1 text-xs text-slate-600 sm:text-sm">Remplissez les informations de votre événement</p>
                     </div>
-                    <button onClick={onClose} className="rounded-xl p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"><X className="h-5 w-5 sm:h-6 sm:w-6" /></button>
+                    <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-5 w-5 sm:h-6 sm:w-6" />} />
                 </div>
 
                 <form onSubmit={handleSubmit} className="overflow-y-auto flex-1">
@@ -228,7 +230,15 @@ export function AddEventModal({ onClose, onSuccess }: AddEventModalProps) {
                                     <label className="mb-3 block text-sm font-semibold text-slate-700">Objectifs secondaires</label>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                         {OBJECTIVES.map((obj) => (
-                                            <button key={obj.value} type="button" onClick={() => handleObjectiveToggle(obj.value)} className={`rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${formData.secondary_objectives.includes(obj.value) ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}>{obj.label}</button>
+                                            <MaterialButton
+                                                key={obj.value}
+                                                type="button"
+                                                onClick={() => handleObjectiveToggle(obj.value)}
+                                                variant={formData.secondary_objectives.includes(obj.value) ? 'filled' : 'text'}
+                                                className="justify-center text-sm"
+                                            >
+                                                {obj.label}
+                                            </MaterialButton>
                                         ))}
                                     </div>
                                 </div>
@@ -236,7 +246,15 @@ export function AddEventModal({ onClose, onSuccess }: AddEventModalProps) {
                                     <label className="mb-3 block text-sm font-semibold text-slate-700">Type de public visé</label>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                         {AUDIENCE_TYPES.map((aud) => (
-                                            <button key={aud.value} type="button" onClick={() => handleAudienceToggle(aud.value)} className={`rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${formData.target_audience.includes(aud.value) ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}>{aud.label}</button>
+                                            <MaterialButton
+                                                key={aud.value}
+                                                type="button"
+                                                onClick={() => handleAudienceToggle(aud.value)}
+                                                variant={formData.target_audience.includes(aud.value) ? 'filled' : 'text'}
+                                                className="justify-center text-sm"
+                                            >
+                                                {aud.label}
+                                            </MaterialButton>
                                         ))}
                                     </div>
                                 </div>
@@ -245,10 +263,10 @@ export function AddEventModal({ onClose, onSuccess }: AddEventModalProps) {
                     </div>
 
                     <div className="order-1 flex flex-col justify-end gap-2 border-t border-slate-200 bg-slate-50 p-4 sm:flex-row sm:gap-3 sm:p-6">
-                        <button type="button" onClick={onClose} disabled={loading} className="btn-secondary order-2 px-6 py-3 font-semibold text-slate-700 disabled:opacity-50 sm:order-1">Annuler</button>
-                        <button type="submit" disabled={loading} className="btn-primary order-1 flex items-center justify-center gap-2 px-6 py-3 font-semibold disabled:opacity-50 sm:order-2">
-                            {loading ? (<><div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>Création...</>) : (<><CalendarIcon className="h-5 w-5" />Créer l&apos;événement</>)}
-                        </button>
+                        <MaterialButton type="button" onClick={onClose} disabled={loading} variant="outlined" className="order-2 justify-center sm:order-1">Annuler</MaterialButton>
+                        <MaterialButton type="submit" disabled={loading} icon={loading ? <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div> : <CalendarIcon className="h-5 w-5" />} className="order-1 justify-center sm:order-2">
+                            {loading ? 'Création...' : 'Créer l’événement'}
+                        </MaterialButton>
                     </div>
                 </form>
             </div>

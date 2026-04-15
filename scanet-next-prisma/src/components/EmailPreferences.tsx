@@ -5,6 +5,7 @@ import { Mail, Bell, Clock, ToggleLeft, ToggleRight, History, Settings } from 'l
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { EmailLogs } from './EmailLogs';
+import { MaterialButton } from './material/MaterialButton';
 
 interface EmailPreferencesProps {
     onClose?: () => void;
@@ -73,7 +74,7 @@ export function EmailPreferences({ onClose }: EmailPreferencesProps) {
     };
 
     const Toggle = ({ enabled, onChange }: { enabled: boolean; onChange: () => void }) => (
-        <button onClick={onChange} className="flex-shrink-0">
+        <button type="button" onClick={onChange} className="flex-shrink-0">
             {enabled ? (
                 <ToggleRight className="h-10 w-10 text-slate-700" />
             ) : (
@@ -95,14 +96,12 @@ export function EmailPreferences({ onClose }: EmailPreferencesProps) {
     return (
         <div className="space-y-6">
             <div className="flex w-fit items-center gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1">
-                <button onClick={() => setActiveTab('preferences')}
-                    className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${activeTab === 'preferences' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>
-                    <Settings className="h-4 w-4" />Préférences
-                </button>
-                <button onClick={() => setActiveTab('history')}
-                    className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all ${activeTab === 'history' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>
-                    <History className="h-4 w-4" />Historique
-                </button>
+                <MaterialButton onClick={() => setActiveTab('preferences')} variant={activeTab === 'preferences' ? 'filled' : 'text'} icon={<Settings className="h-4 w-4" />} className="text-sm">
+                    Préférences
+                </MaterialButton>
+                <MaterialButton onClick={() => setActiveTab('history')} variant={activeTab === 'history' ? 'filled' : 'text'} icon={<History className="h-4 w-4" />} className="text-sm">
+                    Historique
+                </MaterialButton>
             </div>
 
             {activeTab === 'history' ? (
@@ -132,10 +131,14 @@ export function EmailPreferences({ onClose }: EmailPreferencesProps) {
                         </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                             {(['never', 'daily', 'weekly', 'monthly'] as const).map(freq => (
-                                <button key={freq} onClick={() => savePreferences({ digest_frequency: freq })}
-                                    className={`rounded-xl px-4 py-3 text-sm font-medium transition-colors ${preferences.digest_frequency === freq ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}>
+                                <MaterialButton
+                                    key={freq}
+                                    onClick={() => savePreferences({ digest_frequency: freq })}
+                                    variant={preferences.digest_frequency === freq ? 'filled' : 'text'}
+                                    className="justify-center text-sm"
+                                >
                                     {freq === 'never' ? 'Jamais' : freq === 'daily' ? 'Quotidien' : freq === 'weekly' ? 'Hebdomadaire' : 'Mensuel'}
-                                </button>
+                                </MaterialButton>
                             ))}
                         </div>
                     </div>

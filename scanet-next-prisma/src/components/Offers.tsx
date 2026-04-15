@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface Offer {
     id: string;
@@ -312,15 +314,13 @@ export function Offers(_props: OffersProps) {
                         {activeTab === 'offers' ? `${stats.totalOffers} offre${stats.totalOffers !== 1 ? 's' : ''}` : `${stats.totalPacks} pack${stats.totalPacks !== 1 ? 's' : ''}`}
                     </p>
                 </div>
-                <div className="flex gap-3">
-                    <button onClick={() => { resetOfferForm(); setEditingOffer(null); setShowOfferModal(true); }}
-                        className="flex items-center gap-3 rounded-full bg-slate-900 px-8 py-4 font-semibold text-white transition-colors hover:bg-slate-800">
-                        <Plus className="w-5 h-5" />Nouvelle offre
-                    </button>
-                    <button onClick={() => { resetPackForm(); setEditingPack(null); setShowPackModal(true); }}
-                        className="px-8 py-4 border-2 border-gray-900 rounded-full font-semibold text-gray-900 hover:bg-gray-900 hover:text-white transition-all flex items-center gap-3">
-                        <FolderPlus className="w-5 h-5" />Nouveau pack
-                    </button>
+                <div className="flex flex-wrap gap-3">
+                    <MaterialButton onClick={() => { resetOfferForm(); setEditingOffer(null); setShowOfferModal(true); }} icon={<Plus className="w-5 h-5" />}>
+                        Nouvelle offre
+                    </MaterialButton>
+                    <MaterialButton variant="outlined" onClick={() => { resetPackForm(); setEditingPack(null); setShowPackModal(true); }} icon={<FolderPlus className="w-5 h-5" />}>
+                        Nouveau pack
+                    </MaterialButton>
                 </div>
             </div>
 
@@ -390,10 +390,9 @@ export function Offers(_props: OffersProps) {
                             {searchQuery ? 'Modifiez vos filtres.' : 'Créez votre première offre pour la proposer à vos clients.'}
                         </p>
                         {!searchQuery && (
-                            <button onClick={() => setShowOfferModal(true)}
-                                className="inline-flex items-center gap-3 rounded-full bg-slate-900 px-8 py-4 font-semibold text-white transition-colors hover:bg-slate-800">
-                                <Plus className="w-5 h-5" />Créer votre première offre
-                            </button>
+                            <MaterialButton onClick={() => setShowOfferModal(true)} icon={<Plus className="w-5 h-5" />}>
+                                Créer votre première offre
+                            </MaterialButton>
                         )}
                     </div>
                 ) : (
@@ -401,10 +400,11 @@ export function Offers(_props: OffersProps) {
                         {filteredOffers.map(offer => (
                             <div key={offer.id} className="relative">
                                 <div className="absolute top-4 right-4 z-10">
-                                    <button onClick={e => { e.stopPropagation(); setActionMenuId(actionMenuId === offer.id ? null : offer.id); }}
-                                        className="rounded-xl border border-gray-200 bg-white p-2 hover:bg-gray-50">
-                                        <MoreVertical className="w-5 h-5 text-gray-600" />
-                                    </button>
+                                    <MaterialIconButton
+                                        ariaLabel="Ouvrir les actions de l'offre"
+                                        onClick={e => { e.stopPropagation(); setActionMenuId(actionMenuId === offer.id ? null : offer.id); }}
+                                        icon={<MoreVertical className="w-5 h-5 text-gray-600" />}
+                                    />
                                     {actionMenuId === offer.id && (
                                         <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-2xl border border-gray-200 bg-white py-2 shadow-lg">
                                             <button onClick={() => openEditOffer(offer)} className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
@@ -468,16 +468,22 @@ export function Offers(_props: OffersProps) {
                         </div>
                         <h3 className="text-2xl font-bold text-gray-900 mb-3">{searchQuery ? 'Aucun pack trouvé' : 'Aucun pack'}</h3>
                         <p className="text-gray-500 mb-8 max-w-md mx-auto text-lg">Créez des packs pour regrouper plusieurs offres.</p>
+                        {!searchQuery && (
+                            <MaterialButton variant="outlined" onClick={() => { resetPackForm(); setEditingPack(null); setShowPackModal(true); }} icon={<FolderPlus className="w-5 h-5" />}>
+                                Créer votre premier pack
+                            </MaterialButton>
+                        )}
                     </div>
                 ) : (
                     <div className="space-y-6">
                         {filteredPacks.map(pack => (
                             <div key={pack.id} className="relative">
                                 <div className="absolute top-4 right-4 z-10">
-                                    <button onClick={e => { e.stopPropagation(); setActionMenuId(actionMenuId === `pack-${pack.id}` ? null : `pack-${pack.id}`); }}
-                                        className="rounded-xl border border-gray-200 bg-white p-2 hover:bg-gray-50">
-                                        <MoreVertical className="w-5 h-5 text-gray-600" />
-                                    </button>
+                                    <MaterialIconButton
+                                        ariaLabel="Ouvrir les actions du pack"
+                                        onClick={e => { e.stopPropagation(); setActionMenuId(actionMenuId === `pack-${pack.id}` ? null : `pack-${pack.id}`); }}
+                                        icon={<MoreVertical className="w-5 h-5 text-gray-600" />}
+                                    />
                                     {actionMenuId === `pack-${pack.id}` && (
                                         <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-2xl border border-gray-200 bg-white py-2 shadow-lg">
                                             <button onClick={() => openEditPack(pack)} className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
@@ -617,12 +623,12 @@ export function Offers(_props: OffersProps) {
                                 <span className="text-sm text-gray-700">Active</span>
                             </div>
                             <div className="flex gap-3 pt-4 border-t">
-                                <button onClick={() => { setShowOfferModal(false); setEditingOffer(null); }}
-                                    className="flex-1 px-4 py-3 border rounded-xl text-gray-700 hover:bg-gray-50">Annuler</button>
-                                <button onClick={handleSaveOffer}
-                                    className="flex-1 rounded-xl bg-slate-900 px-4 py-3 font-medium text-white transition-colors hover:bg-slate-800">
+                                <MaterialButton variant="outlined" onClick={() => { setShowOfferModal(false); setEditingOffer(null); }} className="flex-1 justify-center">
+                                    Annuler
+                                </MaterialButton>
+                                <MaterialButton onClick={handleSaveOffer} className="flex-1 justify-center">
                                     {editingOffer ? 'Modifier' : 'Créer'}
-                                </button>
+                                </MaterialButton>
                             </div>
                         </div>
                     </div>
@@ -691,12 +697,12 @@ export function Offers(_props: OffersProps) {
                                 <span className="text-sm text-gray-700">Actif</span>
                             </div>
                             <div className="flex gap-3 pt-4 border-t">
-                                <button onClick={() => { setShowPackModal(false); setEditingPack(null); }}
-                                    className="flex-1 px-4 py-3 border rounded-xl text-gray-700 hover:bg-gray-50">Annuler</button>
-                                <button onClick={handleSavePack}
-                                    className="flex-1 rounded-xl bg-slate-900 px-4 py-3 font-medium text-white transition-colors hover:bg-slate-800">
+                                <MaterialButton variant="outlined" onClick={() => { setShowPackModal(false); setEditingPack(null); }} className="flex-1 justify-center">
+                                    Annuler
+                                </MaterialButton>
+                                <MaterialButton onClick={handleSavePack} className="flex-1 justify-center">
                                     {editingPack ? 'Modifier' : 'Créer'}
-                                </button>
+                                </MaterialButton>
                             </div>
                         </div>
                     </div>
@@ -741,13 +747,12 @@ export function Offers(_props: OffersProps) {
                                     placeholder="Ajoutez un message personnalisé..." />
                             </div>
                             <div className="flex gap-3 pt-4 border-t">
-                                <button onClick={() => { setShowSendModal(false); setSendingOffer(null); }}
-                                    className="flex-1 px-4 py-3 border rounded-xl text-gray-700 hover:bg-gray-50">Annuler</button>
-                                <button onClick={handleSendOffer} disabled={selectedRecipients.length === 0 || isSending}
-                                    className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 font-medium text-white transition-colors hover:bg-slate-800 disabled:opacity-50">
-                                    {isSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                                <MaterialButton variant="outlined" onClick={() => { setShowSendModal(false); setSendingOffer(null); }} className="flex-1 justify-center">
+                                    Annuler
+                                </MaterialButton>
+                                <MaterialButton onClick={handleSendOffer} disabled={selectedRecipients.length === 0 || isSending} icon={isSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />} className="flex-1 justify-center">
                                     {isSending ? 'Envoi...' : `Envoyer (${selectedRecipients.length})`}
-                                </button>
+                                </MaterialButton>
                             </div>
                         </div>
                     </div>

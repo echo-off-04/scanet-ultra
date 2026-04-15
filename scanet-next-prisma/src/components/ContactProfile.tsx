@@ -12,6 +12,8 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import { useKpis } from '@/contexts/KpiContext';
 import { PhoneInput } from './PhoneInput';
 import { COUNTRIES } from '@/lib/countries';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface ContactProfileProps {
     contactId: string;
@@ -510,27 +512,17 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
 
                 <div className="absolute top-0 left-0 right-0 z-20">
                     <div className="flex items-center justify-between p-4 sm:p-6">
-                        <button onClick={onBack} className="rounded-2xl border border-slate-200 bg-white p-2.5 hover:bg-slate-50">
-                            <ArrowLeft className="w-5 h-5 text-slate-700" />
-                        </button>
+                        <MaterialIconButton ariaLabel="Retour" onClick={onBack} icon={<ArrowLeft className="w-5 h-5 text-slate-700" />} />
                         <div className="flex gap-2">
                             {isEditing ? (
                                 <>
-                                    <button onClick={handleCancelEdit} className="rounded-2xl border border-slate-200 bg-white p-2.5 hover:bg-slate-50">
-                                        <X className="w-5 h-5 text-slate-700" />
-                                    </button>
-                                    <button onClick={handleSaveEdit} className="rounded-2xl bg-slate-900 p-2.5 text-white hover:bg-slate-800">
-                                        <Save className="w-5 h-5" />
-                                    </button>
+                                    <MaterialIconButton ariaLabel="Annuler les modifications" onClick={handleCancelEdit} icon={<X className="w-5 h-5 text-slate-700" />} />
+                                    <MaterialIconButton ariaLabel="Enregistrer le contact" onClick={handleSaveEdit} variant="filled" icon={<Save className="w-5 h-5" />} />
                                 </>
                             ) : (
                                 <>
-                                    <button onClick={() => setIsEditing(true)} className="rounded-2xl border border-slate-200 bg-white p-2.5 hover:bg-slate-50">
-                                        <Edit className="w-5 h-5 text-slate-700" />
-                                    </button>
-                                    <button onClick={() => setShowDeleteModal(true)} className="rounded-2xl border border-red-200 bg-white p-2.5 hover:bg-red-50">
-                                        <Trash2 className="w-5 h-5 text-red-600" />
-                                    </button>
+                                    <MaterialIconButton ariaLabel="Modifier le contact" onClick={() => setIsEditing(true)} icon={<Edit className="w-5 h-5 text-slate-700" />} />
+                                    <MaterialIconButton ariaLabel="Supprimer le contact" onClick={() => setShowDeleteModal(true)} variant="outlined" icon={<Trash2 className="w-5 h-5 text-red-600" />} />
                                 </>
                             )}
                         </div>
@@ -622,30 +614,28 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                         <div className="flex justify-center gap-3 flex-wrap">
                             {displayContact.phone && (
                                 <>
-                                    <button onClick={handleCall} className="flex items-center gap-2 rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800">
-                                        <Phone className="w-4 h-4" /><span className="hidden sm:inline">Appeler</span>
-                                    </button>
-                                    <button onClick={handleWhatsApp} className="flex items-center gap-2 px-5 py-3 bg-emerald-600 text-white rounded-2xl hover:bg-emerald-700 shadow-lg font-semibold text-sm">
-                                        <MessageCircle className="w-4 h-4" /><span className="hidden sm:inline">WhatsApp</span>
-                                    </button>
+                                    <MaterialButton onClick={handleCall} icon={<Phone className="w-4 h-4" />}>
+                                        Appeler
+                                    </MaterialButton>
+                                    <MaterialButton onClick={handleWhatsApp} variant="tonal" icon={<MessageCircle className="w-4 h-4" />}>
+                                        WhatsApp
+                                    </MaterialButton>
                                 </>
                             )}
                             {displayContact.email && (
-                                <button onClick={handleEmail} className="flex items-center gap-2 px-5 py-3 bg-white text-gray-700 rounded-2xl hover:bg-gray-50 shadow-sm border font-semibold text-sm">
-                                    <Mail className="w-4 h-4" /><span className="hidden sm:inline">Email</span>
-                                </button>
+                                <MaterialButton onClick={handleEmail} variant="outlined" icon={<Mail className="w-4 h-4" />}>
+                                    Email
+                                </MaterialButton>
                             )}
-                            <button onClick={handleShare} className="flex items-center gap-2 px-5 py-3 bg-white text-gray-700 rounded-2xl hover:bg-gray-50 shadow-sm border font-semibold text-sm">
-                                <Share2 className="w-4 h-4" /><span className="hidden sm:inline">Partager</span>
-                            </button>
-                            <button onClick={handleToggleFavorite}
-                                className={`flex items-center gap-2 px-5 py-3 rounded-2xl shadow-sm font-semibold text-sm ${displayContact.is_favorite ? 'bg-amber-500 text-white' : 'bg-white text-gray-700 border hover:bg-gray-50'}`}>
-                                <Star className="w-4 h-4" />
-                            </button>
-                            <button onClick={handleToggleMember}
-                                className={`flex items-center gap-2 px-5 py-3 rounded-2xl shadow-sm font-semibold text-sm ${displayContact.is_member ? 'bg-emerald-600 text-white' : 'bg-white text-gray-700 border hover:bg-gray-50'}`}>
-                                <Users className="w-4 h-4" />
-                            </button>
+                            <MaterialButton onClick={handleShare} variant="outlined" icon={<Share2 className="w-4 h-4" />}>
+                                Partager
+                            </MaterialButton>
+                            <MaterialButton onClick={handleToggleFavorite} variant={displayContact.is_favorite ? 'filled' : 'outlined'} icon={<Star className="w-4 h-4" />}>
+                                Favori
+                            </MaterialButton>
+                            <MaterialButton onClick={handleToggleMember} variant={displayContact.is_member ? 'tonal' : 'outlined'} icon={<Users className="w-4 h-4" />}>
+                                Membre
+                            </MaterialButton>
                         </div>
                     </div>
                 )}
@@ -883,9 +873,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                                 <div className="rounded-xl bg-slate-100 p-2"><StickyNote className="w-4 h-4 text-slate-700" /></div>Notes ({notes.length})
                             </h2>
-                            <button onClick={() => setShowNoteInput(!showNoteInput)} className="text-sm font-semibold text-slate-700 hover:text-slate-900">
-                                <Plus className="w-5 h-5" />
-                            </button>
+                            <MaterialIconButton ariaLabel="Ajouter une note" onClick={() => setShowNoteInput(!showNoteInput)} icon={<Plus className="w-5 h-5" />} />
                         </div>
 
                         {showNoteInput && (
@@ -893,10 +881,12 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                 <textarea value={newNote} onChange={e => setNewNote(e.target.value)} rows={3} placeholder="Ajouter une note..."
                                     className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                 <div className="flex justify-end gap-2 mt-2">
-                                    <button onClick={() => { setShowNoteInput(false); setNewNote(''); }}
-                                        className="px-4 py-2 text-gray-600 rounded-xl hover:bg-gray-100 text-sm">Annuler</button>
-                                    <button onClick={handleAddNote} disabled={!newNote.trim()}
-                                        className="rounded-xl bg-slate-900 px-4 py-2 text-sm text-white disabled:opacity-50">Ajouter</button>
+                                    <MaterialButton onClick={() => { setShowNoteInput(false); setNewNote(''); }} variant="outlined">
+                                        Annuler
+                                    </MaterialButton>
+                                    <MaterialButton onClick={handleAddNote} disabled={!newNote.trim()}>
+                                        Ajouter
+                                    </MaterialButton>
                                 </div>
                             </div>
                         )}
@@ -911,8 +901,12 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                             <textarea value={editingNoteContent} onChange={e => setEditingNoteContent(e.target.value)} rows={3}
                                                 className="w-full px-3 py-2 bg-white border rounded-xl text-sm" />
                                             <div className="flex justify-end gap-2 mt-2">
-                                                <button onClick={() => setEditingNoteId(null)} className="px-3 py-1.5 text-gray-600 rounded-lg text-sm">Annuler</button>
-                                                <button onClick={() => handleEditNote(note.id)} className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm text-white">Sauver</button>
+                                                <MaterialButton onClick={() => setEditingNoteId(null)} variant="outlined" className="text-sm">
+                                                    Annuler
+                                                </MaterialButton>
+                                                <MaterialButton onClick={() => handleEditNote(note.id)} className="text-sm">
+                                                    Sauver
+                                                </MaterialButton>
                                             </div>
                                         </div>
                                     ) : (
@@ -947,19 +941,22 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                                 <div className="rounded-xl bg-slate-100 p-2"><History className="w-4 h-4 text-slate-700" /></div>Activités ({activities.length})
                             </h2>
-                            <button onClick={() => setShowActivityForm(!showActivityForm)} className="text-sm font-semibold text-slate-700 hover:text-slate-900">
-                                <Plus className="w-5 h-5" />
-                            </button>
+                            <MaterialIconButton ariaLabel="Ajouter une activité" onClick={() => setShowActivityForm(!showActivityForm)} icon={<Plus className="w-5 h-5" />} />
                         </div>
 
                         {showActivityForm && (
                             <div className="mb-4 p-4 bg-gray-50 rounded-2xl space-y-3">
                                 <div className="flex gap-2 flex-wrap">
                                     {ACTIVITY_TYPES.map(type => (
-                                        <button key={type.value} onClick={() => setActivityType(type.value)}
-                                            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm ${activityType === type.value ? 'bg-slate-900 text-white' : 'border bg-white text-gray-600'}`}>
-                                            <type.icon className="w-3.5 h-3.5" />{type.label}
-                                        </button>
+                                        <MaterialButton
+                                            key={type.value}
+                                            onClick={() => setActivityType(type.value)}
+                                            variant={activityType === type.value ? 'filled' : 'outlined'}
+                                            icon={<type.icon className="w-3.5 h-3.5" />}
+                                            className="text-sm"
+                                        >
+                                            {type.label}
+                                        </MaterialButton>
                                     ))}
                                 </div>
                                 <input type="text" value={activityDescription} onChange={e => setActivityDescription(e.target.value)}
@@ -967,9 +964,12 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                 <input type="datetime-local" value={activityDate} onChange={e => setActivityDate(e.target.value)}
                                     className="w-full px-4 py-2.5 bg-white border rounded-xl text-sm" />
                                 <div className="flex justify-end gap-2">
-                                    <button onClick={() => setShowActivityForm(false)} className="px-4 py-2 text-gray-600 rounded-xl text-sm">Annuler</button>
-                                    <button onClick={handleAddActivity} disabled={!activityDescription.trim()}
-                                        className="rounded-xl bg-slate-900 px-4 py-2 text-sm text-white disabled:opacity-50">Ajouter</button>
+                                    <MaterialButton onClick={() => setShowActivityForm(false)} variant="outlined" className="text-sm">
+                                        Annuler
+                                    </MaterialButton>
+                                    <MaterialButton onClick={handleAddActivity} disabled={!activityDescription.trim()} className="text-sm">
+                                        Ajouter
+                                    </MaterialButton>
                                 </div>
                             </div>
                         )}
@@ -999,9 +999,7 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                                 <div className="rounded-xl bg-slate-100 p-2"><TrendingUp className="w-4 h-4 text-slate-700" /></div>Opportunités ({opportunities.length})
                             </h2>
-                            <button onClick={() => setShowOpportunityForm(!showOpportunityForm)} className="text-sm font-semibold text-slate-700 hover:text-slate-900">
-                                <Plus className="w-5 h-5" />
-                            </button>
+                            <MaterialIconButton ariaLabel="Ajouter une opportunité" onClick={() => setShowOpportunityForm(!showOpportunityForm)} icon={<Plus className="w-5 h-5" />} />
                         </div>
 
                         {showOpportunityForm && (
@@ -1025,9 +1023,12 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                                 <textarea value={oppDescription} onChange={e => setOppDescription(e.target.value)} placeholder="Description"
                                     className="w-full px-4 py-2.5 bg-white border rounded-xl text-sm resize-none" rows={2} />
                                 <div className="flex justify-end gap-2">
-                                    <button onClick={() => setShowOpportunityForm(false)} className="px-4 py-2 text-gray-600 rounded-xl text-sm">Annuler</button>
-                                    <button onClick={handleAddOpportunity} disabled={!oppTitle.trim()}
-                                        className="rounded-xl bg-slate-900 px-4 py-2 text-sm text-white disabled:opacity-50">Ajouter</button>
+                                    <MaterialButton onClick={() => setShowOpportunityForm(false)} variant="outlined" className="text-sm">
+                                        Annuler
+                                    </MaterialButton>
+                                    <MaterialButton onClick={handleAddOpportunity} disabled={!oppTitle.trim()} className="text-sm">
+                                        Ajouter
+                                    </MaterialButton>
                                 </div>
                             </div>
                         )}
@@ -1095,11 +1096,12 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                         <h3 className="text-lg font-bold text-gray-900 mb-2">Supprimer ce contact ?</h3>
                         <p className="text-gray-600 mb-6">Cette action est irréversible. Toutes les données associées seront supprimées.</p>
                         <div className="flex gap-3">
-                            <button onClick={() => setShowDeleteModal(false)} className="flex-1 px-4 py-3 border rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button>
-                            <button onClick={handleDeleteContact} disabled={deleting}
-                                className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 disabled:opacity-50">
+                            <MaterialButton onClick={() => setShowDeleteModal(false)} variant="outlined" className="flex-1 justify-center">
+                                Annuler
+                            </MaterialButton>
+                            <MaterialButton onClick={handleDeleteContact} disabled={deleting} className="flex-1 justify-center">
                                 {deleting ? 'Suppression...' : 'Supprimer'}
-                            </button>
+                            </MaterialButton>
                         </div>
                     </div>
                 </div>
@@ -1112,9 +1114,12 @@ export function ContactProfile({ contactId, onBack, onNavigateToEnterprise }: Co
                         <h3 className="text-lg font-bold text-gray-900 mb-2">Entreprise requise</h3>
                         <p className="text-gray-600 mb-6">Vous devez d&apos;abord créer une entreprise pour ajouter des membres.</p>
                         <div className="flex gap-3">
-                            <button onClick={() => setShowEnterpriseWarning(false)} className="flex-1 px-4 py-3 border rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button>
-                            <button onClick={() => { setShowEnterpriseWarning(false); onNavigateToEnterprise?.(); }}
-                                className="flex-1 rounded-xl bg-slate-900 px-4 py-3 font-medium text-white hover:bg-slate-800">Créer une entreprise</button>
+                            <MaterialButton onClick={() => setShowEnterpriseWarning(false)} variant="outlined" className="flex-1 justify-center">
+                                Annuler
+                            </MaterialButton>
+                            <MaterialButton onClick={() => { setShowEnterpriseWarning(false); onNavigateToEnterprise?.(); }} className="flex-1 justify-center">
+                                Créer une entreprise
+                            </MaterialButton>
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Home, Users, Calendar, Target, Package, Building2, Settings, Bell, LogOut, User, Plus, X, CheckSquare, MoreHorizontal } from 'lucide-react';
 import { useNotifications } from '@/contexts/NotificationContext';
+import { MaterialIconButton } from './material/MaterialIconButton';
 import type { ViewType } from '@/types';
 
 interface NavbarProps {
@@ -44,9 +45,13 @@ export function Navbar({ view, onViewChange, onSignOut, onAddContact, userName =
         <>
             <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200 bg-white lg:hidden">
                 <div className="safe-area-bottom relative flex items-end justify-between px-4 pb-3 pt-2">
-                    <button onClick={onAddContact} className="absolute left-1/2 top-0 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border-4 border-slate-50 bg-slate-900 text-white transition-colors hover:bg-slate-700 active:bg-slate-800" aria-label="Ajouter un contact">
-                        <Plus className="h-6 w-6" />
-                    </button>
+                    <MaterialIconButton
+                        ariaLabel="Ajouter un contact"
+                        onClick={onAddContact}
+                        variant="filled"
+                        icon={<Plus className="h-6 w-6" />}
+                        className="absolute left-1/2 top-0 z-10 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-xl border-4 border-slate-50"
+                    />
                     {mainNavItems.map((item, index) => {
                         const Icon = item.icon;
                         const isActive = view === item.id;

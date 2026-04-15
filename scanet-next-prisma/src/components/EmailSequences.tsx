@@ -5,6 +5,8 @@ import { Workflow, Plus, Play, Pause, Trash2, ChevronDown, ChevronUp, MoreVertic
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import type { EmailSequence } from '@/types';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface EmailSequencesProps {
     onCreateNew: () => void;
@@ -124,9 +126,9 @@ export default function EmailSequences({ onCreateNew, onEdit }: EmailSequencesPr
                 <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-900">
                     <Workflow className="h-5 w-5 text-slate-700" />Séquences ({sequences.length})
                 </h3>
-                <button onClick={onCreateNew} className="btn-primary gap-2 rounded-full px-4 py-2 text-sm">
-                    <Plus className="h-4 w-4" />Nouvelle séquence
-                </button>
+                <MaterialButton onClick={onCreateNew} icon={<Plus className="h-4 w-4" />} className="text-sm">
+                    Nouvelle séquence
+                </MaterialButton>
             </div>
 
             {sequences.length === 0 ? (
@@ -134,9 +136,9 @@ export default function EmailSequences({ onCreateNew, onEdit }: EmailSequencesPr
                     <Workflow className="mx-auto mb-4 h-12 w-12 text-slate-300" />
                     <h3 className="mb-2 text-xl font-semibold text-slate-900">Aucune séquence</h3>
                     <p className="mb-6 text-slate-500">Créez des séquences d'emails automatiques.</p>
-                    <button onClick={onCreateNew} className="btn-primary inline-flex gap-2 rounded-full px-6 py-3">
-                        <Plus className="h-5 w-5" />Créer une séquence
-                    </button>
+                    <MaterialButton onClick={onCreateNew} icon={<Plus className="h-5 w-5" />}>
+                        Créer une séquence
+                    </MaterialButton>
                 </div>
             ) : (
                 <div className="space-y-3">
@@ -153,11 +155,9 @@ export default function EmailSequences({ onCreateNew, onEdit }: EmailSequencesPr
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <button onClick={() => toggleActive(seq)} className={`rounded-lg p-2 transition-colors ${seq.status === 'active' ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}>
-                                        {seq.status === 'active' ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                                    </button>
-                                    <button onClick={() => onEdit(seq)} className="rounded-lg bg-slate-100 p-2 text-slate-700 transition-colors hover:bg-slate-200"><MoreVertical className="h-4 w-4" /></button>
-                                    <button onClick={() => handleDelete(seq.id)} className="rounded-lg bg-red-50 p-2 text-red-600 transition-colors hover:bg-red-100"><Trash2 className="h-4 w-4" /></button>
+                                    <MaterialIconButton ariaLabel={seq.status === 'active' ? 'Mettre en pause' : 'Activer'} onClick={() => toggleActive(seq)} icon={seq.status === 'active' ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />} />
+                                    <MaterialIconButton ariaLabel="Modifier la séquence" onClick={() => onEdit(seq)} icon={<MoreVertical className="h-4 w-4" />} />
+                                    <MaterialIconButton ariaLabel="Supprimer la séquence" onClick={() => handleDelete(seq.id)} variant="outlined" icon={<Trash2 className="h-4 w-4 text-red-600" />} />
                                 </div>
                             </div>
 

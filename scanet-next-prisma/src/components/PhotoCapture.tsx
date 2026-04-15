@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { Camera, Upload, X, User } from 'lucide-react';
+import { MaterialButton } from './material/MaterialButton';
 
 interface PhotoCaptureProps {
     onPhotoChange: (file: File | null) => void;
@@ -101,14 +102,8 @@ export function PhotoCapture({ onPhotoChange, currentPhoto }: PhotoCaptureProps)
             </div>
 
             <div className="flex items-center gap-2">
-                <button type="button" onClick={startCamera} className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 text-sm transition-colors hover:bg-slate-200">
-                    <Camera className="h-4 w-4" />
-                    <span>Caméra</span>
-                </button>
-                <button type="button" onClick={() => fileInputRef.current?.click()} className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-100 px-3 py-1.5 text-sm transition-colors hover:bg-slate-200">
-                    <Upload className="h-4 w-4" />
-                    <span>Fichier</span>
-                </button>
+                <MaterialButton type="button" onClick={startCamera} variant="outlined" icon={<Camera className="h-4 w-4" />} className="text-sm">Caméra</MaterialButton>
+                <MaterialButton type="button" onClick={() => fileInputRef.current?.click()} variant="outlined" icon={<Upload className="h-4 w-4" />} className="text-sm">Fichier</MaterialButton>
                 <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
             </div>
 
@@ -120,12 +115,8 @@ export function PhotoCapture({ onPhotoChange, currentPhoto }: PhotoCaptureProps)
                         <video ref={videoRef} autoPlay playsInline className="w-full rounded-xl" />
                         <canvas ref={canvasRef} className="hidden" />
                         <div className="flex items-center justify-center gap-4 mt-4">
-                            <button onClick={stopCamera} className="btn-secondary px-4 py-2 text-slate-700">
-                                Annuler
-                            </button>
-                            <button onClick={capturePhoto} className="btn-primary px-4 py-2">
-                                Capturer
-                            </button>
+                            <MaterialButton onClick={stopCamera} variant="outlined">Annuler</MaterialButton>
+                            <MaterialButton onClick={capturePhoto}>Capturer</MaterialButton>
                         </div>
                     </div>
                 </div>

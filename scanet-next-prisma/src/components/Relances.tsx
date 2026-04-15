@@ -7,6 +7,8 @@ import { toast } from 'sonner';
 import EmailSequences from './EmailSequences';
 import SequenceBuilderModal from './SequenceBuilderModal';
 import type { EmailSequence } from '@/types';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface ScheduledEmail {
     id: string;
@@ -219,23 +221,25 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
                             <div className="flex flex-col gap-3 md:gap-4">
                                 <div className="flex items-center gap-2 overflow-x-auto pb-2">
                                     {(['all', 'pending', 'sent', 'failed'] as const).map(f => (
-                                        <button key={f} onClick={() => setFilter(f)}
-                                            className={`whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium transition-colors md:px-4 md:text-sm ${filter === f ? 'bg-slate-900 text-white' : 'bg-white text-slate-700 hover:bg-slate-100'}`}>
+                                        <MaterialButton
+                                            key={f}
+                                            onClick={() => setFilter(f)}
+                                            variant={filter === f ? 'filled' : 'text'}
+                                            className="min-w-0 whitespace-nowrap text-xs md:text-sm"
+                                        >
                                             {f === 'all' ? 'Tous' : f === 'pending' ? 'En attente' : f === 'sent' ? 'Envoyés' : 'Échoués'}
-                                        </button>
+                                        </MaterialButton>
                                     ))}
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row gap-3">
-                                    <button onClick={onScheduleNew} className="btn-primary justify-center rounded-full px-4 py-3 text-sm md:px-6 md:text-base">
-                                        <Plus className="h-4 w-4 md:h-5 md:w-5" /><span className="font-semibold">Planifier une relance</span>
-                                    </button>
+                                    <MaterialButton onClick={onScheduleNew} icon={<Plus className="h-4 w-4 md:h-5 md:w-5" />} className="justify-center text-sm md:text-base">
+                                        Planifier une relance
+                                    </MaterialButton>
                                     {stats.failed > 0 && (
-                                        <button onClick={handleManualProcess} disabled={processing}
-                                            className="btn-secondary justify-center rounded-full px-4 py-3 text-sm text-slate-700 md:px-6 md:text-base disabled:opacity-50">
-                                            <RefreshCw className={`h-4 w-4 md:h-5 md:w-5 ${processing ? 'animate-spin' : ''}`} />
-                                            <span className="font-medium">{processing ? 'Traitement...' : 'Relancer les échecs'}</span>
-                                        </button>
+                                        <MaterialButton onClick={handleManualProcess} disabled={processing} variant="outlined" icon={<RefreshCw className={`h-4 w-4 md:h-5 md:w-5 ${processing ? 'animate-spin' : ''}`} />} className="justify-center text-sm md:text-base">
+                                            {processing ? 'Traitement...' : 'Relancer les échecs'}
+                                        </MaterialButton>
                                     )}
                                 </div>
                             </div>
@@ -247,9 +251,9 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
                                         {filter === 'all' ? 'Aucune relance planifiée' : `Aucune relance ${filter === 'pending' ? 'en attente' : filter === 'sent' ? 'envoyée' : 'échouée'}`}
                                     </h3>
                                     <p className="mx-auto mb-6 max-w-md text-slate-600">Planifiez des relances pour vos contacts.</p>
-                                    <button onClick={onScheduleNew} className="btn-primary inline-flex rounded-full px-6 py-3">
-                                        <Plus className="h-5 w-5" /><span className="font-semibold">Planifier ma première relance</span>
-                                    </button>
+                                    <MaterialButton onClick={onScheduleNew} icon={<Plus className="h-5 w-5" />}>
+                                        Planifier ma première relance
+                                    </MaterialButton>
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 gap-3 md:gap-4">
@@ -291,12 +295,12 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
                                                 </div>
                                                 {email.status === 'pending' ? (
                                                     <div className="flex lg:flex-col gap-2">
-                                                        <button onClick={() => { setEditingEmail(email); setShowEditModal(true); }} className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200" title="Modifier"><Edit2 className="h-5 w-5" /></button>
-                                                        <button onClick={() => handleCancel(email.id)} className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200" title="Annuler"><AlertCircle className="h-5 w-5" /></button>
-                                                        <button onClick={() => handleDelete(email.id)} className="flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-100" title="Supprimer"><Trash2 className="h-5 w-5" /></button>
+                                                        <MaterialIconButton ariaLabel="Modifier" onClick={() => { setEditingEmail(email); setShowEditModal(true); }} icon={<Edit2 className="h-5 w-5" />} />
+                                                        <MaterialIconButton ariaLabel="Annuler la relance" onClick={() => handleCancel(email.id)} icon={<AlertCircle className="h-5 w-5" />} />
+                                                        <MaterialIconButton ariaLabel="Supprimer" onClick={() => handleDelete(email.id)} variant="outlined" icon={<Trash2 className="h-5 w-5 text-red-600" />} />
                                                     </div>
                                                 ) : (
-                                                    <button onClick={() => handleDelete(email.id)} className="flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-100"><Trash2 className="h-5 w-5" /></button>
+                                                    <MaterialIconButton ariaLabel="Supprimer" onClick={() => handleDelete(email.id)} variant="outlined" icon={<Trash2 className="h-5 w-5 text-red-600" />} />
                                                 )}
                                             </div>
                                         </div>
@@ -313,7 +317,7 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
                     <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
                         <div className="sticky top-0 flex items-center justify-between rounded-t-2xl border-b border-slate-200 bg-white px-6 py-4">
                             <h2 className="text-2xl font-semibold text-slate-900">Modifier la relance</h2>
-                            <button onClick={() => { setShowEditModal(false); setEditingEmail(null); }} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"><X className="h-5 w-5" /></button>
+                            <MaterialIconButton ariaLabel="Fermer" onClick={() => { setShowEditModal(false); setEditingEmail(null); }} icon={<X className="h-5 w-5" />} />
                         </div>
                         <div className="p-6 space-y-6">
                             <div>
@@ -341,8 +345,8 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
                             </div>
                         </div>
                         <div className="sticky bottom-0 flex justify-end gap-3 rounded-b-2xl border-t border-slate-200 bg-slate-50 px-6 py-4">
-                            <button onClick={() => { setShowEditModal(false); setEditingEmail(null); }} className="btn-secondary">Annuler</button>
-                            <button onClick={handleSaveEdit} className="btn-primary">Enregistrer</button>
+                            <MaterialButton onClick={() => { setShowEditModal(false); setEditingEmail(null); }} variant="outlined">Annuler</MaterialButton>
+                            <MaterialButton onClick={handleSaveEdit}>Enregistrer</MaterialButton>
                         </div>
                     </div>
                 </div>

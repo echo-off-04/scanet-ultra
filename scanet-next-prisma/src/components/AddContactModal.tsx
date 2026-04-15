@@ -5,6 +5,7 @@ import { X, Star, Upload, XIcon, Users } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { PhoneInput } from './PhoneInput';
+import { MaterialButton } from './material/MaterialButton';
 import { detectUserCountry, getCountryName, COUNTRIES, getRegionsByCountryCode } from '@/lib/countries';
 
 interface AddContactModalProps {
@@ -416,8 +417,8 @@ export function AddContactModal({ onClose, onContactAdded, defaultIsMember = fal
                             </div>
 
                             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 pt-4 sm:pt-6 pb-4">
-                                <button type="button" onClick={onClose} className="px-6 sm:px-8 py-3 sm:py-4 text-gray-700 font-semibold rounded-2xl hover:bg-gray-100 transition-all">Annuler</button>
-                                <button type="submit" disabled={loading} className="rounded-2xl bg-slate-900 px-8 py-3 font-semibold text-white transition-colors hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 sm:px-10 sm:py-4">{loading ? 'Enregistrement...' : 'Enregistrer'}</button>
+                                <MaterialButton type="button" onClick={onClose} variant="outlined">Annuler</MaterialButton>
+                                <MaterialButton type="submit" disabled={loading}>{loading ? 'Enregistrement...' : 'Enregistrer'}</MaterialButton>
                             </div>
                         </form>
                     </div>
@@ -432,8 +433,8 @@ export function AddContactModal({ onClose, onContactAdded, defaultIsMember = fal
                             <h3 className="text-xl font-bold text-gray-900 mb-3">Entreprise non configurée</h3>
                             <p className="text-gray-600 mb-6">Pour ajouter des membres à votre entreprise, vous devez d&apos;abord la créer dans la section Entreprise.</p>
                             <div className="flex gap-3 w-full">
-                                <button onClick={() => setShowEnterpriseWarning(false)} className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition-colors">Plus tard</button>
-                                <button onClick={() => { setShowEnterpriseWarning(false); onClose(); onNavigateToEnterprise?.(); }} className="flex-1 rounded-xl bg-slate-900 px-6 py-3 font-semibold text-white transition-colors hover:bg-slate-800">Créer mon entreprise</button>
+                                <MaterialButton onClick={() => setShowEnterpriseWarning(false)} variant="outlined" className="flex-1 justify-center">Plus tard</MaterialButton>
+                                <MaterialButton onClick={() => { setShowEnterpriseWarning(false); onClose(); onNavigateToEnterprise?.(); }} className="flex-1 justify-center">Créer mon entreprise</MaterialButton>
                             </div>
                         </div>
                     </div>

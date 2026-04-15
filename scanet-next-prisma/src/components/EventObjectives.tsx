@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { Target, Plus, Edit2, Trash2, Users, DollarSign, Award, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface Objective {
     id: string;
@@ -145,22 +147,16 @@ export function EventObjectives({ eventId }: EventObjectivesProps) {
                     <Target className="h-5 w-5 text-slate-700" />
                     Objectifs ({objectives.length})
                 </h3>
-                <button
-                    onClick={() => { resetForm(); setShowAddModal(true); }}
-                    className="btn-primary gap-1.5 px-3 py-1.5 text-sm"
-                >
-                    <Plus className="h-4 w-4" />
+                <MaterialButton onClick={() => { resetForm(); setShowAddModal(true); }} icon={<Plus className="h-4 w-4" />} className="text-sm">
                     Ajouter
-                </button>
+                </MaterialButton>
             </div>
 
             {objectives.length === 0 ? (
                 <div className="rounded-xl border border-slate-200 bg-slate-50 py-8 text-center">
                     <Target className="mx-auto mb-3 h-10 w-10 text-slate-300" />
                     <p className="text-slate-500">Aucun objectif défini</p>
-                    <button onClick={() => setShowAddModal(true)} className="mt-3 text-sm font-medium text-slate-700 hover:underline">
-                        Définir un objectif
-                    </button>
+                    <MaterialButton onClick={() => setShowAddModal(true)} variant="text" className="mt-3">Définir un objectif</MaterialButton>
                 </div>
             ) : (
                 <div className="space-y-3">
@@ -183,12 +179,8 @@ export function EventObjectives({ eventId }: EventObjectivesProps) {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-1">
-                                        <button onClick={() => startEdit(obj)} className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600">
-                                            <Edit2 className="h-4 w-4" />
-                                        </button>
-                                        <button onClick={() => handleDelete(obj.id)} className="flex h-8 w-8 items-center justify-center rounded-full text-red-400 transition-colors hover:bg-red-50 hover:text-red-600">
-                                            <Trash2 className="h-4 w-4" />
-                                        </button>
+                                        <MaterialIconButton ariaLabel="Modifier l'objectif" onClick={() => startEdit(obj)} icon={<Edit2 className="h-4 w-4" />} className="h-8 w-8" />
+                                        <MaterialIconButton ariaLabel="Supprimer l'objectif" onClick={() => handleDelete(obj.id)} variant="outlined" icon={<Trash2 className="h-4 w-4 text-red-600" />} className="h-8 w-8" />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
@@ -214,9 +206,7 @@ export function EventObjectives({ eventId }: EventObjectivesProps) {
                     <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" onClick={e => e.stopPropagation()}>
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-xl font-semibold text-slate-900">{editingId ? 'Modifier l\'objectif' : 'Nouvel objectif'}</h3>
-                            <button onClick={resetForm} className="flex h-8 w-8 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700">
-                                <X className="h-5 w-5" />
-                            </button>
+                            <MaterialIconButton ariaLabel="Fermer" onClick={resetForm} icon={<X className="h-5 w-5" />} className="h-8 w-8" />
                         </div>
 
                         <div className="space-y-4">
@@ -262,10 +252,10 @@ export function EventObjectives({ eventId }: EventObjectivesProps) {
                         </div>
 
                         <div className="flex gap-3 mt-6">
-                            <button onClick={resetForm} className="btn-secondary flex-1">Annuler</button>
-                            <button onClick={handleSubmit} disabled={!formData.title.trim()} className="btn-primary flex-1 disabled:opacity-50">
+                            <MaterialButton onClick={resetForm} variant="outlined" className="flex-1 justify-center">Annuler</MaterialButton>
+                            <MaterialButton onClick={handleSubmit} disabled={!formData.title.trim()} className="flex-1 justify-center">
                                 {editingId ? 'Modifier' : 'Créer'}
-                            </button>
+                            </MaterialButton>
                         </div>
                     </div>
                 </div>

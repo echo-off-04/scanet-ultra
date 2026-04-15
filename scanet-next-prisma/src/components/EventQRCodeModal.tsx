@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react';
 import { X, Download, Copy, Check, QrCode } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface EventQRCodeModalProps {
     eventName: string;
@@ -75,9 +77,7 @@ export function EventQRCodeModal({ eventName, qrCodeToken, onClose }: EventQRCod
                         </div>
                         <h2 className="text-xl font-semibold text-slate-900">QR Code</h2>
                     </div>
-                    <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700">
-                        <X className="h-5 w-5" />
-                    </button>
+                    <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-5 w-5" />} />
                 </div>
 
                 <p className="mb-6 text-center text-slate-600">
@@ -95,19 +95,14 @@ export function EventQRCodeModal({ eventName, qrCodeToken, onClose }: EventQRCod
                         readOnly
                         className="flex-1 truncate bg-transparent text-sm text-slate-600 outline-none"
                     />
-                    <button onClick={handleCopy} className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100">
-                        {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+                    <MaterialButton onClick={handleCopy} variant="outlined" icon={copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />} className="text-sm">
                         {copied ? 'Copié' : 'Copier'}
-                    </button>
+                    </MaterialButton>
                 </div>
 
-                <button
-                    onClick={handleDownload}
-                    className="btn-primary w-full gap-2 py-3"
-                >
-                    <Download className="h-5 w-5" />
+                <MaterialButton onClick={handleDownload} icon={<Download className="h-5 w-5" />} className="w-full justify-center py-3">
                     Télécharger le QR Code
-                </button>
+                </MaterialButton>
             </div>
         </div>
     );

@@ -11,6 +11,8 @@ import {
     getPeriodDates,
     type PersonalObjective,
 } from '@/lib/objectiveCalculator';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface AddObjectiveModalProps {
     onClose: () => void;
@@ -136,7 +138,7 @@ export function AddObjectiveModal({ onClose, onSuccess, editObjective }: AddObje
                             <p className="text-xs text-slate-500">Définissez un objectif mesurable</p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="rounded-xl p-2 transition-colors hover:bg-slate-100"><X className="h-5 w-5 text-slate-400" /></button>
+                    <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-5 w-5 text-slate-400" />} />
                 </div>
 
                 <div className="p-5 space-y-5">
@@ -210,9 +212,18 @@ export function AddObjectiveModal({ onClose, onSuccess, editObjective }: AddObje
                                 <label className="mb-2 block text-sm font-semibold text-slate-700">Période</label>
                                 <div className="flex flex-wrap gap-2">
                                     {Object.entries(PERIOD_LABELS).map(([key, label]) => (
-                                        <button key={key} onClick={() => setPeriodType(key as typeof periodType)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${periodType === key ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>{label.replace('par ', '').replace('au ', '')}</button>
+                                        <MaterialButton
+                                            key={key}
+                                            onClick={() => setPeriodType(key as typeof periodType)}
+                                            variant={periodType === key ? 'filled' : 'text'}
+                                            className="min-w-0 text-xs"
+                                        >
+                                            {label.replace('par ', '').replace('au ', '')}
+                                        </MaterialButton>
                                     ))}
-                                    <button onClick={() => setPeriodType('custom')} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${periodType === 'custom' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>personnalisé</button>
+                                    <MaterialButton onClick={() => setPeriodType('custom')} variant={periodType === 'custom' ? 'filled' : 'text'} className="min-w-0 text-xs">
+                                        personnalisé
+                                    </MaterialButton>
                                 </div>
                             </div>
 
@@ -248,7 +259,14 @@ export function AddObjectiveModal({ onClose, onSuccess, editObjective }: AddObje
                                         { value: 'medium', label: 'Moyenne', color: 'bg-slate-100 text-slate-600' },
                                         { value: 'high', label: 'Haute', color: 'bg-slate-100 text-slate-600' },
                                     ].map((p) => (
-                                        <button key={p.value} onClick={() => setPriority(p.value as 'low' | 'medium' | 'high')} className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-colors ${priority === p.value ? 'bg-slate-900 text-white' : p.color}`}>{p.label}</button>
+                                        <MaterialButton
+                                            key={p.value}
+                                            onClick={() => setPriority(p.value as 'low' | 'medium' | 'high')}
+                                            variant={priority === p.value ? 'filled' : 'text'}
+                                            className="flex-1 justify-center text-xs"
+                                        >
+                                            {p.label}
+                                        </MaterialButton>
                                     ))}
                                 </div>
                             </div>
@@ -257,10 +275,10 @@ export function AddObjectiveModal({ onClose, onSuccess, editObjective }: AddObje
                 </div>
 
                 <div className="sticky bottom-0 flex gap-3 rounded-b-2xl border-t border-slate-200 bg-white p-5">
-                    <button onClick={onClose} className="btn-secondary flex-1 text-sm">Annuler</button>
-                    <button onClick={handleSave} disabled={!objectiveType || !targetValue || !title || saving} className="btn-primary flex-1 text-sm disabled:cursor-not-allowed disabled:opacity-50">
+                    <MaterialButton onClick={onClose} variant="outlined" className="flex-1 justify-center text-sm">Annuler</MaterialButton>
+                    <MaterialButton onClick={handleSave} disabled={!objectiveType || !targetValue || !title || saving} className="flex-1 justify-center text-sm">
                         {saving ? 'Enregistrement...' : editObjective ? 'Modifier' : "Créer l'objectif"}
-                    </button>
+                    </MaterialButton>
                 </div>
             </div>
         </div>

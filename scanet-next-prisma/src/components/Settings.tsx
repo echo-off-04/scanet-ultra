@@ -11,6 +11,7 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import { SUPPORTED_CURRENCIES, getCurrencyInfo } from '@/lib/currency';
 import { COUNTRIES } from '@/lib/countries';
 import { toast } from 'sonner';
+import { MaterialButton } from './material/MaterialButton';
 
 interface SettingsProps {
     onClose?: () => void;
@@ -335,17 +336,13 @@ export function Settings({ onClose }: SettingsProps) {
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <p className="text-sm text-slate-600">Gérez vos préférences de notifications.</p>
-                                <div className="flex gap-2">
-                                    <button type="button" onClick={handleTestEmail} disabled={testingEmail}
-                                        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-50">
-                                        {testingEmail ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                                <div className="flex flex-wrap gap-2">
+                                    <MaterialButton type="button" variant="outlined" onClick={handleTestEmail} disabled={testingEmail} icon={testingEmail ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}>
                                         {testingEmail ? 'Envoi...' : 'Tester l\'email'}
-                                    </button>
-                                    <button type="button" onClick={handleTestNotifications} disabled={testingNotifications}
-                                        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-50">
-                                        {testingNotifications ? <Loader2 className="h-4 w-4 animate-spin" /> : <TestTube className="h-4 w-4" />}
+                                    </MaterialButton>
+                                    <MaterialButton type="button" variant="outlined" onClick={handleTestNotifications} disabled={testingNotifications} icon={testingNotifications ? <Loader2 className="h-4 w-4 animate-spin" /> : <TestTube className="h-4 w-4" />}>
                                         {testingNotifications ? 'Envoi...' : 'Tester les notifications'}
-                                    </button>
+                                    </MaterialButton>
                                 </div>
                             </div>
 
@@ -413,14 +410,13 @@ export function Settings({ onClose }: SettingsProps) {
                     {/* Boutons */}
                     <div className="flex items-center justify-end gap-4 border-t border-slate-200 pt-6">
                         {onClose && (
-                            <button type="button" onClick={onClose} className="btn-secondary px-6 py-3 text-slate-700">
+                            <MaterialButton type="button" variant="outlined" onClick={onClose}>
                                 Annuler
-                            </button>
+                            </MaterialButton>
                         )}
-                        <button type="submit" disabled={saving}
-                            className="btn-primary px-8 py-3 disabled:opacity-50 flex items-center gap-2">
-                            {saving ? <><Loader2 className="h-5 w-5 animate-spin" />Enregistrement...</> : <><Save className="h-5 w-5" />Enregistrer les modifications</>}
-                        </button>
+                        <MaterialButton type="submit" disabled={saving} icon={saving ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}>
+                            {saving ? 'Enregistrement...' : 'Enregistrer les modifications'}
+                        </MaterialButton>
                     </div>
                 </form>
             </div>
@@ -437,10 +433,12 @@ export function Settings({ onClose }: SettingsProps) {
                             Tous vos montants seront automatiquement convertis selon les taux de change actuels.
                         </p>
                         <div className="flex items-center gap-3">
-                            <button onClick={() => { setShowCurrencyConfirm(false); setPendingCurrency(null); }}
-                                className="btn-secondary flex-1 px-4 py-3 text-slate-700">Annuler</button>
-                            <button onClick={confirmCurrencyChange}
-                                className="btn-primary flex-1 px-4 py-3">Confirmer</button>
+                            <MaterialButton variant="outlined" onClick={() => { setShowCurrencyConfirm(false); setPendingCurrency(null); }} className="flex-1 justify-center">
+                                Annuler
+                            </MaterialButton>
+                            <MaterialButton onClick={confirmCurrencyChange} className="flex-1 justify-center">
+                                Confirmer
+                            </MaterialButton>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,8 @@ import { X, Star, Plus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { PhoneInput } from './PhoneInput';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface ContactFormModalProps {
     onClose: () => void;
@@ -113,9 +115,7 @@ export function ContactFormModal({ onClose, onSuccess, eventId, mode = 'create',
                     <h2 className="text-2xl font-semibold text-slate-900">
                         {mode === 'edit' ? 'Modifier le contact' : 'Nouveau contact'}
                     </h2>
-                    <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700">
-                        <X className="h-5 w-5" />
-                    </button>
+                    <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-5 w-5" />} />
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-5">
@@ -246,9 +246,7 @@ export function ContactFormModal({ onClose, onSuccess, eventId, mode = 'create',
                                 className="input-modern flex-1 text-sm"
                                 placeholder="Ajouter un tag..."
                             />
-                            <button type="button" onClick={addTag} className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200">
-                                <Plus className="h-4 w-4" />
-                            </button>
+                            <MaterialIconButton ariaLabel="Ajouter le tag" onClick={addTag} icon={<Plus className="h-4 w-4" />} />
                         </div>
                     </div>
 
@@ -273,16 +271,12 @@ export function ContactFormModal({ onClose, onSuccess, eventId, mode = 'create',
                     </label>
 
                     <div className="flex items-center gap-3 border-t border-slate-200 pt-4">
-                        <button type="button" onClick={onClose} className="btn-secondary flex-1">
+                        <MaterialButton type="button" onClick={onClose} variant="outlined" className="flex-1 justify-center">
                             Annuler
-                        </button>
-                        <button
-                            type="submit"
-                            disabled={loading || !formData.full_name.trim()}
-                            className="btn-primary flex-1 disabled:opacity-50"
-                        >
+                        </MaterialButton>
+                        <MaterialButton type="submit" disabled={loading || !formData.full_name.trim()} className="flex-1 justify-center">
                             {loading ? 'Enregistrement...' : mode === 'edit' ? 'Modifier' : 'Créer le contact'}
-                        </button>
+                        </MaterialButton>
                     </div>
                 </form>
             </div>

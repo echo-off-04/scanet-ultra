@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Search, SlidersHorizontal, Grid3x3, List, Images, X, ChevronDown, Plus } from 'lucide-react';
 import { FilterDropdown } from './FilterDropdown';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 import type { ViewMode, SortOption, Event } from '@/types';
 
 interface ContactsToolbarProps {
@@ -76,12 +78,13 @@ export function ContactsToolbar({
                         {(['grid', 'list', 'photos'] as ViewMode[]).map((mode) => {
                             const Icon = mode === 'grid' ? Grid3x3 : mode === 'list' ? List : Images;
                             return (
-                                <button key={mode} onClick={() => onViewModeChange(mode)}
-                                    className={`rounded-lg p-2 transition-colors ${viewMode === mode ? 'border border-slate-300 bg-white text-slate-900' : 'text-slate-500 hover:bg-white hover:text-slate-700'}`}
-                                    title={mode === 'grid' ? 'Vue en cartes' : mode === 'list' ? 'Vue en liste' : 'Vue en photos'}
-                                >
-                                    <Icon className="h-4 w-4 lg:h-5 lg:w-5" />
-                                </button>
+                                <MaterialIconButton
+                                    key={mode}
+                                    ariaLabel={mode === 'grid' ? 'Vue en cartes' : mode === 'list' ? 'Vue en liste' : 'Vue en photos'}
+                                    onClick={() => onViewModeChange(mode)}
+                                    variant={viewMode === mode ? 'filled' : 'outlined'}
+                                    icon={<Icon className="h-4 w-4 lg:h-5 lg:w-5" />}
+                                />
                             );
                         })}
                     </div>
@@ -108,11 +111,9 @@ export function ContactsToolbar({
                     </button>
 
                     {onAddContact && (
-                        <button onClick={onAddContact}
-                            className="btn-primary ml-auto hidden gap-2 rounded-xl px-5 py-2.5 text-sm lg:flex lg:text-base"
-                        >
-                            <Plus className="h-5 w-5" /><span>Ajouter un contact</span>
-                        </button>
+                        <MaterialButton onClick={onAddContact} icon={<Plus className="h-5 w-5" />} className="ml-auto hidden lg:flex">
+                            Ajouter un contact
+                        </MaterialButton>
                     )}
                 </div>
             </div>

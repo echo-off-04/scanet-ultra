@@ -30,6 +30,7 @@ import { Navbar } from './Navbar';
 import Relances from './Relances';
 import ScheduleEmailModal from './ScheduleEmailModal';
 import { PersonalObjectives } from './PersonalObjectives';
+import { MaterialButton } from './material/MaterialButton';
 import { formatCurrency } from '@/lib/currency';
 import type { Contact, Event, ViewType, ViewMode, SortOption } from '@/types';
 
@@ -320,9 +321,9 @@ export function Dashboard() {
                                             : 'Commencez à construire votre réseau en ajoutant votre premier contact'}
                                     </p>
                                     {!searchTerm && filterStatus === 'all' && filters.events.length === 0 && (
-                                        <button onClick={() => setShowAddModal(true)} className="btn-primary gap-2 px-5 py-3">
-                                            <Plus className="h-5 w-5" />Ajouter votre premier contact
-                                        </button>
+                                        <MaterialButton onClick={() => setShowAddModal(true)} icon={<Plus className="h-5 w-5" />} className="px-5 py-3">
+                                            Ajouter votre premier contact
+                                        </MaterialButton>
                                     )}
                                 </div>
                             ) : (
@@ -345,9 +346,9 @@ export function Dashboard() {
                     {view === 'dashboard' && (
                         <div className="space-y-6 lg:space-y-8">
                             <Hero label="Bienvenue" imageUrl="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg" imageAlt="Dashboard business">
-                                <HeroText>Pilotez votre</HeroText>
+                                <HeroText>Pilotez votre </HeroText>
                                 <HeroText highlight highlightColor="blue">activité commerciale</HeroText>
-                                <HeroText>en temps réel</HeroText>
+                                <HeroText> en temps réel</HeroText>
                             </Hero>
 
                             <div className="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(280px,0.9fr)]">

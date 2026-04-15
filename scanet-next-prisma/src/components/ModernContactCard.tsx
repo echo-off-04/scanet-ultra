@@ -2,6 +2,7 @@
 
 import { Star, Send, Building2, MapPin } from 'lucide-react';
 import type { Contact } from '@/types';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface ModernContactCardProps {
     contact: Contact;
@@ -66,12 +67,12 @@ export function ModernContactCard({ contact, onClick }: ModernContactCardProps) 
                         ))}
                     </div>
                 </div>
-                <button
+                <MaterialIconButton
+                    ariaLabel="Envoyer un email"
                     onClick={(e) => { e.stopPropagation(); if (contact.email) window.location.href = `mailto:${contact.email}`; }}
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 opacity-0 transition-all group-hover:opacity-100 hover:bg-slate-900 hover:text-white"
-                >
-                    <Send className="h-4 w-4" />
-                </button>
+                    icon={<Send className="h-4 w-4" />}
+                    className="opacity-0 transition-all group-hover:opacity-100"
+                />
             </div>
         </div>
     );

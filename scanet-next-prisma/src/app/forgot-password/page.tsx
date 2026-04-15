@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
                     <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
                         <div className="mb-6 flex justify-center">
                             <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                                Scanet
+                                Scanetwork
                             </div>
                         </div>
                         <div className="mb-8 text-center">
@@ -75,7 +75,7 @@ export default function ForgotPasswordPage() {
                 <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
                     <div className="mb-6 flex justify-center">
                         <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
-                            Scanet
+                            Scanetwork
                         </div>
                     </div>
                     <h1 className="mb-2 text-center text-3xl font-semibold text-slate-900">Mot de passe oublié ?</h1>

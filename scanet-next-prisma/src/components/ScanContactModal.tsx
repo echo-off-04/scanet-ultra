@@ -5,6 +5,8 @@ import { Camera, Upload, X, RotateCcw, Check, Tag, Plus, Loader2 } from 'lucide-
 import { useAuth } from '@/contexts/AuthContext';
 import { compressImage } from '@/lib/imageProcessing';
 import { toast } from 'sonner';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface ScanContactModalProps {
     onClose: () => void;
@@ -237,7 +239,7 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
                             {step === 'capture' ? 'Face avant' : step === 'captureBack' ? 'Face arrière (optionnel)' : 'Vérifier les informations'}
                         </p>
                     </div>
-                    <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"><X className="h-5 w-5" /></button>
+                    <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-5 w-5" />} />
                 </div>
 
                 <div className="p-6">
@@ -269,18 +271,14 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
                             <canvas ref={canvasRef} className="hidden" />
 
                             <div className="flex items-center justify-center gap-4">
-                                <button onClick={() => fileInputRef.current?.click()}
-                                    className="btn-secondary gap-2 px-4 py-2.5 text-slate-700">
-                                    <Upload className="h-4 w-4" />Fichier
-                                </button>
-                                <button onClick={captureImage} disabled={!isVideoReady}
-                                    className="btn-primary gap-2 px-6 py-3 disabled:opacity-50">
-                                    <Camera className="h-5 w-5" />Capturer
-                                </button>
+                                <MaterialButton onClick={() => fileInputRef.current?.click()} variant="outlined" icon={<Upload className="h-4 w-4" />}>
+                                    Fichier
+                                </MaterialButton>
+                                <MaterialButton onClick={captureImage} disabled={!isVideoReady} icon={<Camera className="h-5 w-5" />}>
+                                    Capturer
+                                </MaterialButton>
                                 {step === 'captureBack' && (
-                                    <button onClick={skipBackCapture} className="btn-secondary px-4 py-2.5 text-slate-700">
-                                        Passer
-                                    </button>
+                                    <MaterialButton onClick={skipBackCapture} variant="outlined">Passer</MaterialButton>
                                 )}
                             </div>
                             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
@@ -290,9 +288,9 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
                             <div className="flex items-center gap-3 mb-4">
                                 {image && <img src={image} alt="Avant" className="h-16 w-24 rounded-lg border border-slate-200 object-cover" />}
                                 {backImage && <img src={backImage} alt="Arrière" className="h-16 w-24 rounded-lg border border-slate-200 object-cover" />}
-                                <button onClick={resetAll} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800">
-                                    <RotateCcw className="h-4 w-4" />Rescanner
-                                </button>
+                                <MaterialButton onClick={resetAll} variant="text" icon={<RotateCcw className="h-4 w-4" />} className="px-0 text-sm">
+                                    Rescanner
+                                </MaterialButton>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -332,16 +330,15 @@ export function ScanContactModal({ onClose, onContactAdded }: ScanContactModalPr
                                     <input type="text" value={tagInput} onChange={(e) => setTagInput(e.target.value)}
                                         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addTag(); } }}
                                         className="input-modern flex-1 py-2 text-sm" placeholder="Ajouter un tag..." />
-                                    <button onClick={addTag} className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200"><Plus className="h-4 w-4" /></button>
+                                    <MaterialIconButton ariaLabel="Ajouter le tag" onClick={addTag} icon={<Plus className="h-4 w-4" />} />
                                 </div>
                             </div>
 
                             <div className="flex gap-3 border-t border-slate-200 pt-4">
-                                <button onClick={onClose} className="btn-secondary flex-1">Annuler</button>
-                                <button onClick={handleSave} disabled={saving || !extractedData.full_name.trim()}
-                                    className="btn-primary flex-1 gap-2 disabled:opacity-50">
-                                    <Check className="h-5 w-5" />{saving ? 'Enregistrement...' : 'Enregistrer le contact'}
-                                </button>
+                                <MaterialButton onClick={onClose} variant="outlined" className="flex-1 justify-center">Annuler</MaterialButton>
+                                <MaterialButton onClick={handleSave} disabled={saving || !extractedData.full_name.trim()} icon={<Check className="h-5 w-5" />} className="flex-1 justify-center">
+                                    {saving ? 'Enregistrement...' : 'Enregistrer le contact'}
+                                </MaterialButton>
                             </div>
                         </div>
                     )}

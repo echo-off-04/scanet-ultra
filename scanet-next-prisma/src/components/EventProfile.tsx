@@ -7,6 +7,8 @@ import { useKpis } from '@/contexts/KpiContext';
 import { AddContactModal } from './AddContactModal';
 import { EventObjectives } from './EventObjectives';
 import { EventQRCodeModal } from './EventQRCodeModal';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface EventProfileProps {
     eventId: string;
@@ -287,7 +289,7 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
     if (!event) return (
         <div className="flex h-screen flex-col items-center justify-center bg-slate-50">
             <AlertCircle className="mb-4 h-16 w-16 text-slate-300" /><p className="text-slate-600">Événement non trouvé</p>
-            <button onClick={onBack} className="mt-4 text-sm font-medium text-slate-700 hover:text-slate-900">Retour</button>
+            <MaterialButton onClick={onBack} variant="text" className="mt-4">Retour</MaterialButton>
         </div>
     );
 
@@ -318,7 +320,7 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
                     <div className="p-4 sm:p-6">
                         <div className="mb-4 flex items-start justify-between gap-3">
                             <div className="flex min-w-0 items-center gap-3">
-                                <button onClick={onBack} className="action-btn h-9 w-9 sm:h-10 sm:w-10"><ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-slate-700" /></button>
+                                <MaterialIconButton ariaLabel="Retour" onClick={onBack} icon={<ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-slate-700" />} className="h-9 w-9 sm:h-10 sm:w-10" />
                                 <div className="min-w-0">
                                     <p className="text-sm font-medium text-slate-500">Détail de l&apos;événement</p>
                                     {isEditing ? (
@@ -331,14 +333,14 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
                             <div className="flex flex-shrink-0 gap-2">
                                 {isEditing ? (
                                     <>
-                                        <button onClick={() => { setIsEditing(false); setEditedEvent(event); setImageFile(null); setImagePreview(null); }} className="action-btn"><X className="h-4 w-4 text-slate-700 sm:h-5 sm:w-5" /></button>
-                                        <button onClick={handleSave} className="btn-primary h-10 w-10 px-0"><Save className="h-4 w-4 sm:h-5 sm:w-5" /></button>
+                                        <MaterialIconButton ariaLabel="Annuler les modifications" onClick={() => { setIsEditing(false); setEditedEvent(event); setImageFile(null); setImagePreview(null); }} icon={<X className="h-4 w-4 text-slate-700 sm:h-5 sm:w-5" />} />
+                                        <MaterialIconButton ariaLabel="Enregistrer l'événement" onClick={handleSave} variant="filled" icon={<Save className="h-4 w-4 sm:h-5 sm:w-5" />} />
                                     </>
                                 ) : (
                                     <>
-                                        <button onClick={handleShowQRModal} className="action-btn" title="Code QR"><QrCode className="h-4 w-4 text-slate-700 sm:h-5 sm:w-5" /></button>
-                                        <button onClick={() => setIsEditing(true)} className="action-btn"><Edit className="h-4 w-4 text-slate-700 sm:h-5 sm:w-5" /></button>
-                                        <button onClick={handleDelete} className="action-btn border-red-200 text-red-600 hover:bg-red-50"><Trash2 className="h-4 w-4 sm:h-5 sm:w-5" /></button>
+                                        <MaterialIconButton ariaLabel="Afficher le code QR" onClick={handleShowQRModal} icon={<QrCode className="h-4 w-4 text-slate-700 sm:h-5 sm:w-5" />} />
+                                        <MaterialIconButton ariaLabel="Modifier l'événement" onClick={() => setIsEditing(true)} icon={<Edit className="h-4 w-4 text-slate-700 sm:h-5 sm:w-5" />} />
+                                        <MaterialIconButton ariaLabel="Supprimer l'événement" onClick={handleDelete} variant="outlined" icon={<Trash2 className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />} />
                                     </>
                                 )}
                             </div>
@@ -365,7 +367,7 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
                         <div className="flex-1">
                             <h3 className="mb-1 text-sm font-semibold text-amber-900">Nombre de participants cible non défini</h3>
                             <p className="mb-2 text-sm text-amber-800">Pour obtenir des statistiques précises, veuillez définir le nombre de participants cible.</p>
-                            <button onClick={() => setIsEditing(true)} className="text-sm font-semibold text-amber-900 hover:text-amber-950 underline">Définir maintenant</button>
+                            <MaterialButton onClick={() => setIsEditing(true)} variant="text" className="px-0 text-amber-900">Définir maintenant</MaterialButton>
                         </div>
                     </div>
                 )}
@@ -422,8 +424,12 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
                             <div className="flex items-center justify-between mb-4">
                                 <h2 className="flex items-center gap-2 text-xl font-semibold text-slate-900"><Users className="h-5 w-5 text-slate-700" />Contacts enregistrés ({actualContactsCount})</h2>
                                 <div className="flex items-center gap-2">
-                                    <button onClick={() => setShowContactFormModal(true)} className="btn-secondary gap-2 text-sm text-slate-700"><UserPlus className="h-4 w-4" />Créer</button>
-                                    <button onClick={() => { setShowAddContactModal(true); loadAllContacts(); }} className="btn-primary gap-2 text-sm"><Plus className="h-4 w-4" />Ajouter</button>
+                                    <MaterialButton onClick={() => setShowContactFormModal(true)} variant="outlined" icon={<UserPlus className="h-4 w-4" />} className="text-sm">
+                                        Créer
+                                    </MaterialButton>
+                                    <MaterialButton onClick={() => { setShowAddContactModal(true); loadAllContacts(); }} icon={<Plus className="h-4 w-4" />} className="text-sm">
+                                        Ajouter
+                                    </MaterialButton>
                                 </div>
                             </div>
                             {eventContacts.length === 0 ? (
@@ -450,7 +456,7 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
                                                         <a href={`https://wa.me/${ec.contacts.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-white hover:text-slate-700"><MessageCircle className="h-4 w-4" /></a>
                                                     </>
                                                 )}
-                                                <button onClick={() => handleRemoveContact(ec.id)} className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600"><Trash2 className="h-4 w-4" /></button>
+                                                <MaterialIconButton ariaLabel="Retirer le contact" onClick={() => handleRemoveContact(ec.id)} icon={<Trash2 className="h-4 w-4 text-red-600" />} />
                                             </div>
                                         </div>
                                     ))}
@@ -570,8 +576,12 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
                         <div className="flex items-center justify-between border-t border-slate-200 p-6">
                             <span className="text-sm text-slate-600">{selectedContactIds.size} contact{selectedContactIds.size !== 1 ? 's' : ''} sélectionné{selectedContactIds.size !== 1 ? 's' : ''}</span>
                             <div className="flex gap-3">
-                                <button onClick={() => { setShowAddContactModal(false); setSelectedContactIds(new Set()); setSearchQuery(''); }} className="btn-secondary">Annuler</button>
-                                <button onClick={handleAddContacts} disabled={selectedContactIds.size === 0} className="btn-primary disabled:opacity-50">Ajouter</button>
+                                <MaterialButton variant="outlined" onClick={() => { setShowAddContactModal(false); setSelectedContactIds(new Set()); setSearchQuery(''); }}>
+                                    Annuler
+                                </MaterialButton>
+                                <MaterialButton onClick={handleAddContacts} disabled={selectedContactIds.size === 0}>
+                                    Ajouter
+                                </MaterialButton>
                             </div>
                         </div>
                     </div>

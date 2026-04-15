@@ -6,6 +6,7 @@ import {
     TrendingUp, Video, Building2, Globe, X, AlertTriangle, ArrowUpRight, Target, UserPlus
 } from 'lucide-react';
 import { Hero, HeroText } from './Hero';
+import { MaterialButton } from './material/MaterialButton';
 
 interface Event {
     id: string;
@@ -169,9 +170,9 @@ export function EventsList({ onEventClick, onCreateEvent, refreshKey = 0 }: Even
 
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
                 <div><p className="text-lg text-slate-500">{events.length} événement{events.length !== 1 ? 's' : ''}</p></div>
-                <button onClick={onCreateEvent} className="btn-primary gap-3 self-start px-6 py-3 lg:self-auto">
-                    <Plus className="h-5 w-5" /><span>Créer un événement</span>
-                </button>
+                <MaterialButton onClick={onCreateEvent} icon={<Plus className="h-5 w-5" />} className="self-start lg:self-auto">
+                    Créer un événement
+                </MaterialButton>
             </div>
 
             {events.length > 0 && (
@@ -273,9 +274,9 @@ export function EventsList({ onEventClick, onCreateEvent, refreshKey = 0 }: Even
                     <h3 className="mb-3 text-2xl font-semibold text-slate-900">{events.length === 0 ? 'Aucun événement' : 'Aucun résultat'}</h3>
                     <p className="mx-auto mb-8 max-w-md text-lg text-slate-500">{events.length === 0 ? 'Créez votre premier événement pour commencer.' : 'Modifiez vos filtres pour voir plus de résultats.'}</p>
                     {events.length === 0 && (
-                        <button onClick={onCreateEvent} className="btn-primary gap-3 px-6 py-3">
-                            <Plus className="h-5 w-5" />Créer un événement
-                        </button>
+                        <MaterialButton onClick={onCreateEvent} icon={<Plus className="h-5 w-5" />}>
+                            Créer un événement
+                        </MaterialButton>
                     )}
                 </div>
             ) : (

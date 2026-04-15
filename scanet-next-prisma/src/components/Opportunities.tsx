@@ -11,6 +11,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useKpis } from '@/contexts/KpiContext';
 import { formatCurrency, convertCurrency, convertAllToBaseCurrency, SUPPORTED_CURRENCIES } from '@/lib/currency';
 import { sendOpportunityWonEmail, getEmailPreferences } from '@/lib/emailService';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 // Composant pour afficher les montants convertis
 interface ConvertedAmountProps {
@@ -392,13 +394,9 @@ export function Opportunities({ onContactSelect }: OpportunitiesProps) {
                     <p className="text-lg text-gray-500">{stats.total} opportunité{stats.total !== 1 ? 's' : ''}</p>
                 </div>
 
-                <button
-                    onClick={() => setShowAddModal(true)}
-                    className="flex items-center gap-3 rounded-full bg-slate-900 px-8 py-4 font-semibold text-white transition-colors hover:bg-slate-800"
-                >
-                    <Plus className="w-5 h-5" />
-                    <span>Nouvelle opportunité</span>
-                </button>
+                <MaterialButton onClick={() => setShowAddModal(true)} icon={<Plus className="w-5 h-5" />}>
+                    Nouvelle opportunité
+                </MaterialButton>
             </div>
 
             {/* Stats en grille moderne */}
@@ -618,12 +616,9 @@ export function Opportunities({ onContactSelect }: OpportunitiesProps) {
                         {searchQuery ? 'Aucun résultat pour votre recherche' : 'Commencez à créer des opportunités pour suivre vos ventes'}
                     </p>
                     {!searchQuery && (
-                        <button
-                            onClick={() => setShowAddModal(true)}
-                            className="rounded-full bg-slate-900 px-6 py-3 font-semibold text-white transition-colors hover:bg-slate-800"
-                        >
+                        <MaterialButton onClick={() => setShowAddModal(true)}>
                             Créer une opportunité
-                        </button>
+                        </MaterialButton>
                     )}
                 </div>
             ) : (
@@ -897,9 +892,7 @@ function OpportunityModal({
                         <h2 className="text-xl font-bold text-gray-900">
                             {opportunity ? 'Modifier l\'opportunité' : 'Nouvelle opportunité'}
                         </h2>
-                        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
-                            <X className="w-5 h-5 text-gray-500" />
-                        </button>
+                        <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="w-5 h-5 text-gray-500" />} />
                     </div>
                 </div>
 
@@ -1030,20 +1023,12 @@ function OpportunityModal({
 
                     {/* Buttons */}
                     <div className="flex gap-3 pt-2">
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="flex-1 rounded-xl bg-slate-900 py-3 font-semibold text-white transition-colors hover:bg-slate-800 disabled:opacity-50"
-                        >
+                        <MaterialButton type="submit" disabled={loading} className="flex-1 justify-center">
                             {loading ? 'Enregistrement...' : (opportunity ? 'Modifier' : 'Créer')}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all"
-                        >
+                        </MaterialButton>
+                        <MaterialButton type="button" onClick={onClose} variant="outlined">
                             Annuler
-                        </button>
+                        </MaterialButton>
                     </div>
                 </form>
             </div>
@@ -1087,9 +1072,7 @@ function OpportunityDetailModal({
                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${currentStatus.bg} ${currentStatus.color}`}>
                             {currentStatus.label}
                         </span>
-                        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
-                            <X className="w-5 h-5 text-gray-500" />
-                        </button>
+                        <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="w-5 h-5 text-gray-500" />} />
                     </div>
 
                     {/* Title */}
@@ -1192,18 +1175,10 @@ function OpportunityDetailModal({
 
                     {/* Actions */}
                     <div className="flex gap-3">
-                        <button
-                            onClick={onEdit}
-                            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-slate-900 py-3 font-semibold text-white transition-colors hover:bg-slate-800"
-                        >
-                            <Edit className="w-4 h-4" /> Modifier
-                        </button>
-                        <button
-                            onClick={onDelete}
-                            className="px-4 py-3 bg-red-50 text-red-600 rounded-xl font-semibold hover:bg-red-100 transition-all flex items-center gap-2"
-                        >
-                            <Trash2 className="w-4 h-4" />
-                        </button>
+                        <MaterialButton onClick={onEdit} icon={<Edit className="w-4 h-4" />} className="flex-1 justify-center">
+                            Modifier
+                        </MaterialButton>
+                        <MaterialIconButton ariaLabel="Supprimer" onClick={onDelete} variant="outlined" icon={<Trash2 className="w-4 h-4 text-red-600" />} />
                     </div>
                 </div>
             </div>

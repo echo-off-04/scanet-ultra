@@ -5,6 +5,8 @@ import { X, Plus, Trash2, GripVertical, Mail, MessageSquare, Clock, Tag, Chevron
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import type { EmailSequence } from '@/types';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface StepDraft {
     id?: string;
@@ -178,7 +180,7 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
             <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm" onClick={e => e.stopPropagation()}>
                 <div className="sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-slate-200 bg-white px-6 py-4">
                     <h2 className="text-2xl font-semibold text-slate-900">{editSequence ? 'Modifier la séquence' : 'Nouvelle séquence'}</h2>
-                    <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"><X className="h-5 w-5" /></button>
+                    <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-5 w-5" />} />
                 </div>
 
                 <div className="p-6 space-y-6">
@@ -256,9 +258,9 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                     <div>
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-lg font-semibold text-slate-900">Étapes ({steps.length})</h3>
-                            <button onClick={addStep} className="btn-primary px-3 py-1.5 text-sm">
-                                <Plus className="h-4 w-4" />Ajouter une étape
-                            </button>
+                            <MaterialButton onClick={addStep} icon={<Plus className="h-4 w-4" />} className="text-sm">
+                                Ajouter une étape
+                            </MaterialButton>
                         </div>
 
                         <div className="space-y-3">
@@ -325,11 +327,10 @@ export default function SequenceBuilderModal({ onClose, onSuccess, editSequence 
                 </div>
 
                 <div className="sticky bottom-0 flex justify-end gap-3 rounded-b-2xl border-t border-slate-200 bg-slate-50 px-6 py-4">
-                    <button onClick={onClose} className="btn-secondary">Annuler</button>
-                    <button onClick={handleSave} disabled={saving || !name.trim()}
-                        className="btn-primary disabled:opacity-50">
+                    <MaterialButton onClick={onClose} variant="outlined">Annuler</MaterialButton>
+                    <MaterialButton onClick={handleSave} disabled={saving || !name.trim()}>
                         {saving ? 'Enregistrement...' : editSequence ? 'Modifier' : 'Créer la séquence'}
-                    </button>
+                    </MaterialButton>
                 </div>
             </div>
         </div>
