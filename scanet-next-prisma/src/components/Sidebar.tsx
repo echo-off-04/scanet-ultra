@@ -63,77 +63,85 @@ export function Sidebar({
     ];
 
     const filterOptions = [
-        { value: 'all', label: 'Tous les contacts', count: stats.total, color: 'bg-gray-100 text-gray-700' },
-        { value: 'lead', label: 'Leads', count: stats.leads, color: 'bg-orange-100 text-orange-700' },
-        { value: 'prospect', label: 'Prospects', count: stats.prospects, color: 'bg-amber-100 text-amber-700' },
-        { value: 'client', label: 'Clients', count: stats.clients, color: 'bg-emerald-100 text-emerald-700' },
-        { value: 'partner', label: 'Partenaires', count: stats.partners, color: 'bg-violet-100 text-violet-700' },
-        { value: 'collaborateur', label: 'Collaborateurs', count: stats.collaborateurs || 0, color: 'bg-cyan-100 text-cyan-700' },
-        { value: 'ami', label: 'Ami(e)s', count: stats.amis || 0, color: 'bg-pink-100 text-pink-700' },
-        { value: 'fournisseur', label: 'Fournisseurs', count: stats.fournisseurs || 0, color: 'bg-amber-100 text-amber-700' },
+        { value: 'all', label: 'Tous les contacts', count: stats.total, color: 'bg-slate-100 text-slate-700' },
+        { value: 'lead', label: 'Leads', count: stats.leads, color: 'bg-slate-100 text-slate-700' },
+        { value: 'prospect', label: 'Prospects', count: stats.prospects, color: 'bg-slate-100 text-slate-700' },
+        { value: 'client', label: 'Clients', count: stats.clients, color: 'bg-slate-100 text-slate-700' },
+        { value: 'partner', label: 'Partenaires', count: stats.partners, color: 'bg-slate-100 text-slate-700' },
+        { value: 'collaborateur', label: 'Collaborateurs', count: stats.collaborateurs || 0, color: 'bg-slate-100 text-slate-700' },
+        { value: 'ami', label: 'Ami(e)s', count: stats.amis || 0, color: 'bg-slate-100 text-slate-700' },
+        { value: 'fournisseur', label: 'Fournisseurs', count: stats.fournisseurs || 0, color: 'bg-slate-100 text-slate-700' },
     ];
 
     return (
-        <aside className={`hidden lg:flex bg-white border-r border-gray-200 flex-col h-screen transition-all duration-300 ease-in-out ${isCollapsed ? 'w-16 lg:w-20' : 'w-72'} relative`}>
+        <aside className={`relative hidden h-screen flex-col border-r border-slate-200 bg-slate-50 transition-all duration-200 ease-in-out lg:flex ${isCollapsed ? 'w-16 lg:w-20' : 'w-72'}`}>
             {/* Header */}
-            <div className={`p-4 border-b border-gray-200 ${isCollapsed ? 'px-2' : 'p-6'}`}>
+            <div className={`border-b border-slate-200 ${isCollapsed ? 'p-2' : 'p-5'}`}>
                 <div className="flex items-center justify-between">
                     <div className={`flex items-center gap-3 ${isCollapsed ? 'justify-center w-full' : ''}`}>
-                        <img src="https://i.ibb.co/q3YDjGLC/Scanetwork.png" alt="Scanetwork Logo" className={`${isCollapsed ? 'w-10 h-10' : 'h-12'} object-contain flex-shrink-0`} />
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-900">
+                            S
+                        </div>
+                        {!isCollapsed && (
+                            <div>
+                                <p className="text-sm font-semibold text-slate-900">Scanetwork</p>
+                                <p className="text-xs text-slate-500">Navigation</p>
+                            </div>
+                        )}
                     </div>
                     {!isCollapsed && (
-                        <button onClick={toggleCollapsed} className="hidden lg:block p-2 hover:bg-gray-100 rounded-xl transition-colors" title="Réduire la sidebar">
-                            <ChevronLeft className="w-5 h-5 text-gray-400" />
+                        <button onClick={toggleCollapsed} className="hidden rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 lg:block" title="Réduire la sidebar">
+                            <ChevronLeft className="h-5 w-5" />
                         </button>
                     )}
                 </div>
                 {isCollapsed && (
-                    <button onClick={toggleCollapsed} className="hidden lg:flex w-full mt-3 p-2 hover:bg-gray-100 rounded-xl transition-colors justify-center" title="Agrandir la sidebar">
-                        <ChevronRight className="w-5 h-5 text-gray-400" />
+                    <button onClick={toggleCollapsed} className="mt-3 hidden w-full justify-center rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 lg:flex" title="Agrandir la sidebar">
+                        <ChevronRight className="h-5 w-5" />
                     </button>
                 )}
             </div>
 
             {/* Notifications */}
-            <div className={`relative border-b border-gray-200 ${isCollapsed ? 'p-2' : 'p-3'}`}>
-                <button onClick={() => setShowNotifications(!showNotifications)} className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-xl font-medium transition-all text-gray-700 hover:bg-gray-100 relative`}>
+            <div className={`relative border-b border-slate-200 ${isCollapsed ? 'p-2' : 'p-3'}`}>
+                <button onClick={() => setShowNotifications(!showNotifications)} className={`relative flex w-full items-center rounded-lg px-3 py-2.5 font-medium text-slate-700 transition-colors hover:bg-white ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
                     <div className="relative">
-                        <Bell className="w-5 h-5" />
-                        {unreadCount > 0 && <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-semibold">{unreadCount > 9 ? '9+' : unreadCount}</span>}
+                        <Bell className="h-5 w-5" />
+                        {unreadCount > 0 && <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-semibold text-white">{unreadCount > 9 ? '9+' : unreadCount}</span>}
                     </div>
-                    {!isCollapsed && <><span>Notifications</span>{unreadCount > 0 && <span className="ml-auto px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-600">{unreadCount}</span>}</>}
+                    {!isCollapsed && <><span>Notifications</span>{unreadCount > 0 && <span className="ml-auto rounded-full bg-slate-200 px-2 py-0.5 text-xs font-semibold text-slate-700">{unreadCount}</span>}</>}
                 </button>
 
                 {showNotifications && !isCollapsed && (
-                    <div className="absolute left-full top-0 ml-2 w-96 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-h-[600px] flex flex-col">
-                        <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                            <h3 className="font-semibold text-gray-900">Notifications</h3>
+                    <div className="absolute left-full top-0 z-50 ml-2 flex max-h-[600px] w-96 flex-col rounded-xl border border-slate-200 bg-white shadow-sm">
+                        <div className="flex items-center justify-between border-b border-slate-200 p-4">
+                            <h3 className="font-semibold text-slate-900">Notifications</h3>
                             <div className="flex items-center gap-2">
-                                {unreadCount > 0 && <button onClick={(e) => { e.stopPropagation(); markAllAsRead(); }} className="text-xs text-blue-600 hover:text-blue-700 font-medium">Tout marquer comme lu</button>}
-                                <button onClick={() => setShowNotifications(false)} className="p-1 hover:bg-gray-100 rounded-lg transition-colors"><X className="w-4 h-4 text-gray-400" /></button>
+                                {unreadCount > 0 && <button onClick={(e) => { e.stopPropagation(); markAllAsRead(); }} className="text-xs font-medium text-slate-600 hover:text-slate-900">Tout marquer comme lu</button>}
+                                <button onClick={() => setShowNotifications(false)} className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-slate-100"><X className="h-4 w-4" /></button>
                             </div>
                         </div>
                         <div className="flex-1 overflow-y-auto">
                             {notifications.length === 0 ? (
-                                <div className="p-8 text-center"><Bell className="w-12 h-12 text-gray-300 mx-auto mb-3" /><p className="text-gray-500 text-sm">Aucune notification</p></div>
+                                <div className="p-8 text-center"><Bell className="mx-auto mb-3 h-12 w-12 text-slate-300" /><p className="text-sm text-slate-500">Aucune notification</p></div>
                             ) : (
-                                <div className="divide-y divide-gray-100">
+                                <div className="divide-y divide-slate-100">
                                     {notifications.map((notification) => (
-                                        <div key={notification.id} className={`p-4 hover:bg-gray-50 transition-colors ${!notification.read ? 'bg-blue-50/50' : ''}`}>
+                                        <div key={notification.id} className={`p-4 transition-colors hover:bg-slate-50 ${!notification.read ? 'border-l-2 border-slate-900 bg-slate-100/80' : ''}`}>
                                             <div className="flex items-start gap-3">
                                                 <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${notification.priority === 'urgent' ? 'bg-red-500' : notification.priority === 'high' ? 'bg-orange-500' : notification.priority === 'medium' ? 'bg-blue-500' : 'bg-gray-400'}`} />
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-start justify-between gap-2">
-                                                        <h4 className="font-medium text-sm text-gray-900">{notification.title}</h4>
-                                                        <button onClick={(e) => { e.stopPropagation(); deleteNotification(notification.id); }} className="text-gray-400 hover:text-gray-600"><X className="w-4 h-4" /></button>
+                                                        <h4 className="text-sm font-medium text-slate-900">{notification.title}</h4>
+                                                        <button onClick={(e) => { e.stopPropagation(); deleteNotification(notification.id); }} className="text-slate-400 hover:text-slate-600"><X className="h-4 w-4" /></button>
                                                     </div>
-                                                    <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                                                    <p className="mt-1 text-sm text-slate-600">{notification.message}</p>
                                                     <div className="flex items-center gap-3 mt-2">
-                                                        <span className="text-xs text-gray-400">{new Date(notification.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
-                                                        <span className={`text-xs px-2 py-0.5 rounded-full ${notification.category === 'opportunities' ? 'bg-green-100 text-green-700' : notification.category === 'contacts' ? 'bg-blue-100 text-blue-700' : notification.category === 'follow_ups' ? 'bg-orange-100 text-orange-700' : notification.category === 'events' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-700'}`}>{notification.category}</span>
+                                                        <span className="text-xs text-slate-400">{new Date(notification.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                                                        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700">{notification.category}</span>
                                                         {!notification.read && (
-                                                            <button onClick={(e) => { e.stopPropagation(); markAsRead(notification.id); }} className="text-xs text-blue-600 hover:text-blue-700 flex items-center gap-1">
-                                                                <Check className="w-3 h-3" />Marquer comme lu
+                                                            <button onClick={(e) => { e.stopPropagation(); markAsRead(notification.id); }} className="flex items-center gap-1 text-xs text-slate-600 hover:text-slate-900">
+                                                                <Check className="h-3 w-3" />Marquer comme lu
                                                             </button>
                                                         )}
                                                     </div>
@@ -151,23 +159,23 @@ export function Sidebar({
             {/* Navigation */}
             <nav className="flex-1 overflow-y-auto p-2 space-y-1">
                 <div className="mb-4">
-                    {!isCollapsed && <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3">Navigation</h3>}
+                    {!isCollapsed && <h3 className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">Navigation</h3>}
                     {menuItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = view === item.id;
                         return (
                             <div key={item.id} className="relative group">
                                 <button onClick={() => onViewChange(item.id)}
-                                    className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'} px-3 py-2.5 rounded-xl font-medium transition-all ${isActive ? 'bg-[#0E3A5D] text-white shadow-md' : 'text-gray-700 hover:bg-gray-100'}`}
+                                    className={`flex w-full items-center rounded-lg px-3 py-2.5 font-medium transition-colors ${isCollapsed ? 'justify-center' : 'justify-between'} ${isActive ? 'border border-slate-300 bg-white text-slate-900' : 'text-slate-700 hover:bg-white'}`}
                                     title={isCollapsed ? item.label : undefined}
                                 >
-                                    <div className={`flex items-center ${isCollapsed ? '' : 'gap-3'}`}><Icon className="w-5 h-5 flex-shrink-0" />{!isCollapsed && <span>{item.label}</span>}</div>
+                                    <div className={`flex items-center ${isCollapsed ? '' : 'gap-3'}`}><Icon className="h-5 w-5 flex-shrink-0" />{!isCollapsed && <span>{item.label}</span>}</div>
                                     {!isCollapsed && item.count !== null && item.count > 0 && (
-                                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${isActive ? 'bg-white/20 text-white' : item.badge ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-700'}`}>{item.count}</span>
+                                        <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${item.badge ? 'bg-red-100 text-red-600' : 'bg-slate-200 text-slate-700'}`}>{item.count}</span>
                                     )}
                                 </button>
                                 {isCollapsed && (
-                                    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">{item.label}</div>
+                                    <div className="invisible absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1.5 text-sm text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100">{item.label}</div>
                                 )}
                             </div>
                         );
@@ -175,10 +183,10 @@ export function Sidebar({
                 </div>
 
                 {view === 'contacts' && !isCollapsed && (
-                    <div className="border-t border-gray-100 pt-4">
-                        <button onClick={() => setShowFilters(!showFilters)} className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider hover:text-gray-600 transition-colors">
-                            <div className="flex items-center gap-2"><Filter className="w-4 h-4" />Filtres</div>
-                            {showFilters ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    <div className="border-t border-slate-200 pt-4">
+                        <button onClick={() => setShowFilters(!showFilters)} className="flex w-full items-center justify-between px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-400 transition-colors hover:text-slate-600">
+                            <div className="flex items-center gap-2"><Filter className="h-4 w-4" />Filtres</div>
+                            {showFilters ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                         </button>
                         {showFilters && (
                             <div className="space-y-1 mt-2">
@@ -186,14 +194,14 @@ export function Sidebar({
                                     const isActive = filterStatus === option.value;
                                     return (
                                         <button key={option.value} onClick={() => onFilterChange(option.value)}
-                                            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-all ${isActive ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'text-gray-600 hover:bg-gray-50'}`}
+                                            className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive ? 'border border-slate-300 bg-white text-slate-900' : 'text-slate-600 hover:bg-white'}`}
                                         >
                                             <span>{option.label}</span>
-                                            <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${isActive ? 'bg-blue-100 text-blue-700' : option.color}`}>{option.count}</span>
+                                            <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${isActive ? 'bg-slate-200 text-slate-800' : option.color}`}>{option.count}</span>
                                         </button>
                                     );
                                 })}
-                                {filterStatus !== 'all' && <button onClick={() => onFilterChange('all')} className="w-full text-center text-xs text-gray-500 hover:text-gray-700 py-2 transition-colors">Effacer le filtre</button>}
+                                {filterStatus !== 'all' && <button onClick={() => onFilterChange('all')} className="w-full py-2 text-center text-xs text-slate-500 transition-colors hover:text-slate-700">Effacer le filtre</button>}
                             </div>
                         )}
                     </div>
@@ -201,43 +209,43 @@ export function Sidebar({
             </nav>
 
             {/* Bottom */}
-            <div className="border-t border-gray-200">
+            <div className="border-t border-slate-200">
                 <div className="relative group p-2">
                     <button onClick={() => onViewChange('settings')}
-                        className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-xl font-medium transition-all ${view === 'settings' ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50'}`}
+                        className={`flex w-full items-center rounded-lg px-3 py-2.5 font-medium transition-colors ${isCollapsed ? 'justify-center' : 'gap-3'} ${view === 'settings' ? 'border border-slate-300 bg-white text-slate-900' : 'text-slate-600 hover:bg-white'}`}
                         title={isCollapsed ? 'Paramètres' : undefined}
                     >
-                        <Settings className="w-5 h-5" />{!isCollapsed && <span>Paramètres</span>}
+                        <Settings className="h-5 w-5" />{!isCollapsed && <span>Paramètres</span>}
                     </button>
-                    {isCollapsed && <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Paramètres</div>}
+                    {isCollapsed && <div className="invisible absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1.5 text-sm text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100">Paramètres</div>}
                 </div>
 
                 <div className={`p-3 ${isCollapsed ? 'px-2' : ''}`}>
                     <div className="relative">
-                        <button onClick={() => !isCollapsed && setShowUserMenu(!showUserMenu)} className={`w-full flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} p-2 rounded-xl hover:bg-gray-50 transition-all`}>
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e] flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">{getInitials(userName)}</div>
+                        <button onClick={() => !isCollapsed && setShowUserMenu(!showUserMenu)} className={`flex w-full items-center rounded-lg p-2 transition-colors hover:bg-white ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-slate-300 bg-slate-200 text-sm font-semibold text-slate-900">{getInitials(userName)}</div>
                             {!isCollapsed && (
                                 <>
-                                    <div className="flex-1 text-left"><p className="text-sm font-semibold text-gray-900 truncate">{userName}</p><p className="text-xs text-gray-500 truncate">{userEmail}</p></div>
-                                    <ChevronUp className={`w-4 h-4 text-gray-400 transition-transform ${showUserMenu ? '' : 'rotate-180'}`} />
+                                    <div className="flex-1 text-left"><p className="truncate text-sm font-semibold text-slate-900">{userName}</p><p className="truncate text-xs text-slate-500">{userEmail}</p></div>
+                                    <ChevronUp className={`h-4 w-4 text-slate-400 transition-transform ${showUserMenu ? '' : 'rotate-180'}`} />
                                 </>
                             )}
                         </button>
                         {showUserMenu && !isCollapsed && (
-                            <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                                <button onClick={() => { setShowUserMenu(false); onViewChange('settings'); }} className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"><User className="w-4 h-4" /><span className="text-sm">Mon profil</span></button>
-                                <button onClick={() => { setShowUserMenu(false); onSignOut(); }} className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors"><LogOut className="w-4 h-4" /><span className="text-sm">Déconnexion</span></button>
+                            <div className="absolute bottom-full left-0 right-0 mb-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+                                <button onClick={() => { setShowUserMenu(false); onViewChange('settings'); }} className="flex w-full items-center gap-3 px-4 py-3 text-slate-700 transition-colors hover:bg-slate-50"><User className="h-4 w-4" /><span className="text-sm">Mon profil</span></button>
+                                <button onClick={() => { setShowUserMenu(false); onSignOut(); }} className="flex w-full items-center gap-3 px-4 py-3 text-red-600 transition-colors hover:bg-red-50"><LogOut className="h-4 w-4" /><span className="text-sm">Déconnexion</span></button>
                             </div>
                         )}
                     </div>
                     {isCollapsed && (
                         <div className="relative group mt-2">
-                            <button onClick={onSignOut} className="w-full flex justify-center p-2.5 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors" title="Déconnexion"><LogOut className="w-5 h-5" /></button>
-                            <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-3 py-1.5 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Déconnexion</div>
+                            <button onClick={onSignOut} className="flex w-full justify-center rounded-lg p-2.5 text-slate-600 transition-colors hover:bg-red-50 hover:text-red-600" title="Déconnexion"><LogOut className="h-5 w-5" /></button>
+                            <div className="invisible absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-900 px-3 py-1.5 text-sm text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100">Déconnexion</div>
                         </div>
                     )}
                 </div>
-                {!isCollapsed && <p className="text-center text-xs text-gray-400 pb-3">v1.0.0</p>}
+                {!isCollapsed && <p className="pb-3 text-center text-xs text-slate-400">v1.0.0</p>}
             </div>
         </aside>
     );

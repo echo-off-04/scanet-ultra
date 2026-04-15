@@ -7,6 +7,8 @@ import { useKpis } from '@/contexts/KpiContext';
 import { AddContactModal } from './AddContactModal';
 import { EventObjectives } from './EventObjectives';
 import { EventQRCodeModal } from './EventQRCodeModal';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface EventProfileProps {
     eventId: string;
@@ -45,10 +47,10 @@ const EVENT_TYPES = [
 ];
 
 const STATUS_OPTIONS = [
-    { value: 'upcoming', label: 'À venir', color: 'bg-blue-100 text-blue-800' },
-    { value: 'ongoing', label: 'En cours', color: 'bg-green-100 text-green-800' },
-    { value: 'completed', label: 'Terminé', color: 'bg-gray-100 text-gray-800' },
-    { value: 'cancelled', label: 'Annulé', color: 'bg-red-100 text-red-800' },
+    { value: 'upcoming', label: 'À venir', color: 'bg-slate-100 text-slate-700' },
+    { value: 'ongoing', label: 'En cours', color: 'bg-slate-200 text-slate-800' },
+    { value: 'completed', label: 'Terminé', color: 'bg-slate-100 text-slate-500' },
+    { value: 'cancelled', label: 'Annulé', color: 'bg-red-100 text-red-700' },
 ];
 
 const calculateEventStatus = (event: Event): string => {
@@ -283,11 +285,11 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
         );
     };
 
-    if (loading) return <div className="flex items-center justify-center h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>;
+    if (loading) return <div className="flex h-screen items-center justify-center bg-slate-50"><div className="h-12 w-12 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"></div></div>;
     if (!event) return (
-        <div className="flex flex-col items-center justify-center h-screen">
-            <AlertCircle className="w-16 h-16 text-gray-400 mb-4" /><p className="text-gray-600">Événement non trouvé</p>
-            <button onClick={onBack} className="mt-4 text-blue-600 hover:text-blue-700">Retour</button>
+        <div className="flex h-screen flex-col items-center justify-center bg-slate-50">
+            <AlertCircle className="mb-4 h-16 w-16 text-slate-300" /><p className="text-slate-600">Événement non trouvé</p>
+            <MaterialButton onClick={onBack} variant="text" className="mt-4">Retour</MaterialButton>
         </div>
     );
 
@@ -307,61 +309,65 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
     const costPerContact = actualContactsCount > 0 ? (event.budget / actualContactsCount).toFixed(2) : '0';
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50/30">
-            {/* Header */}
-            <div className="relative h-48 sm:h-56 md:h-64 bg-gradient-to-r from-blue-600 to-blue-800">
-                {(imagePreview || event.image_url) && <img src={imagePreview || event.image_url || ''} alt={event.name} className="w-full h-full object-cover" />}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div className="min-h-screen bg-slate-50">
+            <div className="mx-auto max-w-6xl px-3 py-4 sm:px-4 sm:py-6 md:px-6 md:py-8">
+                <div className="mb-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                    {(imagePreview || event.image_url) && (
+                        <div className="h-48 border-b border-slate-200 bg-slate-100 sm:h-56 md:h-64">
+                            <img src={imagePreview || event.image_url || ''} alt={event.name} className="h-full w-full object-cover" />
+                        </div>
+                    )}
+                    <div className="p-4 sm:p-6">
+                        <div className="mb-4 flex items-start justify-between gap-3">
+                            <div className="flex min-w-0 items-center gap-3">
+                                <MaterialIconButton ariaLabel="Retour" onClick={onBack} icon={<ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 text-slate-700" />} className="h-9 w-9 sm:h-10 sm:w-10" />
+                                <div className="min-w-0">
+                                    <p className="text-sm font-medium text-slate-500">Détail de l&apos;événement</p>
+                                    {isEditing ? (
+                                        <input type="text" value={editedEvent.name || ''} onChange={(e) => setEditedEvent({ ...editedEvent, name: e.target.value })} className="input-modern mt-1 text-xl font-semibold sm:text-2xl md:text-3xl" />
+                                    ) : (
+                                        <h1 className="mt-1 truncate text-xl font-semibold text-slate-900 sm:text-2xl md:text-3xl">{event.name}</h1>
+                                    )}
+                                </div>
+                            </div>
+                            <div className="flex flex-shrink-0 gap-2">
+                                {isEditing ? (
+                                    <>
+                                        <MaterialIconButton ariaLabel="Annuler les modifications" onClick={() => { setIsEditing(false); setEditedEvent(event); setImageFile(null); setImagePreview(null); }} icon={<X className="h-4 w-4 text-slate-700 sm:h-5 sm:w-5" />} />
+                                        <MaterialIconButton ariaLabel="Enregistrer l'événement" onClick={handleSave} variant="filled" icon={<Save className="h-4 w-4 sm:h-5 sm:w-5" />} />
+                                    </>
+                                ) : (
+                                    <>
+                                        <MaterialIconButton ariaLabel="Afficher le code QR" onClick={handleShowQRModal} icon={<QrCode className="h-4 w-4 text-slate-700 sm:h-5 sm:w-5" />} />
+                                        <MaterialIconButton ariaLabel="Modifier l'événement" onClick={() => setIsEditing(true)} icon={<Edit className="h-4 w-4 text-slate-700 sm:h-5 sm:w-5" />} />
+                                        <MaterialIconButton ariaLabel="Supprimer l'événement" onClick={handleDelete} variant="outlined" icon={<Trash2 className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />} />
+                                    </>
+                                )}
+                            </div>
+                        </div>
 
-                <div className="absolute top-3 sm:top-4 md:top-6 left-3 sm:left-4 md:left-6 right-3 sm:right-4 md:right-6 flex items-center justify-between">
-                    <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                        <button onClick={onBack} className="p-1.5 sm:p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-all shadow-lg flex-shrink-0"><ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" /></button>
-                        <h1 className="text-base sm:text-lg md:text-xl font-bold text-white drop-shadow-lg truncate">Détail de l&apos;événement</h1>
-                    </div>
-                    <div className="flex gap-1.5 sm:gap-2 flex-shrink-0">
-                        {isEditing ? (
-                            <>
-                                <button onClick={() => { setIsEditing(false); setEditedEvent(event); setImageFile(null); setImagePreview(null); }} className="p-1.5 sm:p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-all shadow-lg"><X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" /></button>
-                                <button onClick={handleSave} className="p-1.5 sm:p-2 bg-blue-600 rounded-full hover:bg-blue-700 transition-all shadow-lg"><Save className="w-4 h-4 sm:w-5 sm:h-5 text-white" /></button>
-                            </>
-                        ) : (
-                            <>
-                                <button onClick={handleShowQRModal} className="p-1.5 sm:p-2 bg-indigo-600 rounded-full hover:bg-indigo-700 transition-all shadow-lg" title="Code QR"><QrCode className="w-4 h-4 sm:w-5 sm:h-5 text-white" /></button>
-                                <button onClick={() => setIsEditing(true)} className="p-1.5 sm:p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-all shadow-lg"><Edit className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" /></button>
-                                <button onClick={handleDelete} className="p-1.5 sm:p-2 bg-red-600 rounded-full hover:bg-red-700 transition-all shadow-lg"><Trash2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" /></button>
-                            </>
+                        <div className="flex flex-wrap gap-2">
+                            <span className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${statusInfo?.color || 'bg-slate-100 text-slate-700'}`}>{statusInfo?.label || event.status}</span>
+                            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 sm:text-sm">{categoryLabel}</span>
+                            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 sm:text-sm">{eventTypeLabel}</span>
+                        </div>
+
+                        {isEditing && (
+                            <label className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100">
+                                <Camera className="h-4 w-4" />Modifier l&apos;image
+                                <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                            </label>
                         )}
                     </div>
                 </div>
 
-                <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-3 sm:left-4 md:left-6 right-3 sm:right-4 md:right-6">
-                    {isEditing ? (
-                        <input type="text" value={editedEvent.name || ''} onChange={(e) => setEditedEvent({ ...editedEvent, name: e.target.value })} className="text-xl sm:text-2xl md:text-3xl font-bold text-white bg-white/10 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-1.5 w-full border-2 border-white/30" />
-                    ) : (
-                        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-2 truncate">{event.name}</h1>
-                    )}
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
-                        <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium ${statusInfo?.color || 'bg-gray-100 text-gray-800'}`}>{statusInfo?.label || event.status}</span>
-                        <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium bg-white/20 backdrop-blur-sm text-white">{categoryLabel}</span>
-                        <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm font-medium bg-white/20 backdrop-blur-sm text-white">{eventTypeLabel}</span>
-                    </div>
-                </div>
-
-                {isEditing && (
-                    <label className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 p-2 sm:p-3 bg-white rounded-full hover:bg-gray-100 cursor-pointer transition-all shadow-lg">
-                        <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700" /><input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
-                    </label>
-                )}
-            </div>
-
-            <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
                 {(!event.target_participants || event.target_participants === 0) && !isEditing && (
-                    <div className="mb-6 bg-amber-50 border-l-4 border-amber-500 rounded-lg p-4 flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div className="mb-6 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
+                        <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-600" />
                         <div className="flex-1">
-                            <h3 className="text-sm font-semibold text-amber-900 mb-1">Nombre de participants cible non défini</h3>
-                            <p className="text-sm text-amber-800 mb-2">Pour obtenir des statistiques précises, veuillez définir le nombre de participants cible.</p>
-                            <button onClick={() => setIsEditing(true)} className="text-sm font-semibold text-amber-900 hover:text-amber-950 underline">Définir maintenant</button>
+                            <h3 className="mb-1 text-sm font-semibold text-amber-900">Nombre de participants cible non défini</h3>
+                            <p className="mb-2 text-sm text-amber-800">Pour obtenir des statistiques précises, veuillez définir le nombre de participants cible.</p>
+                            <MaterialButton onClick={() => setIsEditing(true)} variant="text" className="px-0 text-amber-900">Définir maintenant</MaterialButton>
                         </div>
                     </div>
                 )}
@@ -369,84 +375,88 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 space-y-6">
                         {/* Stats */}
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2"><BarChart3 className="w-5 h-5 text-blue-600" />Statistiques de performance</h2>
-                            <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-sky-50 rounded-xl">
+                        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                            <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-slate-900"><BarChart3 className="h-5 w-5 text-slate-700" />Statistiques de performance</h2>
+                            <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
                                 <div className="flex items-center justify-between mb-2">
-                                    <span className="text-sm font-semibold text-gray-700">Progression des participants</span>
-                                    <span className="text-sm font-bold text-gray-900">{actualContactsCount} / {targetParticipants}</span>
+                                    <span className="text-sm font-semibold text-slate-700">Progression des participants</span>
+                                    <span className="text-sm font-semibold text-slate-900">{actualContactsCount} / {targetParticipants}</span>
                                 </div>
-                                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                                    <div className={`h-full rounded-full transition-all ${calculatedStatus === 'completed' ? 'bg-gray-400' : calculatedStatus === 'ongoing' ? 'bg-green-500' : calculatedStatus === 'cancelled' ? 'bg-red-400' : 'bg-blue-500'}`} style={{ width: `${Math.min(100, targetParticipants > 0 ? (actualContactsCount / targetParticipants) * 100 : 0)}%` }} />
+                                <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200">
+                                    <div className="h-full rounded-full bg-slate-700 transition-all" style={{ width: `${Math.min(100, targetParticipants > 0 ? (actualContactsCount / targetParticipants) * 100 : 0)}%` }} />
                                 </div>
                                 <div className="flex items-center justify-between mt-2">
-                                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${statusInfo?.color || 'bg-gray-100 text-gray-800'}`}>{statusInfo?.label || calculatedStatus}</span>
-                                    <span className="text-xs text-gray-600">{targetParticipants > 0 ? Math.round((actualContactsCount / targetParticipants) * 100) : 0}% complété</span>
+                                    <span className={`rounded-full px-2 py-1 text-xs font-medium ${statusInfo?.color || 'bg-slate-100 text-slate-700'}`}>{statusInfo?.label || calculatedStatus}</span>
+                                    <span className="text-xs text-slate-600">{targetParticipants > 0 ? Math.round((actualContactsCount / targetParticipants) * 100) : 0}% complété</span>
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                                <div className="text-center p-4 bg-blue-50 rounded-xl">
-                                    <div className="text-3xl font-bold text-blue-600 flex items-center justify-center gap-2">
-                                        <button onClick={() => updatePeopleApproached(-1)} className="p-1 hover:bg-blue-100 rounded transition-colors"><ChevronDown className="w-5 h-5" /></button>
+                                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center">
+                                    <div className="flex items-center justify-center gap-2 text-3xl font-semibold text-slate-900">
+                                        <button onClick={() => updatePeopleApproached(-1)} className="rounded p-1 transition-colors hover:bg-slate-200"><ChevronDown className="h-5 w-5" /></button>
                                         <span>{event.people_approached || 0}</span>
-                                        <button onClick={() => updatePeopleApproached(1)} className="p-1 hover:bg-blue-100 rounded transition-colors"><ChevronUp className="w-5 h-5" /></button>
+                                        <button onClick={() => updatePeopleApproached(1)} className="rounded p-1 transition-colors hover:bg-slate-200"><ChevronUp className="h-5 w-5" /></button>
                                     </div>
-                                    <div className="text-sm text-gray-600 mt-1 flex items-center justify-center gap-1"><Eye className="w-4 h-4" />Approchées</div>
+                                    <div className="mt-1 flex items-center justify-center gap-1 text-sm text-slate-600"><Eye className="h-4 w-4" />Approchées</div>
                                 </div>
-                                <div className="text-center p-4 bg-green-50 rounded-xl">
-                                    <div className="text-3xl font-bold text-green-600">{actualContactsCount}</div>
-                                    <div className="text-sm text-gray-600 mt-1 flex items-center justify-center gap-1"><UserPlus className="w-4 h-4" />Enregistrées</div>
+                                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center">
+                                    <div className="text-3xl font-semibold text-slate-900">{actualContactsCount}</div>
+                                    <div className="mt-1 flex items-center justify-center gap-1 text-sm text-slate-600"><UserPlus className="h-4 w-4" />Enregistrées</div>
                                 </div>
-                                <div className="text-center p-4 bg-purple-50 rounded-xl">
-                                    <div className="text-3xl font-bold text-purple-600">{conversionRate}%</div>
-                                    <div className="text-sm text-gray-600 mt-1 flex items-center justify-center gap-1"><TrendingUp className="w-4 h-4" />Conversion</div>
+                                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center">
+                                    <div className="text-3xl font-semibold text-slate-900">{conversionRate}%</div>
+                                    <div className="mt-1 flex items-center justify-center gap-1 text-sm text-slate-600"><TrendingUp className="h-4 w-4" />Conversion</div>
                                 </div>
-                                <div className="text-center p-4 bg-amber-50 rounded-xl">
-                                    <div className="text-3xl font-bold text-amber-600">{targetParticipants || 0}</div>
-                                    <div className="text-sm text-gray-600 mt-1 flex items-center justify-center gap-1"><Target className="w-4 h-4" />Cible</div>
+                                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center">
+                                    <div className="text-3xl font-semibold text-slate-900">{targetParticipants || 0}</div>
+                                    <div className="mt-1 flex items-center justify-center gap-1 text-sm text-slate-600"><Target className="h-4 w-4" />Cible</div>
                                 </div>
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
-                                <div className="text-center"><div className="flex items-center justify-center gap-1 mb-1"><Percent className="w-4 h-4 text-gray-500" /><span className="text-sm font-medium text-gray-600">Taux d&apos;approche</span></div><div className="text-2xl font-bold text-gray-900">{approachRate}%</div></div>
-                                <div className="text-center"><div className="flex items-center justify-center gap-1 mb-1"><CheckCircle className="w-4 h-4 text-gray-500" /><span className="text-sm font-medium text-gray-600">Qualité</span></div><div className="text-2xl font-bold text-gray-900">{contactQualityRate}%</div></div>
-                                <div className="text-center"><div className="flex items-center justify-center gap-1 mb-1"><TrendingUp className="w-4 h-4 text-gray-500" /><span className="text-sm font-medium text-gray-600">ROI</span></div><div className="text-2xl font-bold text-gray-900">{roi}%</div></div>
+                            <div className="grid grid-cols-2 gap-4 border-t border-slate-200 pt-4 md:grid-cols-3">
+                                <div className="text-center"><div className="mb-1 flex items-center justify-center gap-1"><Percent className="h-4 w-4 text-slate-500" /><span className="text-sm font-medium text-slate-600">Taux d&apos;approche</span></div><div className="text-2xl font-semibold text-slate-900">{approachRate}%</div></div>
+                                <div className="text-center"><div className="mb-1 flex items-center justify-center gap-1"><CheckCircle className="h-4 w-4 text-slate-500" /><span className="text-sm font-medium text-slate-600">Qualité</span></div><div className="text-2xl font-semibold text-slate-900">{contactQualityRate}%</div></div>
+                                <div className="text-center"><div className="mb-1 flex items-center justify-center gap-1"><TrendingUp className="h-4 w-4 text-slate-500" /><span className="text-sm font-medium text-slate-600">ROI</span></div><div className="text-2xl font-semibold text-slate-900">{roi}%</div></div>
                             </div>
                         </div>
 
                         {/* Contacts */}
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2"><Users className="w-5 h-5 text-blue-600" />Contacts enregistrés ({actualContactsCount})</h2>
+                                <h2 className="flex items-center gap-2 text-xl font-semibold text-slate-900"><Users className="h-5 w-5 text-slate-700" />Contacts enregistrés ({actualContactsCount})</h2>
                                 <div className="flex items-center gap-2">
-                                    <button onClick={() => setShowContactFormModal(true)} className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all text-sm font-semibold"><UserPlus className="w-4 h-4" />Créer</button>
-                                    <button onClick={() => { setShowAddContactModal(true); loadAllContacts(); }} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all text-sm font-semibold"><Plus className="w-4 h-4" />Ajouter</button>
+                                    <MaterialButton onClick={() => setShowContactFormModal(true)} variant="outlined" icon={<UserPlus className="h-4 w-4" />} className="text-sm">
+                                        Créer
+                                    </MaterialButton>
+                                    <MaterialButton onClick={() => { setShowAddContactModal(true); loadAllContacts(); }} icon={<Plus className="h-4 w-4" />} className="text-sm">
+                                        Ajouter
+                                    </MaterialButton>
                                 </div>
                             </div>
                             {eventContacts.length === 0 ? (
-                                <div className="text-center py-8"><Users className="w-12 h-12 text-gray-300 mx-auto mb-3" /><p className="text-gray-500">Aucun contact associé</p></div>
+                                <div className="py-8 text-center"><Users className="mx-auto mb-3 h-12 w-12 text-slate-300" /><p className="text-slate-500">Aucun contact associé</p></div>
                             ) : (
                                 <div className="space-y-3">
                                     {eventContacts.map((ec) => (
-                                        <div key={ec.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all">
+                                        <div key={ec.id} className="flex items-center gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100">
                                             <button onClick={() => onContactSelect(ec.contact_id)} className="flex items-center gap-4 flex-1 min-w-0 text-left">
-                                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-semibold">{ec.contacts.full_name.charAt(0).toUpperCase()}</div>
+                                                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-300 bg-slate-200 font-semibold text-slate-900">{ec.contacts.full_name.charAt(0).toUpperCase()}</div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h3 className="font-semibold text-gray-900 hover:text-blue-600">{ec.contacts.full_name}</h3>
+                                                    <h3 className="font-semibold text-slate-900">{ec.contacts.full_name}</h3>
                                                     <div className="flex items-center gap-3 mt-1">
-                                                        {ec.contacts.company && <span className="text-sm text-gray-600 flex items-center gap-1"><Building2 className="w-3 h-3" />{ec.contacts.company}</span>}
-                                                        {ec.contacts.job_title && <span className="text-sm text-gray-500">{ec.contacts.job_title}</span>}
+                                                        {ec.contacts.company && <span className="flex items-center gap-1 text-sm text-slate-600"><Building2 className="h-3 w-3" />{ec.contacts.company}</span>}
+                                                        {ec.contacts.job_title && <span className="text-sm text-slate-500">{ec.contacts.job_title}</span>}
                                                     </div>
                                                 </div>
                                             </button>
                                             <div className="flex items-center gap-2">
-                                                {ec.contacts.email && <a href={`mailto:${ec.contacts.email}`} className="p-2 text-gray-400 hover:text-blue-600 transition-colors"><Mail className="w-4 h-4" /></a>}
+                                                {ec.contacts.email && <a href={`mailto:${ec.contacts.email}`} className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-white hover:text-slate-700"><Mail className="h-4 w-4" /></a>}
                                                 {ec.contacts.phone && (
                                                     <>
-                                                        <a href={`tel:${ec.contacts.phone}`} className="p-2 text-gray-400 hover:text-green-600 transition-colors"><Phone className="w-4 h-4" /></a>
-                                                        <a href={`https://wa.me/${ec.contacts.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-green-600 transition-colors"><MessageCircle className="w-4 h-4" /></a>
+                                                        <a href={`tel:${ec.contacts.phone}`} className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-white hover:text-slate-700"><Phone className="h-4 w-4" /></a>
+                                                        <a href={`https://wa.me/${ec.contacts.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-white hover:text-slate-700"><MessageCircle className="h-4 w-4" /></a>
                                                     </>
                                                 )}
-                                                <button onClick={() => handleRemoveContact(ec.id)} className="p-2 text-gray-400 hover:text-red-600 transition-colors"><Trash2 className="w-4 h-4" /></button>
+                                                <MaterialIconButton ariaLabel="Retirer le contact" onClick={() => handleRemoveContact(ec.id)} icon={<Trash2 className="h-4 w-4 text-red-600" />} />
                                             </div>
                                         </div>
                                     ))}
@@ -455,12 +465,12 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
                         </div>
 
                         {/* Description */}
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h2 className="text-xl font-bold text-gray-900 mb-4">Description</h2>
+                        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                            <h2 className="mb-4 text-xl font-semibold text-slate-900">Description</h2>
                             {isEditing ? (
-                                <textarea value={editedEvent.description || ''} onChange={(e) => setEditedEvent({ ...editedEvent, description: e.target.value })} className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none" rows={6} placeholder="Description..." />
+                                <textarea value={editedEvent.description || ''} onChange={(e) => setEditedEvent({ ...editedEvent, description: e.target.value })} className="input-modern resize-none px-4 py-3" rows={6} placeholder="Description..." />
                             ) : (
-                                <p className="text-gray-700 whitespace-pre-wrap">{event.description || 'Aucune description'}</p>
+                                <p className="whitespace-pre-wrap text-slate-700">{event.description || 'Aucune description'}</p>
                             )}
                         </div>
 
@@ -469,60 +479,60 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
 
                     {/* Sidebar */}
                     <div className="space-y-6">
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><Calendar className="w-5 h-5 text-blue-600" />Dates</h2>
+                        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                            <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900"><Calendar className="h-5 w-5 text-slate-700" />Dates</h2>
                             <div className="space-y-3">
                                 <div>
-                                    <label className="text-sm text-gray-600 block mb-1">Début</label>
-                                    {isEditing ? <input type="datetime-local" value={editedEvent.start_date?.slice(0, 16) || ''} onChange={(e) => setEditedEvent({ ...editedEvent, start_date: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2" /> : <p className="text-gray-900">{event.start_date ? new Date(event.start_date).toLocaleString('fr-FR') : 'Non défini'}</p>}
+                                    <label className="mb-1 block text-sm text-slate-600">Début</label>
+                                    {isEditing ? <input type="datetime-local" value={editedEvent.start_date?.slice(0, 16) || ''} onChange={(e) => setEditedEvent({ ...editedEvent, start_date: e.target.value })} className="input-modern" /> : <p className="text-slate-900">{event.start_date ? new Date(event.start_date).toLocaleString('fr-FR') : 'Non défini'}</p>}
                                 </div>
                                 <div>
-                                    <label className="text-sm text-gray-600 block mb-1">Fin</label>
-                                    {isEditing ? <input type="datetime-local" value={editedEvent.end_date?.slice(0, 16) || ''} onChange={(e) => setEditedEvent({ ...editedEvent, end_date: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2" /> : <p className="text-gray-900">{event.end_date ? new Date(event.end_date).toLocaleString('fr-FR') : 'Non défini'}</p>}
+                                    <label className="mb-1 block text-sm text-slate-600">Fin</label>
+                                    {isEditing ? <input type="datetime-local" value={editedEvent.end_date?.slice(0, 16) || ''} onChange={(e) => setEditedEvent({ ...editedEvent, end_date: e.target.value })} className="input-modern" /> : <p className="text-slate-900">{event.end_date ? new Date(event.end_date).toLocaleString('fr-FR') : 'Non défini'}</p>}
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><MapPin className="w-5 h-5 text-blue-600" />Lieu</h2>
-                            {isEditing ? <input type="text" value={editedEvent.location || ''} onChange={(e) => setEditedEvent({ ...editedEvent, location: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="Ex: Paris" /> : event.location ? <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 underline">{event.location}</a> : <p className="text-gray-700">Non défini</p>}
+                        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                            <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900"><MapPin className="h-5 w-5 text-slate-700" />Lieu</h2>
+                            {isEditing ? <input type="text" value={editedEvent.location || ''} onChange={(e) => setEditedEvent({ ...editedEvent, location: e.target.value })} className="input-modern" placeholder="Ex: Paris" /> : event.location ? <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-slate-700 underline hover:text-slate-900">{event.location}</a> : <p className="text-slate-700">Non défini</p>}
                         </div>
 
                         {isEditing && (
                             <>
-                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                                    <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><Users className="w-5 h-5 text-blue-600" />Participants</h2>
-                                    <div><label className="text-sm text-gray-600 block mb-1">Nombre cible</label><input type="number" value={editedEvent.target_participants || 0} onChange={(e) => setEditedEvent({ ...editedEvent, target_participants: parseInt(e.target.value) || 0 })} className="w-full border border-gray-300 rounded-lg px-3 py-2" min="0" /></div>
+                                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                                    <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900"><Users className="h-5 w-5 text-slate-700" />Participants</h2>
+                                    <div><label className="mb-1 block text-sm text-slate-600">Nombre cible</label><input type="number" value={editedEvent.target_participants || 0} onChange={(e) => setEditedEvent({ ...editedEvent, target_participants: parseInt(e.target.value) || 0 })} className="input-modern" min="0" /></div>
                                 </div>
-                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                                    <h2 className="text-lg font-bold text-gray-900 mb-4">Budget & Revenus</h2>
+                                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                                    <h2 className="mb-4 text-lg font-semibold text-slate-900">Budget & Revenus</h2>
                                     <div className="space-y-3">
-                                        <div><label className="text-sm text-gray-600 block mb-1">Budget (€)</label><input type="number" value={editedEvent.budget || 0} onChange={(e) => setEditedEvent({ ...editedEvent, budget: parseFloat(e.target.value) || 0 })} className="w-full border border-gray-300 rounded-lg px-3 py-2" min="0" step="0.01" /></div>
-                                        <div><label className="text-sm text-gray-600 block mb-1">Revenus (€)</label><input type="number" value={editedEvent.revenue || 0} onChange={(e) => setEditedEvent({ ...editedEvent, revenue: parseFloat(e.target.value) || 0 })} className="w-full border border-gray-300 rounded-lg px-3 py-2" min="0" step="0.01" /></div>
-                                        <div className="pt-3 border-t border-gray-200"><div className="flex justify-between items-center"><span className="text-sm text-gray-600">Coût par contact</span><span className="font-bold text-gray-900">{costPerContact}€</span></div></div>
+                                        <div><label className="mb-1 block text-sm text-slate-600">Budget (€)</label><input type="number" value={editedEvent.budget || 0} onChange={(e) => setEditedEvent({ ...editedEvent, budget: parseFloat(e.target.value) || 0 })} className="input-modern" min="0" step="0.01" /></div>
+                                        <div><label className="mb-1 block text-sm text-slate-600">Revenus (€)</label><input type="number" value={editedEvent.revenue || 0} onChange={(e) => setEditedEvent({ ...editedEvent, revenue: parseFloat(e.target.value) || 0 })} className="input-modern" min="0" step="0.01" /></div>
+                                        <div className="border-t border-slate-200 pt-3"><div className="flex items-center justify-between"><span className="text-sm text-slate-600">Coût par contact</span><span className="font-semibold text-slate-900">{costPerContact}€</span></div></div>
                                     </div>
                                 </div>
-                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                                    <h2 className="text-lg font-bold text-gray-900 mb-4">Statut</h2>
-                                    <select value={editedEvent.status || ''} onChange={(e) => setEditedEvent({ ...editedEvent, status: e.target.value })} className="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                                    <h2 className="mb-4 text-lg font-semibold text-slate-900">Statut</h2>
+                                    <select value={editedEvent.status || ''} onChange={(e) => setEditedEvent({ ...editedEvent, status: e.target.value })} className="input-modern">
                                         {STATUS_OPTIONS.map(status => <option key={status.value} value={status.value}>{status.label}</option>)}
                                     </select>
                                 </div>
                             </>
                         )}
 
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><Users className="w-5 h-5 text-blue-600" />Public cible</h2>
+                        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                            <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900"><Users className="h-5 w-5 text-slate-700" />Public cible</h2>
                             {event.target_audience && event.target_audience.length > 0 ? (
-                                <div className="flex flex-wrap gap-2">{event.target_audience.map((audience, index) => <span key={index} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">{audience}</span>)}</div>
-                            ) : <p className="text-gray-500 text-sm">Non défini</p>}
+                                <div className="flex flex-wrap gap-2">{event.target_audience.map((audience, index) => <span key={index} className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700">{audience}</span>)}</div>
+                            ) : <p className="text-sm text-slate-500">Non défini</p>}
                         </div>
 
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-blue-600" />Informations</h2>
+                        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                            <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900"><Clock className="h-5 w-5 text-slate-700" />Informations</h2>
                             <div className="space-y-2 text-sm">
-                                <div className="flex justify-between"><span className="text-gray-600">Créé le</span><span className="text-gray-900">{new Date(event.created_at).toLocaleDateString('fr-FR')}</span></div>
-                                <div className="flex justify-between"><span className="text-gray-600">Modifié le</span><span className="text-gray-900">{new Date(event.updated_at).toLocaleDateString('fr-FR')}</span></div>
+                                <div className="flex justify-between"><span className="text-slate-600">Créé le</span><span className="text-slate-900">{new Date(event.created_at).toLocaleDateString('fr-FR')}</span></div>
+                                <div className="flex justify-between"><span className="text-slate-600">Modifié le</span><span className="text-slate-900">{new Date(event.updated_at).toLocaleDateString('fr-FR')}</span></div>
                             </div>
                         </div>
                     </div>
@@ -531,40 +541,47 @@ export function EventProfile({ eventId, onBack, onContactSelect }: EventProfileP
 
             {/* Add contacts modal */}
             {showAddContactModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
-                        <div className="p-6 border-b border-gray-200">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
+                    <div className="max-h-[80vh] w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                        <div className="border-b border-slate-200 p-6">
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-2xl font-bold text-gray-900">Ajouter des contacts</h2>
-                                <button onClick={() => { setShowAddContactModal(false); setSelectedContactIds(new Set()); setSearchQuery(''); }} className="p-2 hover:bg-gray-100 rounded-full transition-colors"><X className="w-5 h-5 text-gray-500" /></button>
+                                <h2 className="text-2xl font-semibold text-slate-900">Ajouter des contacts</h2>
+                                <button onClick={() => { setShowAddContactModal(false); setSelectedContactIds(new Set()); setSearchQuery(''); }} className="rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700"><X className="h-5 w-5" /></button>
                             </div>
-                            <input type="text" placeholder="Rechercher un contact..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-blue-500" />
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                <input type="text" placeholder="Rechercher un contact..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="input-modern pl-10" />
+                            </div>
                         </div>
                         <div className="p-6 overflow-y-auto max-h-96">
                             {loadingContacts ? (
-                                <div className="text-center py-8"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3"></div><p className="text-gray-500">Chargement...</p></div>
+                                <div className="py-8 text-center"><div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"></div><p className="text-slate-500">Chargement...</p></div>
                             ) : getAvailableContacts().length === 0 ? (
-                                <div className="text-center py-8"><Users className="w-12 h-12 text-gray-300 mx-auto mb-3" /><p className="text-gray-500">Aucun contact disponible</p></div>
+                                <div className="py-8 text-center"><Users className="mx-auto mb-3 h-12 w-12 text-slate-300" /><p className="text-slate-500">Aucun contact disponible</p></div>
                             ) : (
                                 <div className="space-y-2">
                                     {getAvailableContacts().map((contact) => (
-                                        <label key={contact.id} className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${selectedContactIds.has(contact.id) ? 'bg-blue-50 border-2 border-blue-500' : 'bg-gray-50 border-2 border-transparent hover:bg-gray-100'}`}>
-                                            <input type="checkbox" checked={selectedContactIds.has(contact.id)} onChange={() => toggleContactSelection(contact.id)} className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500" />
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-semibold">{contact.full_name.charAt(0).toUpperCase()}</div>
+                                        <label key={contact.id} className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition-colors ${selectedContactIds.has(contact.id) ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white hover:bg-slate-50'}`}>
+                                            <input type="checkbox" checked={selectedContactIds.has(contact.id)} onChange={() => toggleContactSelection(contact.id)} className="h-5 w-5 rounded border-slate-300 text-slate-900 focus:ring-slate-300" />
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 bg-slate-200 font-semibold text-slate-900">{contact.full_name.charAt(0).toUpperCase()}</div>
                                             <div className="flex-1 min-w-0">
-                                                <h3 className="font-semibold text-gray-900">{contact.full_name}</h3>
-                                                <div className="flex items-center gap-2 text-sm text-gray-600">{contact.company && <span>{contact.company}</span>}{contact.job_title && <span>• {contact.job_title}</span>}</div>
+                                                <h3 className="font-semibold text-slate-900">{contact.full_name}</h3>
+                                                <div className="flex items-center gap-2 text-sm text-slate-600">{contact.company && <span>{contact.company}</span>}{contact.job_title && <span>• {contact.job_title}</span>}</div>
                                             </div>
                                         </label>
                                     ))}
                                 </div>
                             )}
                         </div>
-                        <div className="p-6 border-t border-gray-200 flex items-center justify-between">
-                            <span className="text-sm text-gray-600">{selectedContactIds.size} contact{selectedContactIds.size !== 1 ? 's' : ''} sélectionné{selectedContactIds.size !== 1 ? 's' : ''}</span>
+                        <div className="flex items-center justify-between border-t border-slate-200 p-6">
+                            <span className="text-sm text-slate-600">{selectedContactIds.size} contact{selectedContactIds.size !== 1 ? 's' : ''} sélectionné{selectedContactIds.size !== 1 ? 's' : ''}</span>
                             <div className="flex gap-3">
-                                <button onClick={() => { setShowAddContactModal(false); setSelectedContactIds(new Set()); setSearchQuery(''); }} className="px-6 py-2 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">Annuler</button>
-                                <button onClick={handleAddContacts} disabled={selectedContactIds.size === 0} className="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50">Ajouter</button>
+                                <MaterialButton variant="outlined" onClick={() => { setShowAddContactModal(false); setSelectedContactIds(new Set()); setSearchQuery(''); }}>
+                                    Annuler
+                                </MaterialButton>
+                                <MaterialButton onClick={handleAddContacts} disabled={selectedContactIds.size === 0}>
+                                    Ajouter
+                                </MaterialButton>
                             </div>
                         </div>
                     </div>

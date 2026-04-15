@@ -64,20 +64,20 @@ export function ModernContactsToolbar({ sortBy, onSortChange, filters, onFilters
             <div className="relative">
                 <button
                     onClick={() => setShowSortDropdown(!showSortDropdown)}
-                    className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 hover:bg-gray-50 transition-all"
+                    className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50"
                 >
-                    <ArrowUpDown className="w-4 h-4" />
+                    <ArrowUpDown className="h-4 w-4" />
                     <span className="hidden sm:inline">{sortOptions.find(s => s.value === sortBy)?.label}</span>
-                    <ChevronDown className="w-3.5 h-3.5" />
+                    <ChevronDown className="h-3.5 w-3.5" />
                 </button>
 
                 {showSortDropdown && (
-                    <div className="absolute top-full mt-1 right-0 bg-white border border-gray-200 rounded-xl shadow-xl z-20 py-1 min-w-[160px]">
+                    <div className="absolute right-0 top-full z-20 mt-1 min-w-[160px] rounded-xl border border-slate-200 bg-white py-1 shadow-sm">
                         {sortOptions.map((opt) => (
                             <button
                                 key={opt.value}
                                 onClick={() => { onSortChange(opt.value); setShowSortDropdown(false); }}
-                                className={`w-full text-left px-4 py-2 text-sm transition-colors ${sortBy === opt.value ? 'bg-[#0E3A5D]/10 text-[#0E3A5D] font-medium' : 'text-gray-700 hover:bg-gray-50'
+                                className={`w-full px-4 py-2 text-left text-sm transition-colors ${sortBy === opt.value ? 'bg-slate-100 font-medium text-slate-900' : 'text-slate-700 hover:bg-slate-50'
                                     }`}
                             >
                                 {opt.label}
@@ -90,25 +90,25 @@ export function ModernContactsToolbar({ sortBy, onSortChange, filters, onFilters
             <button
                 onClick={() => setShowFilters(!showFilters)}
                 className={`flex items-center gap-2 px-3 py-2 border rounded-xl text-sm transition-all ${activeFilterCount > 0
-                    ? 'bg-[#0E3A5D] text-white border-[#0E3A5D]'
-                    : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                    ? 'border-slate-900 bg-slate-900 text-white'
+                    : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
             >
-                <SlidersHorizontal className="w-4 h-4" />
+                <SlidersHorizontal className="h-4 w-4" />
                 <span className="hidden sm:inline">Filtres</span>
                 {activeFilterCount > 0 && (
-                    <span className="w-5 h-5 bg-white text-[#0E3A5D] rounded-full text-xs flex items-center justify-center font-bold">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-slate-900">
                         {activeFilterCount}
                     </span>
                 )}
             </button>
 
             {showFilters && (
-                <div className="w-full mt-2 p-4 bg-white border border-gray-200 rounded-xl shadow-lg space-y-4">
+                <div className="mt-2 w-full space-y-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
                     <div className="flex items-center justify-between">
-                        <h4 className="font-semibold text-gray-900">Filtres avancés</h4>
-                        <button onClick={() => setShowFilters(false)} className="text-gray-400 hover:text-gray-600">
-                            <X className="w-4 h-4" />
+                        <h4 className="font-semibold text-slate-900">Filtres avancés</h4>
+                        <button onClick={() => setShowFilters(false)} className="text-slate-400 hover:text-slate-600">
+                            <X className="h-4 w-4" />
                         </button>
                     </div>
 

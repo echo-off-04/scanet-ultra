@@ -5,6 +5,7 @@ import { X, Star, Upload, XIcon, Users } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { PhoneInput } from './PhoneInput';
+import { MaterialButton } from './material/MaterialButton';
 import { detectUserCountry, getCountryName, COUNTRIES, getRegionsByCountryCode } from '@/lib/countries';
 
 interface AddContactModalProps {
@@ -218,14 +219,11 @@ export function AddContactModal({ onClose, onContactAdded, defaultIsMember = fal
         .scroll-fade-container::after { bottom: 0; background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); }
       `}</style>
 
-            <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50">
-                <div className="bg-white rounded-2xl sm:rounded-[32px] shadow-2xl w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden relative scroll-fade-container">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-2 sm:p-4">
+                <div className="relative w-full max-w-6xl max-h-[95vh] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg sm:max-h-[90vh] scroll-fade-container">
                     <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-20">
                         <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-600"><X className="w-5 h-5 sm:w-6 sm:h-6" /></button>
                     </div>
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-pink-100/50 to-transparent rounded-full blur-3xl pointer-events-none"></div>
-                    <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-blue-100/50 to-transparent rounded-full blur-3xl pointer-events-none"></div>
-
                     <div className="overflow-y-auto custom-scrollbar max-h-[95vh] sm:max-h-[90vh] pr-2">
                         <form onSubmit={handleSubmit} className="relative p-4 sm:p-8 lg:p-12 space-y-6 sm:space-y-8">
                             <div className="text-center mb-6 sm:mb-8">
@@ -235,11 +233,11 @@ export function AddContactModal({ onClose, onContactAdded, defaultIsMember = fal
 
                             <div className="flex justify-center mb-8">
                                 <div className="relative">
-                                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-100 to-pink-100 flex items-center justify-center overflow-hidden border-4 border-white shadow-xl">
+                                    <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-full border-4 border-slate-200 bg-slate-100">
                                         {avatarPreview ? <img src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" /> : <Upload className="w-12 h-12 text-gray-400" />}
                                     </div>
                                     <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
-                                    <div className="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full shadow-lg"><Upload className="w-4 h-4" /></div>
+                                    <div className="absolute bottom-0 right-0 rounded-full border border-slate-200 bg-white p-2 text-slate-700"><Upload className="w-4 h-4" /></div>
                                 </div>
                             </div>
 
@@ -419,8 +417,8 @@ export function AddContactModal({ onClose, onContactAdded, defaultIsMember = fal
                             </div>
 
                             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 pt-4 sm:pt-6 pb-4">
-                                <button type="button" onClick={onClose} className="px-6 sm:px-8 py-3 sm:py-4 text-gray-700 font-semibold rounded-2xl hover:bg-gray-100 transition-all">Annuler</button>
-                                <button type="submit" disabled={loading} className="px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-2xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg shadow-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed">{loading ? 'Enregistrement...' : 'Enregistrer'}</button>
+                                <MaterialButton type="button" onClick={onClose} variant="outlined">Annuler</MaterialButton>
+                                <MaterialButton type="submit" disabled={loading}>{loading ? 'Enregistrement...' : 'Enregistrer'}</MaterialButton>
                             </div>
                         </form>
                     </div>
@@ -429,14 +427,14 @@ export function AddContactModal({ onClose, onContactAdded, defaultIsMember = fal
 
             {showEnterpriseWarning && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[60]">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-8">
+                    <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-lg sm:p-8">
                         <div className="flex flex-col items-center text-center">
                             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4"><Users className="w-8 h-8 text-blue-600" /></div>
                             <h3 className="text-xl font-bold text-gray-900 mb-3">Entreprise non configurée</h3>
                             <p className="text-gray-600 mb-6">Pour ajouter des membres à votre entreprise, vous devez d&apos;abord la créer dans la section Entreprise.</p>
                             <div className="flex gap-3 w-full">
-                                <button onClick={() => setShowEnterpriseWarning(false)} className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition-colors">Plus tard</button>
-                                <button onClick={() => { setShowEnterpriseWarning(false); onClose(); onNavigateToEnterprise?.(); }} className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg shadow-blue-500/30">Créer mon entreprise</button>
+                                <MaterialButton onClick={() => setShowEnterpriseWarning(false)} variant="outlined" className="flex-1 justify-center">Plus tard</MaterialButton>
+                                <MaterialButton onClick={() => { setShowEnterpriseWarning(false); onClose(); onNavigateToEnterprise?.(); }} className="flex-1 justify-center">Créer mon entreprise</MaterialButton>
                             </div>
                         </div>
                     </div>

@@ -12,8 +12,8 @@ interface ContactsGridViewProps {
 export function ContactsGridView({ contacts, onContactClick, onSendOffer }: ContactsGridViewProps) {
     if (contacts.length === 0) {
         return (
-            <div className="text-center py-12 glass-card">
-                <p className="text-gray-500 font-medium">Aucun contact trouvé</p>
+            <div className="rounded-xl border border-slate-200 bg-white py-12 text-center">
+                <p className="font-medium text-slate-500">Aucun contact trouvé</p>
             </div>
         );
     }

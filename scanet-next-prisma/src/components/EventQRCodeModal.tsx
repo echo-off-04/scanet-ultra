@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react';
 import { X, Download, Copy, Check, QrCode } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface EventQRCodeModalProps {
     eventName: string;
@@ -40,7 +42,7 @@ export function EventQRCodeModal({ eventName, qrCodeToken, onClose }: EventQRCod
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = '#0E3A5D';
+        ctx.fillStyle = '#111827';
         ctx.font = 'bold 28px Arial';
         ctx.textAlign = 'center';
         ctx.fillText(eventName, canvas.width / 2, 50);
@@ -66,48 +68,41 @@ export function EventQRCodeModal({ eventName, qrCodeToken, onClose }: EventQRCod
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50" onClick={onClose}>
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={onClose}>
+            <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm" onClick={e => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
-                            <QrCode className="w-5 h-5 text-purple-600" />
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-slate-700">
+                            <QrCode className="h-5 w-5" />
                         </div>
-                        <h2 className="text-xl font-bold text-gray-900">QR Code</h2>
+                        <h2 className="text-xl font-semibold text-slate-900">QR Code</h2>
                     </div>
-                    <button onClick={onClose} className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center">
-                        <X className="w-5 h-5" />
-                    </button>
+                    <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-5 w-5" />} />
                 </div>
 
-                <p className="text-center text-gray-600 mb-6">
+                <p className="mb-6 text-center text-slate-600">
                     Partagez ce QR code pour permettre aux participants de s'inscrire à <strong>{eventName}</strong>
                 </p>
 
-                <div ref={qrRef} className="flex justify-center mb-6 p-6 bg-white rounded-2xl border border-gray-100">
+                <div ref={qrRef} className="mb-6 flex justify-center rounded-xl border border-slate-200 bg-slate-50 p-6">
                     <QRCodeSVG value={registrationUrl} size={256} level="H" includeMargin />
                 </div>
 
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl mb-6">
+                <div className="mb-6 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-3">
                     <input
                         type="text"
                         value={registrationUrl}
                         readOnly
-                        className="flex-1 bg-transparent text-sm text-gray-600 outline-none truncate"
+                        className="flex-1 truncate bg-transparent text-sm text-slate-600 outline-none"
                     />
-                    <button onClick={handleCopy} className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm hover:bg-gray-50 transition-colors">
-                        {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
+                    <MaterialButton onClick={handleCopy} variant="outlined" icon={copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />} className="text-sm">
                         {copied ? 'Copié' : 'Copier'}
-                    </button>
+                    </MaterialButton>
                 </div>
 
-                <button
-                    onClick={handleDownload}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium hover:bg-[#1E5A8E] transition-colors"
-                >
-                    <Download className="w-5 h-5" />
+                <MaterialButton onClick={handleDownload} icon={<Download className="h-5 w-5" />} className="w-full justify-center py-3">
                     Télécharger le QR Code
-                </button>
+                </MaterialButton>
             </div>
         </div>
     );

@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface Offer {
     id: string;
@@ -312,30 +314,28 @@ export function Offers(_props: OffersProps) {
                         {activeTab === 'offers' ? `${stats.totalOffers} offre${stats.totalOffers !== 1 ? 's' : ''}` : `${stats.totalPacks} pack${stats.totalPacks !== 1 ? 's' : ''}`}
                     </p>
                 </div>
-                <div className="flex gap-3">
-                    <button onClick={() => { resetOfferForm(); setEditingOffer(null); setShowOfferModal(true); }}
-                        className="bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white px-8 py-4 rounded-full hover:shadow-xl transition-all font-semibold flex items-center gap-3">
-                        <Plus className="w-5 h-5" />Nouvelle offre
-                    </button>
-                    <button onClick={() => { resetPackForm(); setEditingPack(null); setShowPackModal(true); }}
-                        className="px-8 py-4 border-2 border-gray-900 rounded-full font-semibold text-gray-900 hover:bg-gray-900 hover:text-white transition-all flex items-center gap-3">
-                        <FolderPlus className="w-5 h-5" />Nouveau pack
-                    </button>
+                <div className="flex flex-wrap gap-3">
+                    <MaterialButton onClick={() => { resetOfferForm(); setEditingOffer(null); setShowOfferModal(true); }} icon={<Plus className="w-5 h-5" />}>
+                        Nouvelle offre
+                    </MaterialButton>
+                    <MaterialButton variant="outlined" onClick={() => { resetPackForm(); setEditingPack(null); setShowPackModal(true); }} icon={<FolderPlus className="w-5 h-5" />}>
+                        Nouveau pack
+                    </MaterialButton>
                 </div>
             </div>
 
             {/* Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
                 {[
-                    { label: 'Total Offres', value: stats.totalOffers, icon: Package, color: 'text-white', bg: 'bg-gradient-to-br from-gray-900 to-gray-800' },
+                    { label: 'Total Offres', value: stats.totalOffers, icon: Package, color: 'text-gray-900', bg: 'bg-white' },
                     { label: 'Actives', value: stats.activeOffers, icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-white' },
                     { label: 'Total Packs', value: stats.totalPacks, icon: Layers, color: 'text-gray-900', bg: 'bg-white' },
                     { label: 'Packs Actifs', value: stats.activePacks, icon: Tag, color: 'text-amber-600', bg: 'bg-white' },
                 ].map((stat, i) => (
                     <div key={i} className={`rounded-2xl p-5 border border-gray-200 shadow-sm hover:shadow-md transition-all ${stat.bg}`}>
                         <div className="flex items-center gap-2 mb-3">
-                            <stat.icon className={`w-4 h-4 ${i === 0 ? 'text-white/70' : 'text-gray-400'}`} />
-                            <p className={`text-xs font-medium uppercase tracking-wider ${i === 0 ? 'text-white/70' : 'text-gray-500'}`}>{stat.label}</p>
+                            <stat.icon className="w-4 h-4 text-gray-400" />
+                            <p className="text-xs font-medium uppercase tracking-wider text-gray-500">{stat.label}</p>
                         </div>
                         <h3 className={`text-3xl font-bold ${stat.color}`}>{stat.value}</h3>
                     </div>
@@ -390,10 +390,9 @@ export function Offers(_props: OffersProps) {
                             {searchQuery ? 'Modifiez vos filtres.' : 'Créez votre première offre pour la proposer à vos clients.'}
                         </p>
                         {!searchQuery && (
-                            <button onClick={() => setShowOfferModal(true)}
-                                className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white rounded-full font-semibold shadow-xl">
-                                <Plus className="w-5 h-5" />Créer votre première offre
-                            </button>
+                            <MaterialButton onClick={() => setShowOfferModal(true)} icon={<Plus className="w-5 h-5" />}>
+                                Créer votre première offre
+                            </MaterialButton>
                         )}
                     </div>
                 ) : (
@@ -401,12 +400,13 @@ export function Offers(_props: OffersProps) {
                         {filteredOffers.map(offer => (
                             <div key={offer.id} className="relative">
                                 <div className="absolute top-4 right-4 z-10">
-                                    <button onClick={e => { e.stopPropagation(); setActionMenuId(actionMenuId === offer.id ? null : offer.id); }}
-                                        className="p-2 bg-white/90 backdrop-blur-sm hover:bg-white rounded-xl shadow-lg">
-                                        <MoreVertical className="w-5 h-5 text-gray-600" />
-                                    </button>
+                                    <MaterialIconButton
+                                        ariaLabel="Ouvrir les actions de l'offre"
+                                        onClick={e => { e.stopPropagation(); setActionMenuId(actionMenuId === offer.id ? null : offer.id); }}
+                                        icon={<MoreVertical className="w-5 h-5 text-gray-600" />}
+                                    />
                                     {actionMenuId === offer.id && (
-                                        <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-2xl border py-2 z-50">
+                                        <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-2xl border border-gray-200 bg-white py-2 shadow-lg">
                                             <button onClick={() => openEditOffer(offer)} className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
                                                 <Edit className="w-4 h-4" />Modifier
                                             </button>
@@ -421,7 +421,7 @@ export function Offers(_props: OffersProps) {
                                     )}
                                 </div>
 
-                                <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden hover:border-gray-900 hover:shadow-2xl transition-all duration-300 cursor-pointer group">
+                                <div className="group cursor-pointer overflow-hidden rounded-3xl border border-gray-200 bg-white transition-all duration-300 hover:border-gray-300 hover:shadow-md">
                                     {offer.image_url && (
                                         <div className="w-full h-48 overflow-hidden">
                                             <img src={offer.image_url} alt={offer.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -468,18 +468,24 @@ export function Offers(_props: OffersProps) {
                         </div>
                         <h3 className="text-2xl font-bold text-gray-900 mb-3">{searchQuery ? 'Aucun pack trouvé' : 'Aucun pack'}</h3>
                         <p className="text-gray-500 mb-8 max-w-md mx-auto text-lg">Créez des packs pour regrouper plusieurs offres.</p>
+                        {!searchQuery && (
+                            <MaterialButton variant="outlined" onClick={() => { resetPackForm(); setEditingPack(null); setShowPackModal(true); }} icon={<FolderPlus className="w-5 h-5" />}>
+                                Créer votre premier pack
+                            </MaterialButton>
+                        )}
                     </div>
                 ) : (
                     <div className="space-y-6">
                         {filteredPacks.map(pack => (
                             <div key={pack.id} className="relative">
                                 <div className="absolute top-4 right-4 z-10">
-                                    <button onClick={e => { e.stopPropagation(); setActionMenuId(actionMenuId === `pack-${pack.id}` ? null : `pack-${pack.id}`); }}
-                                        className="p-2 bg-white/90 backdrop-blur-sm hover:bg-white rounded-xl shadow-lg">
-                                        <MoreVertical className="w-5 h-5 text-gray-600" />
-                                    </button>
+                                    <MaterialIconButton
+                                        ariaLabel="Ouvrir les actions du pack"
+                                        onClick={e => { e.stopPropagation(); setActionMenuId(actionMenuId === `pack-${pack.id}` ? null : `pack-${pack.id}`); }}
+                                        icon={<MoreVertical className="w-5 h-5 text-gray-600" />}
+                                    />
                                     {actionMenuId === `pack-${pack.id}` && (
-                                        <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-2xl border py-2 z-50">
+                                        <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-2xl border border-gray-200 bg-white py-2 shadow-lg">
                                             <button onClick={() => openEditPack(pack)} className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2">
                                                 <Edit className="w-4 h-4" />Modifier
                                             </button>
@@ -494,7 +500,7 @@ export function Offers(_props: OffersProps) {
                                     )}
                                 </div>
 
-                                <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden hover:border-gray-900 hover:shadow-2xl transition-all duration-300">
+                                <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white transition-all duration-300 hover:border-gray-300 hover:shadow-md">
                                     <div className="p-6 cursor-pointer hover:bg-gray-50/50" onClick={() => setSelectedPack(selectedPack?.id === pack.id ? null : pack)}>
                                         <div className="flex items-start justify-between">
                                             <div className="flex items-center gap-4">
@@ -552,7 +558,7 @@ export function Offers(_props: OffersProps) {
 
             {/* Offer modal */}
             {showOfferModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => { setShowOfferModal(false); setEditingOffer(null); }}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => { setShowOfferModal(false); setEditingOffer(null); }}>
                     <div className="bg-white rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                         <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between rounded-t-3xl z-10">
                             <h2 className="text-xl font-bold text-gray-900">{editingOffer ? 'Modifier l\'offre' : 'Nouvelle offre'}</h2>
@@ -564,23 +570,23 @@ export function Offers(_props: OffersProps) {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Titre *</label>
                                 <input type="text" value={offerForm.title} onChange={e => setOfferForm({ ...offerForm, title: e.target.value })}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                                 <textarea value={offerForm.description} onChange={e => setOfferForm({ ...offerForm, description: e.target.value })}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm resize-none" rows={3} />
+                                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" rows={3} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Prix</label>
                                     <input type="number" value={offerForm.price} onChange={e => setOfferForm({ ...offerForm, price: e.target.value })}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Devise</label>
                                     <select value={offerForm.currency} onChange={e => setOfferForm({ ...offerForm, currency: e.target.value })}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm">
+                                        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300">
                                         <option value="EUR">EUR</option><option value="USD">USD</option><option value="GBP">GBP</option><option value="XOF">XOF</option>
                                     </select>
                                 </div>
@@ -589,40 +595,40 @@ export function Offers(_props: OffersProps) {
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Type de facturation</label>
                                     <select value={offerForm.billing_type} onChange={e => setOfferForm({ ...offerForm, billing_type: e.target.value })}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm">
+                                        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300">
                                         <option value="fixed">Forfait</option><option value="hourly">Horaire</option><option value="daily">Journalier</option><option value="unit">À l&apos;unité</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Durée</label>
                                     <input type="text" value={offerForm.duration} onChange={e => setOfferForm({ ...offerForm, duration: e.target.value })}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" placeholder="ex: 3 mois" />
+                                        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" placeholder="ex: 3 mois" />
                                 </div>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
                                 <input type="text" value={offerForm.category} onChange={e => setOfferForm({ ...offerForm, category: e.target.value })}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Fonctionnalités (une par ligne)</label>
                                 <textarea value={offerForm.features} onChange={e => setOfferForm({ ...offerForm, features: e.target.value })}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm resize-none" rows={3} />
+                                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" rows={3} />
                             </div>
                             <div className="flex items-center gap-3">
                                 <button onClick={() => setOfferForm({ ...offerForm, is_active: !offerForm.is_active })}
-                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${offerForm.is_active ? 'bg-[#0E3A5D]' : 'bg-gray-300'}`}>
+                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${offerForm.is_active ? 'bg-slate-900' : 'bg-gray-300'}`}>
                                     <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${offerForm.is_active ? 'translate-x-6' : 'translate-x-1'}`} />
                                 </button>
                                 <span className="text-sm text-gray-700">Active</span>
                             </div>
                             <div className="flex gap-3 pt-4 border-t">
-                                <button onClick={() => { setShowOfferModal(false); setEditingOffer(null); }}
-                                    className="flex-1 px-4 py-3 border rounded-xl text-gray-700 hover:bg-gray-50">Annuler</button>
-                                <button onClick={handleSaveOffer}
-                                    className="flex-1 px-4 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium hover:bg-[#0c2d47]">
+                                <MaterialButton variant="outlined" onClick={() => { setShowOfferModal(false); setEditingOffer(null); }} className="flex-1 justify-center">
+                                    Annuler
+                                </MaterialButton>
+                                <MaterialButton onClick={handleSaveOffer} className="flex-1 justify-center">
                                     {editingOffer ? 'Modifier' : 'Créer'}
-                                </button>
+                                </MaterialButton>
                             </div>
                         </div>
                     </div>
@@ -631,7 +637,7 @@ export function Offers(_props: OffersProps) {
 
             {/* Pack modal */}
             {showPackModal && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => { setShowPackModal(false); setEditingPack(null); }}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => { setShowPackModal(false); setEditingPack(null); }}>
                     <div className="bg-white rounded-3xl w-full max-w-xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                         <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between rounded-t-3xl z-10">
                             <h2 className="text-xl font-bold text-gray-900">{editingPack ? 'Modifier le pack' : 'Nouveau pack'}</h2>
@@ -643,23 +649,23 @@ export function Offers(_props: OffersProps) {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
                                 <input type="text" value={packForm.name} onChange={e => setPackForm({ ...packForm, name: e.target.value })}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                                 <textarea value={packForm.description} onChange={e => setPackForm({ ...packForm, description: e.target.value })}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm resize-none" rows={3} />
+                                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" rows={3} />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Prix du pack</label>
                                     <input type="number" value={packForm.price} onChange={e => setPackForm({ ...packForm, price: e.target.value })}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" />
+                                        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Réduction (%)</label>
                                     <input type="number" value={packForm.discount_percentage} onChange={e => setPackForm({ ...packForm, discount_percentage: e.target.value })}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm" min="0" max="100" />
+                                        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-300" min="0" max="100" />
                                 </div>
                             </div>
                             <div>
@@ -674,7 +680,7 @@ export function Offers(_props: OffersProps) {
                                                         : [...packForm.selectedOfferIds, offer.id];
                                                     setPackForm({ ...packForm, selectedOfferIds: ids });
                                                 }}
-                                                className="rounded border-gray-300 text-[#0E3A5D] focus:ring-[#0E3A5D]" />
+                                                className="rounded border-gray-300 text-slate-900 focus:ring-slate-300" />
                                             <div className="flex-1 min-w-0">
                                                 <p className="text-sm font-medium text-gray-900 truncate">{offer.title}</p>
                                                 <p className="text-xs text-gray-500">{fmtCurrency(offer.price, offer.currency)}</p>
@@ -685,18 +691,18 @@ export function Offers(_props: OffersProps) {
                             </div>
                             <div className="flex items-center gap-3">
                                 <button onClick={() => setPackForm({ ...packForm, is_active: !packForm.is_active })}
-                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${packForm.is_active ? 'bg-[#0E3A5D]' : 'bg-gray-300'}`}>
+                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${packForm.is_active ? 'bg-slate-900' : 'bg-gray-300'}`}>
                                     <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition ${packForm.is_active ? 'translate-x-6' : 'translate-x-1'}`} />
                                 </button>
                                 <span className="text-sm text-gray-700">Actif</span>
                             </div>
                             <div className="flex gap-3 pt-4 border-t">
-                                <button onClick={() => { setShowPackModal(false); setEditingPack(null); }}
-                                    className="flex-1 px-4 py-3 border rounded-xl text-gray-700 hover:bg-gray-50">Annuler</button>
-                                <button onClick={handleSavePack}
-                                    className="flex-1 px-4 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium hover:bg-[#0c2d47]">
+                                <MaterialButton variant="outlined" onClick={() => { setShowPackModal(false); setEditingPack(null); }} className="flex-1 justify-center">
+                                    Annuler
+                                </MaterialButton>
+                                <MaterialButton onClick={handleSavePack} className="flex-1 justify-center">
                                     {editingPack ? 'Modifier' : 'Créer'}
-                                </button>
+                                </MaterialButton>
                             </div>
                         </div>
                     </div>
@@ -705,7 +711,7 @@ export function Offers(_props: OffersProps) {
 
             {/* Send modal */}
             {showSendModal && sendingOffer && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => { setShowSendModal(false); setSendingOffer(null); }}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => { setShowSendModal(false); setSendingOffer(null); }}>
                     <div className="bg-white rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                         <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between rounded-t-3xl z-10">
                             <h2 className="text-xl font-bold text-gray-900">Envoyer {sendingType === 'offer' ? 'l\'offre' : 'le pack'}</h2>
@@ -725,7 +731,7 @@ export function Offers(_props: OffersProps) {
                                                         prev.includes(contact.id) ? prev.filter(id => id !== contact.id) : [...prev, contact.id]
                                                     );
                                                 }}
-                                                className="rounded border-gray-300 text-[#0E3A5D] focus:ring-[#0E3A5D]" />
+                                                className="rounded border-gray-300 text-slate-900 focus:ring-slate-300" />
                                             <div>
                                                 <p className="text-sm font-medium text-gray-900">{contact.full_name}</p>
                                                 <p className="text-xs text-gray-500">{contact.email}</p>
@@ -737,17 +743,16 @@ export function Offers(_props: OffersProps) {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Message (optionnel)</label>
                                 <textarea value={sendMessage} onChange={e => setSendMessage(e.target.value)}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] text-sm resize-none" rows={3}
+                                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" rows={3}
                                     placeholder="Ajoutez un message personnalisé..." />
                             </div>
                             <div className="flex gap-3 pt-4 border-t">
-                                <button onClick={() => { setShowSendModal(false); setSendingOffer(null); }}
-                                    className="flex-1 px-4 py-3 border rounded-xl text-gray-700 hover:bg-gray-50">Annuler</button>
-                                <button onClick={handleSendOffer} disabled={selectedRecipients.length === 0 || isSending}
-                                    className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium hover:bg-[#0c2d47] disabled:opacity-50">
-                                    {isSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                                <MaterialButton variant="outlined" onClick={() => { setShowSendModal(false); setSendingOffer(null); }} className="flex-1 justify-center">
+                                    Annuler
+                                </MaterialButton>
+                                <MaterialButton onClick={handleSendOffer} disabled={selectedRecipients.length === 0 || isSending} icon={isSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />} className="flex-1 justify-center">
                                     {isSending ? 'Envoi...' : `Envoyer (${selectedRecipients.length})`}
-                                </button>
+                                </MaterialButton>
                             </div>
                         </div>
                     </div>

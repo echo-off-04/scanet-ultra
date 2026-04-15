@@ -10,6 +10,8 @@ import {
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { AddContactModal } from './AddContactModal';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 // =====================================================
 // Types
@@ -456,10 +458,9 @@ export function Enterprise() {
                     </div>
                     <h2 className="text-3xl font-bold text-gray-900 mb-4">Configurez votre entreprise</h2>
                     <p className="text-gray-500 mb-8 text-lg">Commencez par créer votre entreprise pour gérer vos équipes, définir des groupes personnalisés et suivre vos objectifs.</p>
-                    <button onClick={() => setShowEnterpriseModal(true)} className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e] text-white rounded-full hover:from-gray-800 hover:to-gray-700 transition-all font-semibold shadow-2xl">
-                        <Plus className="w-5 h-5" />
+                    <MaterialButton onClick={() => setShowEnterpriseModal(true)} icon={<Plus className="w-5 h-5" />}>
                         Créer mon entreprise
-                    </button>
+                    </MaterialButton>
                 </div>
                 {showEnterpriseModal && <EnterpriseModal enterprise={null} onClose={() => setShowEnterpriseModal(false)} onSave={handleSaveEnterprise} />}
             </div>
@@ -476,8 +477,8 @@ export function Enterprise() {
                     {enterprise.logo_url ? (
                         <img src={enterprise.logo_url} alt={enterprise.name} className="w-20 h-20 rounded-3xl object-cover border-2 border-gray-200" />
                     ) : (
-                        <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center shadow-lg">
-                            <Building2 className="w-10 h-10 text-white" />
+                        <div className="flex h-20 w-20 items-center justify-center rounded-3xl border border-slate-200 bg-slate-100">
+                            <Building2 className="w-10 h-10 text-slate-700" />
                         </div>
                     )}
                     <div>
@@ -493,7 +494,7 @@ export function Enterprise() {
                     </div>
 
                     {showEnterpriseSelector && enterprises.length > 1 && (
-                        <div className="absolute top-24 left-0 bg-white rounded-3xl shadow-2xl border border-gray-200 p-6 z-50 w-96">
+                        <div className="absolute top-24 left-0 z-50 w-96 rounded-3xl border border-gray-200 bg-white p-6 shadow-lg">
                             <div className="flex items-center justify-between mb-4">
                                 <h3 className="font-semibold text-gray-900">Vos entreprises</h3>
                                 <button onClick={() => setShowEnterpriseSelector(false)} className="p-1 hover:bg-gray-100 rounded-lg"><X className="w-4 h-4" /></button>
@@ -501,22 +502,21 @@ export function Enterprise() {
                             <div className="space-y-2 max-h-96 overflow-y-auto">
                                 {enterprises.map((ent) => (
                                     <button key={ent.id} onClick={() => { setEnterprise(ent); setShowEnterpriseSelector(false); }}
-                                        className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${ent.id === enterprise.id ? 'bg-blue-50 border-2 border-blue-500' : 'hover:bg-gray-50 border-2 border-transparent'}`}>
-                                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e] flex items-center justify-center">
-                                            <Building2 className="w-5 h-5 text-white" />
+                                        className={`w-full flex items-center gap-3 rounded-xl border-2 p-3 transition-all ${ent.id === enterprise.id ? 'border-slate-400 bg-slate-100' : 'border-transparent hover:bg-gray-50'}`}>
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-200">
+                                            <Building2 className="w-5 h-5 text-slate-700" />
                                         </div>
                                         <div className="flex-1 text-left">
                                             <div className="font-medium text-gray-900">{ent.name}</div>
                                             {ent.industry && <div className="text-xs text-gray-500">{ent.industry}</div>}
                                         </div>
-                                        {ent.id === enterprise.id && <CheckCircle className="w-5 h-5 text-blue-600" />}
+                                        {ent.id === enterprise.id && <CheckCircle className="w-5 h-5 text-slate-700" />}
                                     </button>
                                 ))}
                             </div>
-                            <button onClick={() => { setShowEnterpriseModal(true); setShowEnterpriseSelector(false); }}
-                                className="w-full mt-3 pt-3 border-t border-gray-200 text-left px-3 py-2 hover:bg-gray-50 rounded-lg flex items-center gap-2 text-blue-600 font-medium">
-                                <Plus className="w-4 h-4" /> Créer une nouvelle entreprise
-                            </button>
+                            <MaterialButton onClick={() => { setShowEnterpriseModal(true); setShowEnterpriseSelector(false); }} variant="outlined" icon={<Plus className="w-4 h-4" />} className="mt-3 w-full justify-start">
+                                Créer une nouvelle entreprise
+                            </MaterialButton>
                         </div>
                     )}
                 </div>
@@ -599,15 +599,15 @@ function KpiCard({ icon: Icon, label, value, color, variant }: { icon: React.Ele
     const isDark = variant === 'dark';
     return (
         <div className="group relative overflow-hidden">
-            <div className={`relative rounded-xl lg:rounded-2xl p-4 lg:p-5 border transition-all duration-300 hover:-translate-y-0.5 overflow-hidden ${isDark ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-700/50 shadow-[0_4px_16px_rgba(0,0,0,0.3)]' : 'bg-white border-gray-100 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'}`}>
+            <div className="relative overflow-hidden rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md lg:rounded-2xl lg:p-5">
                 <div className="relative z-10">
                     <div className="flex items-center gap-2 mb-2 lg:mb-3">
-                        <div className={`p-1.5 rounded-lg ${isDark ? 'bg-white/10' : ''}`} style={!isDark ? { backgroundColor: `${color}15` } : undefined}>
-                            <Icon className="w-3.5 h-3.5" strokeWidth={2} style={{ color: isDark ? 'rgba(255,255,255,0.9)' : color }} />
+                        <div className="rounded-lg bg-slate-100 p-1.5" style={color ? { color } : undefined}>
+                            <Icon className="w-3.5 h-3.5 text-slate-700" strokeWidth={2} style={color ? { color } : undefined} />
                         </div>
-                        <p className={`text-[10px] lg:text-xs font-medium uppercase tracking-wider ${isDark ? 'text-white/70' : 'text-gray-500'}`}>{label}</p>
+                        <p className="text-[10px] font-medium uppercase tracking-wider text-gray-500 lg:text-xs">{label}</p>
                     </div>
-                    <h3 className={`text-2xl lg:text-3xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>{value}</h3>
+                    <h3 className="text-2xl font-bold tracking-tight text-gray-900 lg:text-3xl">{value}</h3>
                 </div>
             </div>
         </div>
@@ -638,7 +638,7 @@ function OverviewTab({ teams, customGroups, objectives, onTeamSelect, onGroupSel
                                         <h4 className="font-medium text-gray-900 text-sm">{obj.title}</h4>
                                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${pc.color}`}><PI className="w-3 h-3" />{pc.label}</span>
                                     </div>
-                                    <div className="w-full bg-gray-200 rounded-full h-2 mb-2"><div className="bg-[#0E3A5D] h-2 rounded-full transition-all" style={{ width: `${progress}%` }} /></div>
+                                    <div className="mb-2 h-2 w-full rounded-full bg-gray-200"><div className="h-2 rounded-full bg-slate-700 transition-all" style={{ width: `${progress}%` }} /></div>
                                     <p className="text-xs text-gray-500">{progress}% complété</p>
                                 </div>
                             );
@@ -733,10 +733,9 @@ function TeamsTab({ teams, allTeams, selectedTeam, onSelectTeam, onAddTeam, onAd
                             {isExpanded ? <ChevronDown className="w-4 h-4 text-gray-400" /> : <ChevronRight className="w-4 h-4 text-gray-400" />}
                         </button>
                     ) : <div className="w-6" />}
-                    <button onClick={() => onSelectTeam(team)}
-                        className={`flex-1 flex items-center justify-between p-3 rounded-xl transition-colors ${selectedTeam?.id === team.id ? 'bg-[#0E3A5D] text-white' : 'bg-gray-50 hover:bg-gray-100'}`}>
-                        <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: selectedTeam?.id === team.id ? 'rgba(255,255,255,0.2)' : `${team.color}20` }}>
+                    <MaterialButton onClick={() => onSelectTeam(team)} variant={selectedTeam?.id === team.id ? 'filled' : 'text'} className="flex-1 justify-start text-left">
+                        <div className="flex w-full items-center gap-3">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: selectedTeam?.id === team.id ? 'rgba(255,255,255,0.2)' : `${team.color}20` }}>
                                 <Users className="w-4 h-4" style={{ color: selectedTeam?.id === team.id ? 'white' : team.color }} />
                             </div>
                             <div className="text-left">
@@ -744,7 +743,7 @@ function TeamsTab({ teams, allTeams, selectedTeam, onSelectTeam, onAddTeam, onAd
                                 <p className={`text-xs ${selectedTeam?.id === team.id ? 'text-white/70' : 'text-gray-500'}`}>Niveau {team.level} &bull; {team.members_count || 0} membres</p>
                             </div>
                         </div>
-                    </button>
+                    </MaterialButton>
                 </div>
                 {hasSubs && isExpanded && <div className="mt-1">{renderTeamTree(team.sub_teams!, depth + 1)}</div>}
             </div>
@@ -756,10 +755,10 @@ function TeamsTab({ teams, allTeams, selectedTeam, onSelectTeam, onAddTeam, onAd
             <div className="bg-white rounded-2xl border border-gray-200 p-6">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-gray-900">Structure des équipes</h3>
-                    <button onClick={onAddTeam} className="p-2 bg-[#0E3A5D] text-white rounded-lg hover:bg-[#0c2e4a]"><Plus className="w-4 h-4" /></button>
+                    <MaterialIconButton ariaLabel="Ajouter une équipe" onClick={onAddTeam} variant="filled" icon={<Plus className="w-4 h-4" />} />
                 </div>
                 {teams.length === 0 ? (
-                    <div className="text-center py-8"><Users className="w-12 h-12 text-gray-300 mx-auto mb-3" /><p className="text-gray-500 text-sm mb-4">Aucune équipe créée</p><button onClick={onAddTeam} className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl text-sm">Créer une équipe</button></div>
+                    <div className="text-center py-8"><Users className="w-12 h-12 text-gray-300 mx-auto mb-3" /><p className="text-gray-500 text-sm mb-4">Aucune équipe créée</p><MaterialButton onClick={onAddTeam} className="text-sm">Créer une équipe</MaterialButton></div>
                 ) : <div className="space-y-1">{renderTeamTree(teams)}</div>}
             </div>
             <div className="lg:col-span-2">
@@ -783,13 +782,13 @@ function TeamsTab({ teams, allTeams, selectedTeam, onSelectTeam, onAddTeam, onAd
                         </div>
                         <div className="bg-white rounded-2xl border border-gray-200 p-6">
                             <div className="flex items-center justify-between mb-4"><h4 className="font-semibold text-gray-900">Membres ({teamMembers.length})</h4>
-                                <button onClick={onAddMember} className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl text-sm flex items-center gap-2"><UserPlus className="w-4 h-4" />Ajouter</button></div>
+                                <MaterialButton onClick={onAddMember} icon={<UserPlus className="w-4 h-4" />} className="text-sm">Ajouter</MaterialButton></div>
                             {loadingMembers ? <div className="animate-pulse space-y-3">{[...Array(3)].map((_, i) => <div key={i} className="h-16 bg-gray-100 rounded-xl" />)}</div>
                                 : teamMembers.length === 0 ? <p className="text-gray-500 text-sm text-center py-8">Aucun membre dans cette équipe</p>
                                     : <div className="space-y-3">{teamMembers.map((member) => (
                                         <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                                             <div className="flex items-center gap-3 flex-1">
-                                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e] flex items-center justify-center">
+                                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200">
                                                     <span className="text-white text-sm font-semibold">{member.contact?.full_name?.charAt(0) || '?'}</span>
                                                 </div>
                                                 <div className="flex-1">
@@ -818,7 +817,7 @@ function TeamsTab({ teams, allTeams, selectedTeam, onSelectTeam, onAddTeam, onAd
                         </div>
                         <div className="bg-white rounded-2xl border border-gray-200 p-6">
                             <div className="flex items-center justify-between mb-4"><h4 className="font-semibold text-gray-900">Objectifs de l&apos;équipe</h4>
-                                <button onClick={onAddTeamObjective} className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl text-sm flex items-center gap-2"><Flag className="w-4 h-4" />Définir un objectif</button></div>
+                                <MaterialButton onClick={onAddTeamObjective} icon={<Flag className="w-4 h-4" />} className="text-sm">Définir un objectif</MaterialButton></div>
                             {teamObjectives.length === 0 ? <p className="text-gray-500 text-sm text-center py-8">Aucun objectif défini pour cette équipe</p>
                                 : <div className="space-y-3">{teamObjectives.map((obj) => {
                                     const progress = obj.target_value ? Math.min(100, Math.round((obj.current_value / obj.target_value) * 100)) : 0;
@@ -863,19 +862,19 @@ function GroupsTab({ groups, selectedGroup, onSelectGroup, onAddGroup, onEditGro
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="bg-white rounded-2xl border border-gray-200 p-6">
-                <div className="flex items-center justify-between mb-4"><h3 className="font-semibold text-gray-900">Groupes personnalisés</h3><button onClick={onAddGroup} className="p-2 bg-[#0E3A5D] text-white rounded-lg"><Plus className="w-4 h-4" /></button></div>
+                <div className="flex items-center justify-between mb-4"><h3 className="font-semibold text-gray-900">Groupes personnalisés</h3><MaterialIconButton ariaLabel="Ajouter un groupe" onClick={onAddGroup} variant="filled" icon={<Plus className="w-4 h-4" />} /></div>
                 {groups.length === 0 ? (
-                    <div className="text-center py-8"><Layers className="w-12 h-12 text-gray-300 mx-auto mb-3" /><p className="text-gray-500 text-sm mb-4">Aucun groupe créé</p><button onClick={onAddGroup} className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl text-sm">Créer un groupe</button></div>
+                    <div className="text-center py-8"><Layers className="w-12 h-12 text-gray-300 mx-auto mb-3" /><p className="text-gray-500 text-sm mb-4">Aucun groupe créé</p><MaterialButton onClick={onAddGroup} className="text-sm">Créer un groupe</MaterialButton></div>
                 ) : (
                     <div className="space-y-2">{groups.map((group) => (
-                        <button key={group.id} onClick={() => onSelectGroup(group)} className={`w-full flex items-center justify-between p-3 rounded-xl transition-colors ${selectedGroup?.id === group.id ? 'bg-[#0E3A5D] text-white' : 'bg-gray-50 hover:bg-gray-100'}`}>
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: selectedGroup?.id === group.id ? 'rgba(255,255,255,0.2)' : `${group.color}20` }}>
+                        <MaterialButton key={group.id} onClick={() => onSelectGroup(group)} variant={selectedGroup?.id === group.id ? 'filled' : 'text'} className="w-full justify-start text-left">
+                            <div className="flex w-full items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-lg" style={{ backgroundColor: selectedGroup?.id === group.id ? 'rgba(255,255,255,0.2)' : `${group.color}20` }}>
                                     <Layers className="w-5 h-5" style={{ color: selectedGroup?.id === group.id ? 'white' : group.color }} />
                                 </div>
                                 <div className="text-left"><p className={`font-medium text-sm ${selectedGroup?.id === group.id ? 'text-white' : 'text-gray-900'}`}>{group.name}</p><p className={`text-xs ${selectedGroup?.id === group.id ? 'text-white/70' : 'text-gray-500'}`}>{group.members_count || 0} membres</p></div>
                             </div>
-                        </button>
+                        </MaterialButton>
                     ))}</div>
                 )}
             </div>
@@ -893,13 +892,13 @@ function GroupsTab({ groups, selectedGroup, onSelectGroup, onAddGroup, onEditGro
                             </div>
                         </div>
                         <div className="flex items-center justify-between mb-4"><h4 className="font-semibold text-gray-900">Membres ({groupMembers.length})</h4>
-                            <button onClick={() => setShowAddModal(true)} className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl text-sm flex items-center gap-2"><UserPlus className="w-4 h-4" />Ajouter</button></div>
+                            <MaterialButton onClick={() => setShowAddModal(true)} icon={<UserPlus className="w-4 h-4" />} className="text-sm">Ajouter</MaterialButton></div>
                         {loadingMembers ? <div className="animate-pulse space-y-3">{[...Array(3)].map((_, i) => <div key={i} className="h-16 bg-gray-100 rounded-xl" />)}</div>
                             : groupMembers.length === 0 ? <p className="text-gray-500 text-sm text-center py-8">Aucun membre dans ce groupe</p>
                                 : <div className="grid grid-cols-1 md:grid-cols-2 gap-3">{groupMembers.map((member) => (
                                     <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e] flex items-center justify-center"><span className="text-white text-sm font-semibold">{member.contact?.full_name?.charAt(0) || '?'}</span></div>
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200"><span className="text-slate-700 text-sm font-semibold">{member.contact?.full_name?.charAt(0) || '?'}</span></div>
                                             <div><p className="font-medium text-gray-900 text-sm">{member.contact?.full_name}</p><p className="text-xs text-gray-500">{member.contact?.company || member.contact?.job_title}</p></div>
                                         </div>
                                         <button onClick={() => onRemoveMember(member.id)} className="p-2 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4 text-red-500" /></button>
@@ -913,8 +912,8 @@ function GroupsTab({ groups, selectedGroup, onSelectGroup, onAddGroup, onEditGro
                                         {availableContacts.length === 0 ? <p className="text-gray-500 text-center py-4">Tous les contacts sont déjà membres</p> : (
                                             <div className="space-y-2">{availableContacts.map((contact) => (
                                                 <button key={contact.id} onClick={() => { onAddMember(selectedGroup.id, contact.id); setShowAddModal(false); }}
-                                                    className="w-full flex items-center gap-3 p-3 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors">
-                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e] flex items-center justify-center"><span className="text-white text-sm font-semibold">{contact.full_name?.charAt(0)}</span></div>
+                                                    className="w-full flex items-center gap-3 rounded-xl bg-gray-50 p-3 transition-colors hover:bg-gray-100">
+                                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200"><span className="text-slate-700 text-sm font-semibold">{contact.full_name?.charAt(0)}</span></div>
                                                     <div className="text-left"><p className="font-medium text-gray-900">{contact.full_name}</p><p className="text-xs text-gray-500">{contact.company}</p></div>
                                                 </button>
                                             ))}</div>
@@ -950,22 +949,22 @@ function MembersTab({ members, allContacts, onToggleMember, onRefresh, enterpris
     return (
         <div>
             <div className="flex items-center justify-between mb-6">
-                <div className="relative flex-1 max-w-md"><Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" /><input type="text" placeholder="Rechercher un membre..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-12 pr-4 py-3 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]" /></div>
-                <button onClick={() => setShowContactFormModal(true)} className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl flex items-center gap-2 ml-4"><UserPlus className="w-5 h-5" />Créer un membre</button>
+                <div className="relative flex-1 max-w-md"><Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" /><input type="text" placeholder="Rechercher un membre..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
+                <MaterialButton onClick={() => setShowContactFormModal(true)} icon={<UserPlus className="w-5 h-5" />} className="ml-4">Créer un membre</MaterialButton>
             </div>
             {filteredMembers.length === 0 ? (
-                <div className="bg-white rounded-2xl border p-12 text-center"><Users2 className="w-16 h-16 text-gray-300 mx-auto mb-4" /><h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun membre</h3><p className="text-gray-500 mb-6">Créez des contacts en tant que membres de votre entreprise</p><button onClick={() => setShowContactFormModal(true)} className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl">Créer un membre</button></div>
+                <div className="bg-white rounded-2xl border p-12 text-center"><Users2 className="w-16 h-16 text-gray-300 mx-auto mb-4" /><h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun membre</h3><p className="text-gray-500 mb-6">Créez des contacts en tant que membres de votre entreprise</p><MaterialButton onClick={() => setShowContactFormModal(true)}>Créer un membre</MaterialButton></div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{filteredMembers.map((member) => (
-                    <div key={member.id} className="bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-lg transition-shadow">
+                    <div key={member.id} className="bg-white rounded-2xl border border-gray-200 p-5 transition-shadow hover:shadow-md">
                         <div className="flex items-start gap-4">
-                            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e] flex items-center justify-center text-white font-bold text-lg">{member.full_name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}</div>
+                            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-slate-200 text-lg font-bold text-slate-700">{member.full_name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}</div>
                             <div className="flex-1 min-w-0"><h4 className="font-semibold text-gray-900 truncate">{member.full_name}</h4>{member.job_title && <p className="text-sm text-gray-500 truncate">{member.job_title}</p>}{member.email && <p className="text-xs text-gray-400 truncate mt-1">{member.email}</p>}</div>
                             <button onClick={() => onToggleMember(member.id, false)} className="p-2 hover:bg-red-50 rounded-lg text-gray-400 hover:text-red-500"><X className="w-4 h-4" /></button>
                         </div>
                         <div className="mt-4 pt-4 border-t border-gray-100">
                             <div className="flex items-center justify-between mb-2"><span className="text-sm font-medium text-gray-700">Objectifs ({memberObjectives.filter(o => o.member_id === member.id).length})</span>
-                                <button onClick={() => setCreatingObjectiveFor(member)} className="px-3 py-1 text-xs bg-[#0E3A5D] text-white rounded-lg flex items-center gap-1"><Plus className="w-3 h-3" />Créer</button></div>
+                                <MaterialButton onClick={() => setCreatingObjectiveFor(member)} icon={<Plus className="w-3 h-3" />} className="text-xs">Créer</MaterialButton></div>
                             {memberObjectives.filter(o => o.member_id === member.id).length > 0 && <div className="flex gap-1 flex-wrap">{memberObjectives.filter(o => o.member_id === member.id).slice(0, 2).map(obj => (
                                 <span key={obj.id} className={`px-2 py-1 rounded text-xs ${obj.status === 'completed' ? 'bg-green-100 text-green-700' : obj.status === 'in_progress' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'}`}>{obj.title}</span>
                             ))}</div>}
@@ -1001,28 +1000,28 @@ function ObjectivesTab({ objectives, onAddObjective, onEditObjective, onDeleteOb
         <div>
             <div className="flex items-center justify-between mb-6">
                 <div className="flex gap-2">{['all', 'in_progress', 'completed', 'not_started'].map(s => (
-                    <button key={s} onClick={() => setFilterStatus(s)} className={`px-4 py-2 rounded-lg text-sm font-medium ${filterStatus === s ? 'bg-[#0E3A5D] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+                    <MaterialButton key={s} onClick={() => setFilterStatus(s)} variant={filterStatus === s ? 'filled' : 'text'} className="text-sm">
                         {s === 'all' ? 'Tous' : s === 'in_progress' ? 'En cours' : s === 'completed' ? 'Terminés' : 'Non démarrés'}
-                    </button>
+                    </MaterialButton>
                 ))}</div>
-                <button onClick={onAddObjective} className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl flex items-center gap-2"><Plus className="w-5 h-5" />Nouvel objectif</button>
+                <MaterialButton onClick={onAddObjective} icon={<Plus className="w-5 h-5" />}>Nouvel objectif</MaterialButton>
             </div>
             {filtered.length === 0 ? (
-                <div className="bg-white rounded-2xl border p-12 text-center"><Target className="w-16 h-16 text-gray-300 mx-auto mb-4" /><h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun objectif</h3><button onClick={onAddObjective} className="px-4 py-2 bg-[#0E3A5D] text-white rounded-xl mt-4">Créer un objectif</button></div>
+                <div className="bg-white rounded-2xl border p-12 text-center"><Target className="w-16 h-16 text-gray-300 mx-auto mb-4" /><h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun objectif</h3><MaterialButton onClick={onAddObjective} className="mt-4">Créer un objectif</MaterialButton></div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">{filtered.map((obj) => {
                     const progress = getProgressPercentage(obj.current_value, obj.target_value);
                     const sc = getStatusConfig(obj.status); const pc = getPriorityConfig(obj.priority);
                     const SI = sc.icon; const PI = pc.icon;
                     return (
-                        <div key={obj.id} className="bg-white rounded-2xl border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+                        <div key={obj.id} className="bg-white rounded-2xl border border-gray-200 p-6 transition-shadow hover:shadow-md">
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex-1"><h4 className="font-semibold text-gray-900 mb-1">{obj.title}</h4>{obj.description && <p className="text-sm text-gray-500 line-clamp-2">{obj.description}</p>}</div>
                                 <div className="flex gap-1"><button onClick={() => onEditObjective(obj)} className="p-2 hover:bg-gray-100 rounded-lg"><Edit className="w-4 h-4 text-gray-500" /></button><button onClick={() => onDeleteObjective(obj.id)} className="p-2 hover:bg-red-50 rounded-lg"><Trash2 className="w-4 h-4 text-red-500" /></button></div>
                             </div>
                             <div className="mb-4">
                                 <div className="flex justify-between text-sm mb-2"><span className="text-gray-600">{formatValue(obj.current_value, obj.unit, obj.currency)}</span><span className="text-gray-400">/ {formatValue(obj.target_value, obj.unit, obj.currency)}</span></div>
-                                <div className="w-full bg-gray-200 rounded-full h-3"><div className={`h-3 rounded-full transition-all ${progress >= 100 ? 'bg-emerald-500' : 'bg-[#0E3A5D]'}`} style={{ width: `${progress}%` }} /></div>
+                                <div className="h-3 w-full rounded-full bg-gray-200"><div className={`h-3 rounded-full transition-all ${progress >= 100 ? 'bg-emerald-500' : 'bg-slate-700'}`} style={{ width: `${progress}%` }} /></div>
                                 <p className="text-right text-xs text-gray-500 mt-1">{progress}%</p>
                             </div>
                             <div className="flex items-center gap-2 flex-wrap">
@@ -1050,11 +1049,11 @@ function EnterpriseModal({ enterprise, onClose, onSave }: { enterprise: Enterpri
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"><div className="bg-white rounded-2xl w-full max-w-lg">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between"><h2 className="text-xl font-bold text-gray-900">{enterprise ? "Modifier l'entreprise" : 'Créer mon entreprise'}</h2><button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg"><X className="w-5 h-5 text-gray-500" /></button></div>
             <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Nom *</label><input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20 focus:border-[#0E3A5D]" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Description</label><textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={3} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20 resize-none" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Secteur</label><input type="text" value={formData.industry} onChange={(e) => setFormData({ ...formData, industry: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Taille</label><select value={formData.size} onChange={(e) => setFormData({ ...formData, size: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20"><option value="startup">Startup (1-10)</option><option value="pme">PME (11-250)</option><option value="eti">ETI (251-5000)</option><option value="grande_entreprise">Grande entreprise (5000+)</option></select></div>
-                <div className="flex gap-3 pt-4"><button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button><button type="submit" disabled={loading || !formData.name} className="flex-1 px-6 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium disabled:opacity-50">{loading ? 'Enregistrement...' : enterprise ? 'Modifier' : 'Créer'}</button></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Nom *</label><input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Description</label><textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={3} className="w-full rounded-xl border border-gray-200 px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Secteur</label><input type="text" value={formData.industry} onChange={(e) => setFormData({ ...formData, industry: e.target.value })} className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Taille</label><select value={formData.size} onChange={(e) => setFormData({ ...formData, size: e.target.value })} className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-300"><option value="startup">Startup (1-10)</option><option value="pme">PME (11-250)</option><option value="eti">ETI (251-5000)</option><option value="grande_entreprise">Grande entreprise (5000+)</option></select></div>
+                <div className="flex gap-3 pt-4"><MaterialButton type="button" onClick={onClose} variant="outlined" className="flex-1 justify-center">Annuler</MaterialButton><MaterialButton type="submit" disabled={loading || !formData.name} className="flex-1 justify-center">{loading ? 'Enregistrement...' : enterprise ? 'Modifier' : 'Créer'}</MaterialButton></div>
             </form>
         </div></div>
     );
@@ -1069,11 +1068,11 @@ function TeamModal({ team, parentTeam, allTeams, onClose, onSave }: { team: Team
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"><div className="bg-white rounded-2xl w-full max-w-lg">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between"><h2 className="text-xl font-bold text-gray-900">{team ? "Modifier l'équipe" : parentTeam ? `Nouvelle sous-équipe de ${parentTeam.name}` : 'Nouvelle équipe'}</h2><button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg"><X className="w-5 h-5 text-gray-500" /></button></div>
             <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Nom *</label><input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Description</label><textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={3} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20 resize-none" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Nom *</label><input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Description</label><textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={3} className="w-full rounded-xl border border-gray-200 px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
                 <div><label className="block text-sm font-medium text-gray-700 mb-2">Équipe parente</label><select value={formData.parent_team_id} onChange={(e) => setFormData({ ...formData, parent_team_id: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="">Aucune (équipe principale)</option>{allTeams.filter(t => t.id !== team?.id).map(t => <option key={t.id} value={t.id}>{'—'.repeat(t.level - 1)} {t.name}</option>)}</select></div>
                 <div><label className="block text-sm font-medium text-gray-700 mb-2">Couleur</label><div className="flex gap-2 flex-wrap">{colors.map(c => <button key={c} type="button" onClick={() => setFormData({ ...formData, color: c })} className={`w-10 h-10 rounded-lg ${formData.color === c ? 'ring-2 ring-offset-2 ring-gray-400 scale-110' : ''}`} style={{ backgroundColor: c }} />)}</div></div>
-                <div className="flex gap-3 pt-4"><button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button><button type="submit" disabled={loading || !formData.name} className="flex-1 px-6 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium disabled:opacity-50">{loading ? 'Enregistrement...' : team ? 'Modifier' : 'Créer'}</button></div>
+                <div className="flex gap-3 pt-4"><MaterialButton type="button" onClick={onClose} variant="outlined" className="flex-1 justify-center">Annuler</MaterialButton><MaterialButton type="submit" disabled={loading || !formData.name} className="flex-1 justify-center">{loading ? 'Enregistrement...' : team ? 'Modifier' : 'Créer'}</MaterialButton></div>
             </form>
         </div></div>
     );
@@ -1088,10 +1087,10 @@ function GroupModal({ group, onClose, onSave }: { group: CustomGroup | null; onC
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"><div className="bg-white rounded-2xl w-full max-w-lg">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between"><h2 className="text-xl font-bold text-gray-900">{group ? 'Modifier le groupe' : 'Nouveau groupe'}</h2><button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg"><X className="w-5 h-5 text-gray-500" /></button></div>
             <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Nom *</label><input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Description</label><textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={3} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20 resize-none" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Nom *</label><input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Description</label><textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={3} className="w-full rounded-xl border border-gray-200 px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
                 <div><label className="block text-sm font-medium text-gray-700 mb-2">Couleur</label><div className="flex gap-2 flex-wrap">{colors.map(c => <button key={c} type="button" onClick={() => setFormData({ ...formData, color: c })} className={`w-10 h-10 rounded-lg ${formData.color === c ? 'ring-2 ring-offset-2 ring-gray-400 scale-110' : ''}`} style={{ backgroundColor: c }} />)}</div></div>
-                <div className="flex gap-3 pt-4"><button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button><button type="submit" disabled={loading || !formData.name} className="flex-1 px-6 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium disabled:opacity-50">{loading ? 'Enregistrement...' : group ? 'Modifier' : 'Créer'}</button></div>
+                <div className="flex gap-3 pt-4"><MaterialButton type="button" onClick={onClose} variant="outlined" className="flex-1 justify-center">Annuler</MaterialButton><MaterialButton type="submit" disabled={loading || !formData.name} className="flex-1 justify-center">{loading ? 'Enregistrement...' : group ? 'Modifier' : 'Créer'}</MaterialButton></div>
             </form>
         </div></div>
     );
@@ -1105,13 +1104,13 @@ function ObjectiveModal({ objective, onClose, onSave }: { objective: EnterpriseO
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"><div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white rounded-t-2xl"><h2 className="text-xl font-bold text-gray-900">{objective ? "Modifier l'objectif" : 'Nouvel objectif'}</h2><button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg"><X className="w-5 h-5 text-gray-500" /></button></div>
             <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Titre *</label><input type="text" required value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-2">Description</label><textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={2} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D]/20 resize-none" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Titre *</label><input type="text" required value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-2">Description</label><textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={2} className="w-full rounded-xl border border-gray-200 px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>
                 <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-2">Valeur cible</label><input type="number" value={formData.target_value} onChange={(e) => setFormData({ ...formData, target_value: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div><div><label className="block text-sm font-medium text-gray-700 mb-2">Valeur actuelle</label><input type="number" value={formData.current_value} onChange={(e) => setFormData({ ...formData, current_value: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div></div>
                 <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-2">Unité</label><select value={formData.unit} onChange={(e) => setFormData({ ...formData, unit: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="number">Nombre</option><option value="currency">Devise</option><option value="percentage">Pourcentage</option></select></div>{formData.unit === 'currency' && <div><label className="block text-sm font-medium text-gray-700 mb-2">Devise</label><select value={formData.currency} onChange={(e) => setFormData({ ...formData, currency: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="EUR">EUR</option><option value="USD">USD</option><option value="XOF">XOF</option></select></div>}</div>
                 <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-2">Date de début</label><input type="date" value={formData.start_date} onChange={(e) => setFormData({ ...formData, start_date: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div><div><label className="block text-sm font-medium text-gray-700 mb-2">Date de fin</label><input type="date" value={formData.end_date} onChange={(e) => setFormData({ ...formData, end_date: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div></div>
                 <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-2">Statut</label><select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="not_started">Non démarré</option><option value="in_progress">En cours</option><option value="completed">Terminé</option><option value="cancelled">Annulé</option></select></div><div><label className="block text-sm font-medium text-gray-700 mb-2">Priorité</label><select value={formData.priority} onChange={(e) => setFormData({ ...formData, priority: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="low">Basse</option><option value="medium">Moyenne</option><option value="high">Haute</option><option value="critical">Critique</option></select></div></div>
-                <div className="flex gap-3 pt-4"><button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button><button type="submit" disabled={loading || !formData.title} className="flex-1 px-6 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium disabled:opacity-50">{loading ? 'Enregistrement...' : objective ? 'Modifier' : 'Créer'}</button></div>
+                <div className="flex gap-3 pt-4"><MaterialButton type="button" onClick={onClose} variant="outlined" className="flex-1 justify-center">Annuler</MaterialButton><MaterialButton type="submit" disabled={loading || !formData.title} className="flex-1 justify-center">{loading ? 'Enregistrement...' : objective ? 'Modifier' : 'Créer'}</MaterialButton></div>
             </form>
         </div></div>
     );
@@ -1129,13 +1128,15 @@ function AddMemberModal({ teamId, contacts, existingMemberIds, onClose, onSave }
             <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto">
                 <div className="relative"><Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /><input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Rechercher..." className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl" /></div>
                 <div className="max-h-60 overflow-y-auto space-y-2">{available.length === 0 ? <p className="text-gray-500 text-center py-4">Aucun contact</p> : available.map(c => (
-                    <button key={c.id} type="button" onClick={() => setSelectedContact(c.id)} className={`w-full flex items-center gap-3 p-3 rounded-xl ${selectedContact === c.id ? 'bg-[#0E3A5D] text-white' : 'bg-gray-50 hover:bg-gray-100'}`}>
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${selectedContact === c.id ? 'bg-white/20' : 'bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e]'}`}><span className="text-white text-sm font-semibold">{c.full_name?.charAt(0)}</span></div>
-                        <div className="text-left"><p className={`font-medium ${selectedContact === c.id ? 'text-white' : 'text-gray-900'}`}>{c.full_name}</p><p className={`text-xs ${selectedContact === c.id ? 'text-white/70' : 'text-gray-500'}`}>{c.company || c.job_title}</p></div>
-                    </button>
+                    <MaterialButton key={c.id} type="button" onClick={() => setSelectedContact(c.id)} variant={selectedContact === c.id ? 'filled' : 'text'} className="w-full justify-start text-left">
+                        <div className="flex w-full items-center gap-3">
+                            <div className={`flex h-10 w-10 items-center justify-center rounded-full ${selectedContact === c.id ? 'bg-white/20' : 'bg-slate-200'}`}><span className={`text-sm font-semibold ${selectedContact === c.id ? 'text-white' : 'text-slate-700'}`}>{c.full_name?.charAt(0)}</span></div>
+                            <div className="text-left"><p className={`font-medium ${selectedContact === c.id ? 'text-white' : 'text-gray-900'}`}>{c.full_name}</p><p className={`text-xs ${selectedContact === c.id ? 'text-white/70' : 'text-gray-500'}`}>{c.company || c.job_title}</p></div>
+                        </div>
+                    </MaterialButton>
                 ))}</div>
-                {selectedContact && <div><label className="block text-sm font-medium text-gray-700 mb-2">Rôle (optionnel)</label><input type="text" value={role} onChange={(e) => setRole(e.target.value)} placeholder="Ex: Chef de projet..." className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div>}
-                <div className="flex gap-3 pt-4"><button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button><button type="submit" disabled={!selectedContact} className="flex-1 px-6 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium disabled:opacity-50">Ajouter</button></div>
+                {selectedContact && <div><label className="block text-sm font-medium text-gray-700 mb-2">Rôle (optionnel)</label><input type="text" value={role} onChange={(e) => setRole(e.target.value)} placeholder="Ex: Chef de projet..." className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-slate-300" /></div>}
+                <div className="flex gap-3 pt-4"><MaterialButton type="button" onClick={onClose} variant="outlined" className="flex-1 justify-center">Annuler</MaterialButton><MaterialButton type="submit" disabled={!selectedContact} className="flex-1 justify-center">Ajouter</MaterialButton></div>
             </form>
         </div></div>
     );
@@ -1163,7 +1164,7 @@ function TeamObjectiveModal({ teamId, objective, enterpriseObjectives, contacts,
                 <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-2">Cible</label><input type="number" value={formData.target_value} onChange={(e) => setFormData({ ...formData, target_value: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div><div><label className="block text-sm font-medium text-gray-700 mb-2">Actuel</label><input type="number" value={formData.current_value} onChange={(e) => setFormData({ ...formData, current_value: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div></div>
                 <div><label className="block text-sm font-medium text-gray-700 mb-2">Responsable</label><select value={formData.assigned_to} onChange={(e) => setFormData({ ...formData, assigned_to: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="">Non assigné</option>{contacts.filter(c => c.is_member).map(c => <option key={c.id} value={c.id}>{c.full_name}</option>)}</select></div>
                 <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-2">Statut</label><select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="not_started">Non démarré</option><option value="in_progress">En cours</option><option value="completed">Terminé</option></select></div><div><label className="block text-sm font-medium text-gray-700 mb-2">Priorité</label><select value={formData.priority} onChange={(e) => setFormData({ ...formData, priority: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="low">Basse</option><option value="medium">Moyenne</option><option value="high">Haute</option><option value="critical">Critique</option></select></div></div>
-                <div className="flex gap-3 pt-4"><button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button><button type="submit" disabled={loading || !formData.title} className="flex-1 px-6 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium disabled:opacity-50">{loading ? 'Enregistrement...' : objective ? 'Modifier' : 'Créer'}</button></div>
+                <div className="flex gap-3 pt-4"><MaterialButton type="button" onClick={onClose} variant="outlined" className="flex-1 justify-center">Annuler</MaterialButton><MaterialButton type="submit" disabled={loading || !formData.title} className="flex-1 justify-center">{loading ? 'Enregistrement...' : objective ? 'Modifier' : 'Créer'}</MaterialButton></div>
             </form>
         </div></div>
     );
@@ -1191,7 +1192,7 @@ function MemberObjectiveModal({ member, enterpriseId, objective, onClose, onSucc
                 <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-2">Valeur cible</label><input type="number" step="0.01" value={formData.target_value} onChange={(e) => setFormData({ ...formData, target_value: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div><div><label className="block text-sm font-medium text-gray-700 mb-2">Valeur actuelle</label><input type="number" step="0.01" value={formData.current_value} onChange={(e) => setFormData({ ...formData, current_value: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div></div>
                 <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-2">Date de début</label><input type="date" value={formData.start_date} onChange={(e) => setFormData({ ...formData, start_date: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div><div><label className="block text-sm font-medium text-gray-700 mb-2">Date de fin</label><input type="date" value={formData.end_date} onChange={(e) => setFormData({ ...formData, end_date: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl" /></div></div>
                 <div className="grid grid-cols-2 gap-4"><div><label className="block text-sm font-medium text-gray-700 mb-2">Statut</label><select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="not_started">Non démarré</option><option value="in_progress">En cours</option><option value="completed">Terminé</option><option value="cancelled">Annulé</option></select></div><div><label className="block text-sm font-medium text-gray-700 mb-2">Priorité</label><select value={formData.priority} onChange={(e) => setFormData({ ...formData, priority: e.target.value })} className="w-full px-4 py-3 border border-gray-200 rounded-xl"><option value="low">Basse</option><option value="medium">Moyenne</option><option value="high">Haute</option><option value="critical">Critique</option></select></div></div>
-                <div className="flex gap-3 pt-4"><button type="button" onClick={onClose} className="flex-1 px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50">Annuler</button><button type="submit" disabled={loading} className="flex-1 px-6 py-3 bg-[#0E3A5D] text-white rounded-xl font-medium disabled:opacity-50">{loading ? 'Enregistrement...' : objective ? 'Modifier' : 'Créer'}</button></div>
+                <div className="flex gap-3 pt-4"><MaterialButton type="button" onClick={onClose} variant="outlined" className="flex-1 justify-center">Annuler</MaterialButton><MaterialButton type="submit" disabled={loading} className="flex-1 justify-center">{loading ? 'Enregistrement...' : objective ? 'Modifier' : 'Créer'}</MaterialButton></div>
             </form>
         </div></div>
     );

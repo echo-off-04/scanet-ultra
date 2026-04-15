@@ -1,8 +1,15 @@
 import type { Metadata } from 'next';
+import { Manrope } from 'next/font/google';
 import localFont from 'next/font/local';
 import { Toaster } from 'sonner';
 import { SessionProvider } from './providers';
 import './globals.css';
+
+const manrope = Manrope({
+    subsets: ['latin'],
+    variable: '--font-manrope',
+    display: 'swap',
+});
 
 const inter = localFont({
     src: [
@@ -28,7 +35,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="fr">
-            <body className={inter.className}>
+            <body className={`${inter.className} ${inter.variable} ${manrope.variable}`}>
                 <SessionProvider>
                     {children}
                 </SessionProvider>

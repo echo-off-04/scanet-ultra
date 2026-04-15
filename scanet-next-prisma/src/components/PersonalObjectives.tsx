@@ -11,6 +11,8 @@ import {
 } from '@/lib/objectiveCalculator';
 import { ObjectiveProgressCard } from './ObjectiveProgressCard';
 import { AddObjectiveModal } from './AddObjectiveModal';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface PersonalObjectivesProps {
     compact?: boolean;
@@ -117,13 +119,13 @@ export function PersonalObjectives({ compact = false }: PersonalObjectivesProps)
 
     if (loading) {
         return (
-            <div className="glass-card p-6">
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 rounded-xl bg-gray-100 animate-pulse" />
-                    <div className="space-y-2"><div className="w-32 h-4 bg-gray-100 rounded animate-pulse" /><div className="w-48 h-3 bg-gray-100 rounded animate-pulse" /></div>
+                    <div className="h-10 w-10 animate-pulse rounded-xl bg-slate-100" />
+                    <div className="space-y-2"><div className="h-4 w-32 animate-pulse rounded bg-slate-100" /><div className="h-3 w-48 animate-pulse rounded bg-slate-100" /></div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {[1, 2, 3].map(i => <div key={i} className="h-32 bg-gray-50 rounded-xl animate-pulse" />)}
+                    {[1, 2, 3].map(i => <div key={i} className="h-32 animate-pulse rounded-xl bg-slate-50" />)}
                 </div>
             </div>
         );
@@ -131,59 +133,57 @@ export function PersonalObjectives({ compact = false }: PersonalObjectivesProps)
 
     return (
         <>
-            <div className="glass-card p-5 lg:p-6 relative overflow-hidden">
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:p-6">
                 <svg className="absolute top-0 right-0 w-48 h-48 opacity-[0.03]" viewBox="0 0 200 200">
-                    <circle cx="100" cy="100" r="80" stroke="#0E3A5D" strokeWidth="2" fill="none" />
-                    <path d="M100 20 L100 100 L160 100" stroke="#0E3A5D" strokeWidth="2" fill="none" />
-                    <circle cx="100" cy="100" r="5" fill="#0E3A5D" />
+                    <circle cx="100" cy="100" r="80" stroke="#334155" strokeWidth="2" fill="none" />
+                    <path d="M100 20 L100 100 L160 100" stroke="#334155" strokeWidth="2" fill="none" />
+                    <circle cx="100" cy="100" r="5" fill="#334155" />
                 </svg>
 
                 <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-5">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0E3A5D] to-[#1e5a8e] flex items-center justify-center shadow-md"><Target className="w-5 h-5 text-white" /></div>
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50"><Target className="h-5 w-5 text-slate-700" /></div>
                         <div>
-                            <h3 className="text-lg font-bold text-gray-900">Mes objectifs</h3>
-                            <div className="flex items-center gap-3 text-xs text-gray-500">
+                            <h3 className="text-lg font-semibold text-slate-900">Mes objectifs</h3>
+                            <div className="flex items-center gap-3 text-xs text-slate-500">
                                 <span>{activeCount} actif{activeCount > 1 ? 's' : ''}</span>
-                                {achievedCount > 0 && (<><span className="w-1 h-1 rounded-full bg-gray-300" /><span className="text-emerald-600 font-medium">{achievedCount} atteint{achievedCount > 1 ? 's' : ''}</span></>)}
-                                {activeCount > 0 && (<><span className="w-1 h-1 rounded-full bg-gray-300" /><span className="font-medium">{totalProgress}% global</span></>)}
+                                {achievedCount > 0 && (<><span className="h-1 w-1 rounded-full bg-slate-300" /><span className="font-medium text-slate-700">{achievedCount} atteint{achievedCount > 1 ? 's' : ''}</span></>)}
+                                {activeCount > 0 && (<><span className="h-1 w-1 rounded-full bg-slate-300" /><span className="font-medium">{totalProgress}% global</span></>)}
                             </div>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <button onClick={handleRefresh} disabled={refreshing} className="p-2 hover:bg-gray-100 rounded-xl transition-colors" title="Actualiser les valeurs">
-                            <RefreshCw className={`w-4 h-4 text-gray-500 ${refreshing ? 'animate-spin' : ''}`} />
-                        </button>
+                        <MaterialIconButton ariaLabel="Actualiser les valeurs" onClick={handleRefresh} disabled={refreshing} icon={<RefreshCw className={`h-4 w-4 text-slate-500 ${refreshing ? 'animate-spin' : ''}`} />} />
                         {!compact && (
                             <div className="relative">
-                                <button onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-                                    <Filter className="w-3.5 h-3.5" />{filterStatus === 'all' ? 'Tous' : filterStatus === 'active' ? 'Actifs' : 'Atteints'}<ChevronDown className="w-3 h-3" />
+                                <button onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-100">
+                                    <Filter className="h-3.5 w-3.5" />{filterStatus === 'all' ? 'Tous' : filterStatus === 'active' ? 'Actifs' : 'Atteints'}<ChevronDown className="h-3 w-3" />
                                 </button>
                                 {showFilters && (
-                                    <div className="absolute right-0 top-full mt-1 w-36 bg-white rounded-xl shadow-xl border border-gray-200 z-20 overflow-hidden">
+                                    <div className="absolute right-0 top-full z-20 mt-1 w-36 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                                         {[{ value: 'all', label: 'Tous' }, { value: 'active', label: 'Actifs' }, { value: 'achieved', label: 'Atteints' }].map((f) => (
-                                            <button key={f.value} onClick={() => { setFilterStatus(f.value as 'all' | 'active' | 'achieved'); setShowFilters(false); }} className={`w-full text-left px-3 py-2 text-sm transition-colors ${filterStatus === f.value ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}>{f.label}</button>
+                                            <button key={f.value} onClick={() => { setFilterStatus(f.value as 'all' | 'active' | 'achieved'); setShowFilters(false); }} className={`w-full px-3 py-2 text-left text-sm transition-colors ${filterStatus === f.value ? 'bg-slate-100 font-medium text-slate-900' : 'text-slate-600 hover:bg-slate-50'}`}>{f.label}</button>
                                         ))}
                                     </div>
                                 )}
                             </div>
                         )}
-                        <button onClick={() => { setEditObjective(null); setShowAddModal(true); }} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0E3A5D] text-white rounded-xl text-xs font-semibold hover:bg-[#1e5a8e] transition-colors shadow-md shadow-blue-900/10">
-                            <Plus className="w-3.5 h-3.5" /><span className="hidden sm:inline">Ajouter</span>
-                        </button>
+                        <MaterialButton onClick={() => { setEditObjective(null); setShowAddModal(true); }} icon={<Plus className="h-3.5 w-3.5" />} className="text-xs">
+                            Ajouter
+                        </MaterialButton>
                     </div>
                 </div>
 
                 {filteredObjectives.length === 0 ? (
                     <div className="text-center py-10">
-                        <div className="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mx-auto mb-4"><Trophy className="w-8 h-8 text-gray-300" /></div>
-                        <h4 className="font-semibold text-gray-700 mb-1">{filterStatus !== 'all' ? 'Aucun objectif dans cette catégorie' : 'Aucun objectif défini'}</h4>
-                        <p className="text-sm text-gray-500 mb-4 max-w-sm mx-auto">{filterStatus !== 'all' ? "Changez le filtre pour voir d'autres objectifs" : 'Fixez-vous des objectifs mesurables pour suivre votre progression en temps réel'}</p>
+                        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50"><Trophy className="h-8 w-8 text-slate-300" /></div>
+                        <h4 className="mb-1 font-semibold text-slate-700">{filterStatus !== 'all' ? 'Aucun objectif dans cette catégorie' : 'Aucun objectif défini'}</h4>
+                        <p className="mx-auto mb-4 max-w-sm text-sm text-slate-500">{filterStatus !== 'all' ? "Changez le filtre pour voir d'autres objectifs" : 'Fixez-vous des objectifs mesurables pour suivre votre progression en temps réel'}</p>
                         {filterStatus === 'all' && (
-                            <button onClick={() => { setEditObjective(null); setShowAddModal(true); }} className="inline-flex items-center gap-2 px-4 py-2 bg-[#0E3A5D] text-white rounded-xl text-sm font-semibold hover:bg-[#1e5a8e] transition-colors">
-                                <Plus className="w-4 h-4" />Créer mon premier objectif
-                            </button>
+                            <MaterialButton onClick={() => { setEditObjective(null); setShowAddModal(true); }} icon={<Plus className="h-4 w-4" />} className="text-sm">
+                                Créer mon premier objectif
+                            </MaterialButton>
                         )}
                     </div>
                 ) : (

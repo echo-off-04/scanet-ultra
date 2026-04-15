@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { X, Upload, Calendar as CalendarIcon } from 'lucide-react';
 import { toast } from 'sonner';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 const CATEGORIES = [
     { value: 'conference', label: 'Conférence' },
@@ -143,66 +145,66 @@ export function AddEventModal({ onClose, onSuccess }: AddEventModalProps) {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto">
-            <div className="bg-white rounded-xl sm:rounded-2xl max-w-4xl w-full my-4 sm:my-8 shadow-2xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col">
-                <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/30 p-2 sm:p-4">
+            <div className="my-4 flex max-h-[95vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:my-8">
+                <div className="flex items-center justify-between border-b border-slate-200 p-4 sm:p-6">
                     <div>
-                        <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Créer un événement</h2>
-                        <p className="text-xs sm:text-sm text-gray-600 mt-1">Remplissez les informations de votre événement</p>
+                        <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">Créer un événement</h2>
+                        <p className="mt-1 text-xs text-slate-600 sm:text-sm">Remplissez les informations de votre événement</p>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-xl transition-colors"><X className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" /></button>
+                    <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-5 w-5 sm:h-6 sm:w-6" />} />
                 </div>
 
                 <form onSubmit={handleSubmit} className="overflow-y-auto flex-1">
                     <div className="p-4 sm:p-6 space-y-5 sm:space-y-6">
                         <div>
-                            <h3 className="text-lg font-bold text-gray-900 mb-4">Informations générales</h3>
+                            <h3 className="mb-4 text-lg font-semibold text-slate-900">Informations générales</h3>
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Nom de l&apos;événement *</label>
-                                    <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all" placeholder="Salon Tech 2024" />
+                                    <label className="mb-2 block text-sm font-semibold text-slate-700">Nom de l&apos;événement *</label>
+                                    <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="input-modern py-2.5" placeholder="Salon Tech 2024" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
-                                    <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={3} className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all resize-none" placeholder="Décrivez votre événement..." />
+                                    <label className="mb-2 block text-sm font-semibold text-slate-700">Description</label>
+                                    <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} rows={3} className="input-modern resize-none py-2.5" placeholder="Décrivez votre événement..." />
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Catégorie</label>
-                                        <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all">
+                                        <label className="mb-2 block text-sm font-semibold text-slate-700">Catégorie</label>
+                                        <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="input-modern py-2.5">
                                             {CATEGORIES.map((cat) => <option key={cat.value} value={cat.value}>{cat.label}</option>)}
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Type</label>
-                                        <select value={formData.event_type} onChange={(e) => setFormData({ ...formData, event_type: e.target.value })} className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all">
+                                        <label className="mb-2 block text-sm font-semibold text-slate-700">Type</label>
+                                        <select value={formData.event_type} onChange={(e) => setFormData({ ...formData, event_type: e.target.value })} className="input-modern py-2.5">
                                             {EVENT_TYPES.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
                                         </select>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Date de début</label>
-                                        <input type="datetime-local" value={formData.start_date} onChange={(e) => setFormData({ ...formData, start_date: e.target.value })} className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all" />
+                                        <label className="mb-2 block text-sm font-semibold text-slate-700">Date de début</label>
+                                        <input type="datetime-local" value={formData.start_date} onChange={(e) => setFormData({ ...formData, start_date: e.target.value })} className="input-modern py-2.5" />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Date de fin</label>
-                                        <input type="datetime-local" value={formData.end_date} onChange={(e) => setFormData({ ...formData, end_date: e.target.value })} className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all" />
+                                        <label className="mb-2 block text-sm font-semibold text-slate-700">Date de fin</label>
+                                        <input type="datetime-local" value={formData.end_date} onChange={(e) => setFormData({ ...formData, end_date: e.target.value })} className="input-modern py-2.5" />
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Lieu / Lien</label>
-                                    <input type="text" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all" placeholder="Paris, France ou https://zoom.us/..." />
+                                    <label className="mb-2 block text-sm font-semibold text-slate-700">Lieu / Lien</label>
+                                    <input type="text" value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} className="input-modern py-2.5" placeholder="Paris, France ou https://zoom.us/..." />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Image / Flyer</label>
+                                    <label className="mb-2 block text-sm font-semibold text-slate-700">Image / Flyer</label>
                                     <div className="mt-2">
                                         {imagePreview && <div className="mb-4"><img src={imagePreview} alt="Preview" className="w-full h-48 object-cover rounded-xl" /></div>}
-                                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer hover:bg-gray-50 transition-colors">
+                                        <label className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 transition-colors hover:bg-slate-100">
                                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <Upload className="w-10 h-10 text-gray-400 mb-2" />
-                                                <p className="text-sm text-gray-600"><span className="font-semibold">Cliquez pour uploader</span> ou glissez-déposez</p>
-                                                <p className="text-xs text-gray-500 mt-1">PNG, JPG jusqu&apos;à 10MB</p>
+                                                <Upload className="mb-2 h-10 w-10 text-slate-400" />
+                                                <p className="text-sm text-slate-600"><span className="font-semibold">Cliquez pour uploader</span> ou glissez-déposez</p>
+                                                <p className="mt-1 text-xs text-slate-500">PNG, JPG jusqu&apos;à 10MB</p>
                                             </div>
                                             <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
                                         </label>
@@ -212,31 +214,47 @@ export function AddEventModal({ onClose, onSuccess }: AddEventModalProps) {
                         </div>
 
                         <div>
-                            <h3 className="text-lg font-bold text-gray-900 mb-4">Objectifs et public</h3>
+                            <h3 className="mb-4 text-lg font-semibold text-slate-900">Objectifs et public</h3>
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Nombre cible de participants</label>
-                                    <input type="number" min="0" value={formData.target_participants} onChange={(e) => setFormData({ ...formData, target_participants: e.target.value === '' ? '' : parseInt(e.target.value) })} className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all" placeholder="Ex: 50" />
+                                    <label className="mb-2 block text-sm font-semibold text-slate-700">Nombre cible de participants</label>
+                                    <input type="number" min="0" value={formData.target_participants} onChange={(e) => setFormData({ ...formData, target_participants: e.target.value === '' ? '' : parseInt(e.target.value) })} className="input-modern py-2.5" placeholder="Ex: 50" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Objectif principal</label>
-                                    <select value={formData.primary_objective} onChange={(e) => setFormData({ ...formData, primary_objective: e.target.value })} className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all">
+                                    <label className="mb-2 block text-sm font-semibold text-slate-700">Objectif principal</label>
+                                    <select value={formData.primary_objective} onChange={(e) => setFormData({ ...formData, primary_objective: e.target.value })} className="input-modern py-2.5">
                                         {OBJECTIVES.map((obj) => <option key={obj.value} value={obj.value}>{obj.label}</option>)}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-3">Objectifs secondaires</label>
+                                    <label className="mb-3 block text-sm font-semibold text-slate-700">Objectifs secondaires</label>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                         {OBJECTIVES.map((obj) => (
-                                            <button key={obj.value} type="button" onClick={() => handleObjectiveToggle(obj.value)} className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${formData.secondary_objectives.includes(obj.value) ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>{obj.label}</button>
+                                            <MaterialButton
+                                                key={obj.value}
+                                                type="button"
+                                                onClick={() => handleObjectiveToggle(obj.value)}
+                                                variant={formData.secondary_objectives.includes(obj.value) ? 'filled' : 'text'}
+                                                className="justify-center text-sm"
+                                            >
+                                                {obj.label}
+                                            </MaterialButton>
                                         ))}
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-3">Type de public visé</label>
+                                    <label className="mb-3 block text-sm font-semibold text-slate-700">Type de public visé</label>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                                         {AUDIENCE_TYPES.map((aud) => (
-                                            <button key={aud.value} type="button" onClick={() => handleAudienceToggle(aud.value)} className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${formData.target_audience.includes(aud.value) ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>{aud.label}</button>
+                                            <MaterialButton
+                                                key={aud.value}
+                                                type="button"
+                                                onClick={() => handleAudienceToggle(aud.value)}
+                                                variant={formData.target_audience.includes(aud.value) ? 'filled' : 'text'}
+                                                className="justify-center text-sm"
+                                            >
+                                                {aud.label}
+                                            </MaterialButton>
                                         ))}
                                     </div>
                                 </div>
@@ -244,11 +262,11 @@ export function AddEventModal({ onClose, onSuccess }: AddEventModalProps) {
                         </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-end p-4 sm:p-6 border-t border-gray-200 bg-gray-50">
-                        <button type="button" onClick={onClose} disabled={loading} className="px-6 py-3 bg-white border-2 border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-all font-semibold disabled:opacity-50 order-2 sm:order-1">Annuler</button>
-                        <button type="submit" disabled={loading} className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-semibold shadow-md disabled:opacity-50 flex items-center justify-center gap-2 order-1 sm:order-2">
-                            {loading ? (<><div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>Création...</>) : (<><CalendarIcon className="w-5 h-5" />Créer l&apos;événement</>)}
-                        </button>
+                    <div className="order-1 flex flex-col justify-end gap-2 border-t border-slate-200 bg-slate-50 p-4 sm:flex-row sm:gap-3 sm:p-6">
+                        <MaterialButton type="button" onClick={onClose} disabled={loading} variant="outlined" className="order-2 justify-center sm:order-1">Annuler</MaterialButton>
+                        <MaterialButton type="submit" disabled={loading} icon={loading ? <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div> : <CalendarIcon className="h-5 w-5" />} className="order-1 justify-center sm:order-2">
+                            {loading ? 'Création...' : 'Créer l’événement'}
+                        </MaterialButton>
                     </div>
                 </form>
             </div>

@@ -69,56 +69,58 @@ function ResetPasswordForm() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center p-4">
+        <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
             <div className="w-full max-w-md">
-                <div className="bg-white rounded-3xl shadow-xl p-8">
-                    <div className="flex justify-center mb-6">
-                        <img src="https://i.ibb.co/q3YDjGLC/Scanetwork.png" alt="Scanetwork" className="h-14 object-contain" />
+                <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+                    <div className="mb-6 flex justify-center">
+                        <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+                            Scanetwork
+                        </div>
                     </div>
 
-                    <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">Nouveau mot de passe</h1>
-                    <p className="text-center text-gray-500 mb-8">
+                    <h1 className="mb-2 text-center text-3xl font-semibold text-slate-900">Nouveau mot de passe</h1>
+                    <p className="mb-8 text-center text-sm text-slate-500">
                         Choisissez un nouveau mot de passe sécurisé pour votre compte.
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Nouveau mot de passe</label>
+                            <label className="mb-2 block text-sm font-medium text-slate-700">Nouveau mot de passe</label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent transition-all"
+                                    className="input-modern pl-10 pr-12"
                                     placeholder="••••••••"
                                     required
                                     minLength={6}
                                 />
-                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-lg transition-colors" tabIndex={-1}>
-                                    {showPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}
+                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600" tabIndex={-1}>
+                                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                 </button>
                             </div>
 
                             {password.length > 0 && (
                                 <div className="mt-2">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                    <div className="mb-1 flex items-center gap-2">
+                                        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200">
                                             <div className={`h-full transition-all duration-300 ${passwordStrength.color}`} style={{ width: `${(passwordStrength.score / 5) * 100}%` }} />
                                         </div>
-                                        <span className={`text-xs font-medium ${passwordStrength.score <= 1 ? 'text-red-500' : passwordStrength.score <= 2 ? 'text-yellow-500' : passwordStrength.score <= 3 ? 'text-blue-500' : 'text-green-500'}`}>
+                                        <span className={`text-xs font-medium ${passwordStrength.score <= 1 ? 'text-red-500' : passwordStrength.score <= 2 ? 'text-yellow-600' : passwordStrength.score <= 3 ? 'text-blue-600' : 'text-green-600'}`}>
                                             {passwordStrength.label}
                                         </span>
                                     </div>
-                                    <div className="flex flex-wrap gap-2 text-xs text-gray-500">
-                                        <span className={password.length >= 8 ? 'text-green-500' : ''}>
-                                            {password.length >= 8 ? <CheckCircle className="w-3 h-3 inline mr-1" /> : '○'} 8+ caractères
+                                    <div className="flex flex-wrap gap-2 text-xs text-slate-500">
+                                        <span className={password.length >= 8 ? 'text-green-600' : ''}>
+                                            {password.length >= 8 ? <CheckCircle className="mr-1 inline h-3 w-3" /> : '○'} 8+ caractères
                                         </span>
-                                        <span className={/[A-Z]/.test(password) ? 'text-green-500' : ''}>
-                                            {/[A-Z]/.test(password) ? <CheckCircle className="w-3 h-3 inline mr-1" /> : '○'} Majuscule
+                                        <span className={/[A-Z]/.test(password) ? 'text-green-600' : ''}>
+                                            {/[A-Z]/.test(password) ? <CheckCircle className="mr-1 inline h-3 w-3" /> : '○'} Majuscule
                                         </span>
-                                        <span className={/[0-9]/.test(password) ? 'text-green-500' : ''}>
-                                            {/[0-9]/.test(password) ? <CheckCircle className="w-3 h-3 inline mr-1" /> : '○'} Chiffre
+                                        <span className={/[0-9]/.test(password) ? 'text-green-600' : ''}>
+                                            {/[0-9]/.test(password) ? <CheckCircle className="mr-1 inline h-3 w-3" /> : '○'} Chiffre
                                         </span>
                                     </div>
                                 </div>
@@ -126,20 +128,20 @@ function ResetPasswordForm() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Confirmer le mot de passe</label>
+                            <label className="mb-2 block text-sm font-medium text-slate-700">Confirmer le mot de passe</label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <Lock className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                                 <input
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent transition-all"
+                                    className="input-modern pl-10 pr-12"
                                     placeholder="••••••••"
                                     required
                                     minLength={6}
                                 />
-                                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-lg transition-colors" tabIndex={-1}>
-                                    {showConfirmPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}
+                                <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600" tabIndex={-1}>
+                                    {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                                 </button>
                             </div>
                             {confirmPassword && password !== confirmPassword && (
@@ -150,11 +152,11 @@ function ResetPasswordForm() {
                         <button
                             type="submit"
                             disabled={loading || password !== confirmPassword}
-                            className="w-full bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white py-3 rounded-xl font-medium hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
+                            className="btn-primary w-full justify-center py-3 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             {loading ? (
                                 <>
-                                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
                                     Réinitialisation...
                                 </>
                             ) : (
@@ -171,8 +173,8 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
     return (
         <Suspense fallback={
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-teal-600"></div>
+            <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
+                <div className="h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"></div>
             </div>
         }>
             <ResetPasswordForm />

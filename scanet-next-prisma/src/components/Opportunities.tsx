@@ -11,6 +11,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useKpis } from '@/contexts/KpiContext';
 import { formatCurrency, convertCurrency, convertAllToBaseCurrency, SUPPORTED_CURRENCIES } from '@/lib/currency';
 import { sendOpportunityWonEmail, getEmailPreferences } from '@/lib/emailService';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 // Composant pour afficher les montants convertis
 interface ConvertedAmountProps {
@@ -392,38 +394,24 @@ export function Opportunities({ onContactSelect }: OpportunitiesProps) {
                     <p className="text-lg text-gray-500">{stats.total} opportunité{stats.total !== 1 ? 's' : ''}</p>
                 </div>
 
-                <button
-                    onClick={() => setShowAddModal(true)}
-                    className="group relative overflow-hidden bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white px-8 py-4 rounded-full hover:from-[#0E3A5D]-800 hover:to-[#1e5a8e]-700 transition-all font-semibold shadow-2xl hover:shadow-3xl transform hover:scale-105 flex items-center gap-3"
-                >
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 group-hover:translate-x-full transition-transform duration-700" />
-                    <Plus className="w-5 h-5 relative z-10" />
-                    <span className="relative z-10">Nouvelle opportunité</span>
-                </button>
+                <MaterialButton onClick={() => setShowAddModal(true)} icon={<Plus className="w-5 h-5" />}>
+                    Nouvelle opportunité
+                </MaterialButton>
             </div>
 
             {/* Stats en grille moderne */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
                 {/* Total Opportunities - Dark card */}
                 <div className="group relative overflow-hidden">
-                    <div className="relative rounded-xl lg:rounded-2xl p-4 lg:p-5 border transition-all duration-300 hover:-translate-y-0.5 overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-700/50 shadow-[0_4px_16px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
-                        <div className="absolute inset-0 opacity-30 overflow-hidden">
-                            <svg className="w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                                <path d="M0,100 Q25,80 50,100 T100,100 Q125,120 150,100 T200,100 L200,200 L0,200 Z" fill="white" opacity="0.375" />
-                                <path d="M0,120 Q25,100 50,120 T100,120 Q125,140 150,120 T200,120 L200,200 L0,200 Z" fill="white" opacity="0.3" />
-                            </svg>
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/5 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500 rounded-xl lg:rounded-2xl" />
-                        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-xl lg:rounded-2xl" />
-                        <div className="absolute inset-[1px] rounded-xl lg:rounded-2xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] pointer-events-none" />
+                    <div className="relative overflow-hidden rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md lg:rounded-2xl lg:p-5">
                         <div className="relative z-10">
                             <div className="flex items-center gap-2 mb-2 lg:mb-3">
-                                <div className="p-1.5 rounded-lg transition-transform duration-300 group-hover:scale-110 bg-white/10">
-                                    <Target className="w-3.5 h-3.5 transition-colors duration-300 text-white/90" strokeWidth={2} />
+                                <div className="rounded-lg bg-slate-100 p-1.5 transition-transform duration-300 group-hover:scale-110">
+                                    <Target className="w-3.5 h-3.5 text-slate-700 transition-colors duration-300" strokeWidth={2} />
                                 </div>
-                                <p className="text-[10px] lg:text-xs font-medium uppercase tracking-wider text-white/70">Total</p>
+                                <p className="text-[10px] font-medium uppercase tracking-wider text-gray-500 lg:text-xs">Total</p>
                             </div>
-                            <p className="text-2xl lg:text-3xl font-bold text-white">{stats.total}</p>
+                            <p className="text-2xl font-bold text-gray-900 lg:text-3xl">{stats.total}</p>
                         </div>
                     </div>
                 </div>
@@ -628,12 +616,9 @@ export function Opportunities({ onContactSelect }: OpportunitiesProps) {
                         {searchQuery ? 'Aucun résultat pour votre recherche' : 'Commencez à créer des opportunités pour suivre vos ventes'}
                     </p>
                     {!searchQuery && (
-                        <button
-                            onClick={() => setShowAddModal(true)}
-                            className="px-6 py-3 bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white rounded-full font-semibold hover:shadow-lg transition-all"
-                        >
+                        <MaterialButton onClick={() => setShowAddModal(true)}>
                             Créer une opportunité
-                        </button>
+                        </MaterialButton>
                     )}
                 </div>
             ) : (
@@ -666,7 +651,7 @@ export function Opportunities({ onContactSelect }: OpportunitiesProps) {
                                                 className="w-10 h-10 rounded-full object-cover"
                                             />
                                         ) : (
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-sm font-semibold text-slate-700">
                                                 {getInitials(opp.contact)}
                                             </div>
                                         )}
@@ -900,16 +885,14 @@ function OpportunityModal({
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
             <div className="bg-white rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                 <div className="p-6 border-b border-gray-100">
                     <div className="flex items-center justify-between">
                         <h2 className="text-xl font-bold text-gray-900">
                             {opportunity ? 'Modifier l\'opportunité' : 'Nouvelle opportunité'}
                         </h2>
-                        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
-                            <X className="w-5 h-5 text-gray-500" />
-                        </button>
+                        <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="w-5 h-5 text-gray-500" />} />
                     </div>
                 </div>
 
@@ -1040,20 +1023,12 @@ function OpportunityModal({
 
                     {/* Buttons */}
                     <div className="flex gap-3 pt-2">
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="flex-1 py-3 bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50"
-                        >
+                        <MaterialButton type="submit" disabled={loading} className="flex-1 justify-center">
                             {loading ? 'Enregistrement...' : (opportunity ? 'Modifier' : 'Créer')}
-                        </button>
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all"
-                        >
+                        </MaterialButton>
+                        <MaterialButton type="button" onClick={onClose} variant="outlined">
                             Annuler
-                        </button>
+                        </MaterialButton>
                     </div>
                 </form>
             </div>
@@ -1089,7 +1064,7 @@ function OpportunityDetailModal({
     const currentStatus = statusConfig[opportunity.status] || statusConfig.prospect;
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
             <div className="bg-white rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
                 <div className="p-6">
                     {/* Header */}
@@ -1097,9 +1072,7 @@ function OpportunityDetailModal({
                         <span className={`px-3 py-1 rounded-full text-sm font-medium ${currentStatus.bg} ${currentStatus.color}`}>
                             {currentStatus.label}
                         </span>
-                        <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
-                            <X className="w-5 h-5 text-gray-500" />
-                        </button>
+                        <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="w-5 h-5 text-gray-500" />} />
                     </div>
 
                     {/* Title */}
@@ -1123,7 +1096,7 @@ function OpportunityDetailModal({
                                     className="w-12 h-12 rounded-full object-cover"
                                 />
                             ) : (
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-200 font-semibold text-slate-700">
                                     {opportunity.contact.full_name?.[0]?.toUpperCase()}
                                 </div>
                             )}
@@ -1202,18 +1175,10 @@ function OpportunityDetailModal({
 
                     {/* Actions */}
                     <div className="flex gap-3">
-                        <button
-                            onClick={onEdit}
-                            className="flex-1 py-3 bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white rounded-xl font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
-                        >
-                            <Edit className="w-4 h-4" /> Modifier
-                        </button>
-                        <button
-                            onClick={onDelete}
-                            className="px-4 py-3 bg-red-50 text-red-600 rounded-xl font-semibold hover:bg-red-100 transition-all flex items-center gap-2"
-                        >
-                            <Trash2 className="w-4 h-4" />
-                        </button>
+                        <MaterialButton onClick={onEdit} icon={<Edit className="w-4 h-4" />} className="flex-1 justify-center">
+                            Modifier
+                        </MaterialButton>
+                        <MaterialIconButton ariaLabel="Supprimer" onClick={onDelete} variant="outlined" icon={<Trash2 className="w-4 h-4 text-red-600" />} />
                     </div>
                 </div>
             </div>

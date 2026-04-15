@@ -7,6 +7,8 @@ import { toast } from 'sonner';
 import EmailSequences from './EmailSequences';
 import SequenceBuilderModal from './SequenceBuilderModal';
 import type { EmailSequence } from '@/types';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface ScheduledEmail {
     id: string;
@@ -164,14 +166,14 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
 
     return (
         <div className="space-y-4 md:space-y-6">
-            <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-xl w-fit">
+            <div className="flex w-fit items-center gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1">
                 <button onClick={() => setActiveTab('scheduled')}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'scheduled' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
-                    <Mail className="w-4 h-4" />Emails programmés
+                    className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${activeTab === 'scheduled' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
+                    <Mail className="h-4 w-4" />Emails programmés
                 </button>
                 <button onClick={() => setActiveTab('sequences')}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'sequences' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}>
-                    <Workflow className="w-4 h-4" />Séquences automatiques
+                    className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${activeTab === 'sequences' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
+                    <Workflow className="h-4 w-4" />Séquences automatiques
                 </button>
             </div>
 
@@ -180,7 +182,7 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
             ) : (
                 <>
                     {loading ? (
-                        <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0E3A5D]" /></div>
+                        <div className="flex h-64 items-center justify-center"><div className="h-12 w-12 animate-spin rounded-full border-b-2 border-slate-700" /></div>
                     ) : (
                         <div className="space-y-4 md:space-y-6">
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
@@ -190,28 +192,28 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
                                     { label: 'Envoyés', value: stats.sent, icon: CheckCircle, color: 'emerald', f: 'sent' as const },
                                     { label: 'Échoués', value: stats.failed, icon: XCircle, color: 'red', f: 'failed' as const },
                                 ].map(({ label, value, icon: Icon, color, f }) => (
-                                    <div key={f} className="glass-card p-4 md:p-6 cursor-pointer hover:scale-105 transition-transform" onClick={() => setFilter(f)}>
+                                    <div key={f} className="cursor-pointer rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:bg-slate-50 md:p-6" onClick={() => setFilter(f)}>
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <p className="text-xs md:text-sm text-gray-600">{label}</p>
-                                                <p className={`text-2xl md:text-3xl font-bold mt-1 text-${color}-600`}>{value}</p>
+                                                <p className="text-xs text-slate-600 md:text-sm">{label}</p>
+                                                <p className="mt-1 text-2xl font-semibold text-slate-900 md:text-3xl">{value}</p>
                                             </div>
-                                            <div className={`w-10 h-10 md:w-12 md:h-12 bg-${color}-100 rounded-full flex items-center justify-center`}>
-                                                <Icon className={`w-5 h-5 md:w-6 md:h-6 text-${color}-600`} />
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-slate-50 md:h-12 md:w-12">
+                                                <Icon className="h-5 w-5 text-slate-700 md:h-6 md:w-6" />
                                             </div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="glass-card p-4 md:p-5 border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50">
+                            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5">
                                 <div className="flex items-start gap-3">
-                                    <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
-                                        <Zap className="w-5 h-5 text-emerald-600" />
+                                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white">
+                                        <Zap className="h-5 w-5 text-slate-700" />
                                     </div>
                                     <div>
-                                        <h4 className="text-sm font-semibold text-emerald-900">Envoi automatique actif</h4>
-                                        <p className="text-xs text-emerald-700 mt-0.5">Vos relances sont envoyées automatiquement à l'heure prévue.</p>
+                                        <h4 className="text-sm font-semibold text-slate-900">Envoi automatique actif</h4>
+                                        <p className="mt-0.5 text-xs text-slate-600">Vos relances sont envoyées automatiquement à l'heure prévue.</p>
                                     </div>
                                 </div>
                             </div>
@@ -219,70 +221,72 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
                             <div className="flex flex-col gap-3 md:gap-4">
                                 <div className="flex items-center gap-2 overflow-x-auto pb-2">
                                     {(['all', 'pending', 'sent', 'failed'] as const).map(f => (
-                                        <button key={f} onClick={() => setFilter(f)}
-                                            className={`px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium transition-all whitespace-nowrap ${filter === f ? 'bg-[#0E3A5D] text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}>
+                                        <MaterialButton
+                                            key={f}
+                                            onClick={() => setFilter(f)}
+                                            variant={filter === f ? 'filled' : 'text'}
+                                            className="min-w-0 whitespace-nowrap text-xs md:text-sm"
+                                        >
                                             {f === 'all' ? 'Tous' : f === 'pending' ? 'En attente' : f === 'sent' ? 'Envoyés' : 'Échoués'}
-                                        </button>
+                                        </MaterialButton>
                                     ))}
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row gap-3">
-                                    <button onClick={onScheduleNew} className="flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-gradient-to-r from-[#0E3A5D] to-[#1E5A8E] text-white rounded-full hover:shadow-lg transition-all hover:scale-105 text-sm md:text-base">
-                                        <Plus className="w-4 h-4 md:w-5 md:h-5" /><span className="font-semibold">Planifier une relance</span>
-                                    </button>
+                                    <MaterialButton onClick={onScheduleNew} icon={<Plus className="h-4 w-4 md:h-5 md:w-5" />} className="justify-center text-sm md:text-base">
+                                        Planifier une relance
+                                    </MaterialButton>
                                     {stats.failed > 0 && (
-                                        <button onClick={handleManualProcess} disabled={processing}
-                                            className="flex items-center justify-center gap-2 px-4 md:px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-full hover:bg-gray-50 text-sm md:text-base disabled:opacity-50">
-                                            <RefreshCw className={`w-4 h-4 md:w-5 md:h-5 ${processing ? 'animate-spin' : ''}`} />
-                                            <span className="font-medium">{processing ? 'Traitement...' : 'Relancer les échecs'}</span>
-                                        </button>
+                                        <MaterialButton onClick={handleManualProcess} disabled={processing} variant="outlined" icon={<RefreshCw className={`h-4 w-4 md:h-5 md:w-5 ${processing ? 'animate-spin' : ''}`} />} className="justify-center text-sm md:text-base">
+                                            {processing ? 'Traitement...' : 'Relancer les échecs'}
+                                        </MaterialButton>
                                     )}
                                 </div>
                             </div>
 
                             {filteredEmails.length === 0 ? (
-                                <div className="glass-card p-12 text-center">
-                                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"><Mail className="w-10 h-10 text-[#0E3A5D]" /></div>
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                                <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center">
+                                    <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-slate-200 bg-slate-50"><Mail className="h-10 w-10 text-slate-700" /></div>
+                                    <h3 className="mb-3 text-2xl font-semibold text-slate-900">
                                         {filter === 'all' ? 'Aucune relance planifiée' : `Aucune relance ${filter === 'pending' ? 'en attente' : filter === 'sent' ? 'envoyée' : 'échouée'}`}
                                     </h3>
-                                    <p className="text-gray-600 max-w-md mx-auto mb-6">Planifiez des relances pour vos contacts.</p>
-                                    <button onClick={onScheduleNew} className="inline-flex items-center gap-2 px-6 py-3 bg-[#0E3A5D] text-white rounded-full hover:bg-[#1E5A8E]">
-                                        <Plus className="w-5 h-5" /><span className="font-semibold">Planifier ma première relance</span>
-                                    </button>
+                                    <p className="mx-auto mb-6 max-w-md text-slate-600">Planifiez des relances pour vos contacts.</p>
+                                    <MaterialButton onClick={onScheduleNew} icon={<Plus className="h-5 w-5" />}>
+                                        Planifier ma première relance
+                                    </MaterialButton>
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 gap-3 md:gap-4">
                                     {filteredEmails.map((email) => (
-                                        <div key={email.id} className="glass-card p-4 md:p-6 hover:shadow-xl transition-all">
+                                        <div key={email.id} className="rounded-2xl border border-slate-200 bg-white p-4 transition-colors hover:bg-slate-50 md:p-6">
                                             <div className="flex flex-col lg:flex-row lg:items-start gap-3 md:gap-4">
-                                                <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center flex-shrink-0 ${email.status === 'sent' ? 'bg-emerald-100' : email.status === 'failed' ? 'bg-red-100' : email.status === 'cancelled' ? 'bg-gray-100' : 'bg-blue-100'}`}>
-                                                    <Send className={`w-6 h-6 md:w-7 md:h-7 ${email.status === 'sent' ? 'text-emerald-600' : email.status === 'failed' ? 'text-red-600' : email.status === 'cancelled' ? 'text-gray-600' : 'text-blue-600'}`} />
+                                                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 md:h-14 md:w-14">
+                                                    <Send className="h-6 w-6 text-slate-700 md:h-7 md:w-7" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
                                                         <div className="flex-1 min-w-0">
-                                                            <h3 className="text-lg font-bold text-gray-900 mb-1 truncate">{email.subject}</h3>
-                                                            <p className="text-sm text-gray-600 line-clamp-3">{email.body}</p>
+                                                            <h3 className="mb-1 truncate text-lg font-semibold text-slate-900">{email.subject}</h3>
+                                                            <p className="line-clamp-3 text-sm text-slate-600">{email.body}</p>
                                                         </div>
                                                         {getStatusBadge(email.status)}
                                                     </div>
-                                                    <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                                                    <div className="flex flex-wrap gap-4 text-sm text-slate-600">
                                                         <div className="flex items-center gap-1.5">
-                                                            <Calendar className="w-4 h-4" />
+                                                            <Calendar className="h-4 w-4" />
                                                             <span>{email.status === 'sent' && email.sent_at ? `Envoyé le ${formatDate(email.sent_at)}` : `Prévu le ${formatDate(email.scheduled_for)}`}</span>
                                                             {email.status === 'pending' && isPast(email.scheduled_for) && (
-                                                                <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full flex items-center gap-1"><RefreshCw className="w-3 h-3 animate-spin" />Envoi en cours</span>
+                                                                <span className="ml-2 flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700"><RefreshCw className="h-3 w-3 animate-spin" />Envoi en cours</span>
                                                             )}
                                                         </div>
-                                                        <div className="flex items-center gap-1.5"><Users className="w-4 h-4" /><span>{email.recipients?.length || 0} destinataire(s)</span></div>
+                                                        <div className="flex items-center gap-1.5"><Users className="h-4 w-4" /><span>{email.recipients?.length || 0} destinataire(s)</span></div>
                                                     </div>
                                                     {email.recipients && email.recipients.length > 0 && (
                                                         <div className="mt-3 flex flex-wrap gap-2">
                                                             {email.recipients.slice(0, 3).map(r => (
-                                                                <span key={r.id} className="px-2.5 py-1 bg-white/50 rounded-full text-xs text-gray-700 border border-gray-200 max-w-[200px] truncate">{r.email}</span>
+                                                                <span key={r.id} className="max-w-[200px] truncate rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-700">{r.email}</span>
                                                             ))}
-                                                            {email.recipients.length > 3 && <span className="px-2.5 py-1 bg-white/50 rounded-full text-xs text-gray-700 border border-gray-200">+{email.recipients.length - 3} autre(s)</span>}
+                                                            {email.recipients.length > 3 && <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-700">+{email.recipients.length - 3} autre(s)</span>}
                                                         </div>
                                                     )}
                                                     {email.error_message && (
@@ -291,12 +295,12 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
                                                 </div>
                                                 {email.status === 'pending' ? (
                                                     <div className="flex lg:flex-col gap-2">
-                                                        <button onClick={() => { setEditingEmail(email); setShowEditModal(true); }} className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100" title="Modifier"><Edit2 className="w-5 h-5" /></button>
-                                                        <button onClick={() => handleCancel(email.id)} className="flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 text-orange-600 hover:bg-orange-100" title="Annuler"><AlertCircle className="w-5 h-5" /></button>
-                                                        <button onClick={() => handleDelete(email.id)} className="flex items-center justify-center w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100" title="Supprimer"><Trash2 className="w-5 h-5" /></button>
+                                                        <MaterialIconButton ariaLabel="Modifier" onClick={() => { setEditingEmail(email); setShowEditModal(true); }} icon={<Edit2 className="h-5 w-5" />} />
+                                                        <MaterialIconButton ariaLabel="Annuler la relance" onClick={() => handleCancel(email.id)} icon={<AlertCircle className="h-5 w-5" />} />
+                                                        <MaterialIconButton ariaLabel="Supprimer" onClick={() => handleDelete(email.id)} variant="outlined" icon={<Trash2 className="h-5 w-5 text-red-600" />} />
                                                     </div>
                                                 ) : (
-                                                    <button onClick={() => handleDelete(email.id)} className="flex items-center justify-center w-10 h-10 rounded-full bg-red-50 text-red-600 hover:bg-red-100"><Trash2 className="w-5 h-5" /></button>
+                                                    <MaterialIconButton ariaLabel="Supprimer" onClick={() => handleDelete(email.id)} variant="outlined" icon={<Trash2 className="h-5 w-5 text-red-600" />} />
                                                 )}
                                             </div>
                                         </div>
@@ -309,40 +313,40 @@ export default function Relances({ onScheduleNew }: RelancesProps) {
             )}
 
             {showEditModal && editingEmail && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-2xl">
-                            <h2 className="text-2xl font-bold text-gray-900">Modifier la relance</h2>
-                            <button onClick={() => { setShowEditModal(false); setEditingEmail(null); }} className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center"><X className="w-5 h-5" /></button>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
+                    <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+                        <div className="sticky top-0 flex items-center justify-between rounded-t-2xl border-b border-slate-200 bg-white px-6 py-4">
+                            <h2 className="text-2xl font-semibold text-slate-900">Modifier la relance</h2>
+                            <MaterialIconButton ariaLabel="Fermer" onClick={() => { setShowEditModal(false); setEditingEmail(null); }} icon={<X className="h-5 w-5" />} />
                         </div>
                         <div className="p-6 space-y-6">
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Objet</label>
-                                <input type="text" value={editingEmail.subject} onChange={(e) => setEditingEmail({ ...editingEmail, subject: e.target.value })} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D]" />
+                                <label className="mb-2 block text-sm font-semibold text-slate-700">Objet</label>
+                                <input type="text" value={editingEmail.subject} onChange={(e) => setEditingEmail({ ...editingEmail, subject: e.target.value })} className="input-modern" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Message</label>
-                                <textarea value={editingEmail.body} onChange={(e) => setEditingEmail({ ...editingEmail, body: e.target.value })} rows={8} className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] resize-none" />
+                                <label className="mb-2 block text-sm font-semibold text-slate-700">Message</label>
+                                <textarea value={editingEmail.body} onChange={(e) => setEditingEmail({ ...editingEmail, body: e.target.value })} rows={8} className="input-modern resize-none" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Date et heure d'envoi</label>
+                                <label className="mb-2 block text-sm font-semibold text-slate-700">Date et heure d'envoi</label>
                                 <input type="datetime-local"
                                     value={(() => { const d = new Date(editingEmail.scheduled_for); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; })()}
                                     onChange={(e) => setEditingEmail({ ...editingEmail, scheduled_for: new Date(e.target.value).toISOString() })}
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D]" />
+                                    className="input-modern" />
                             </div>
                             <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Destinataires</label>
-                                <div className="bg-gray-50 rounded-xl p-4 space-y-2">
+                                <label className="mb-2 block text-sm font-semibold text-slate-700">Destinataires</label>
+                                <div className="space-y-2 rounded-xl border border-slate-200 bg-slate-50 p-4">
                                     {editingEmail.recipients.map(r => (
-                                        <div key={r.id} className="flex items-center gap-2 text-sm text-gray-700"><Mail className="w-4 h-4 text-gray-400" /><span>{r.email}</span></div>
+                                        <div key={r.id} className="flex items-center gap-2 text-sm text-slate-700"><Mail className="h-4 w-4 text-slate-400" /><span>{r.email}</span></div>
                                     ))}
                                 </div>
                             </div>
                         </div>
-                        <div className="sticky bottom-0 bg-gray-50 px-6 py-4 flex gap-3 justify-end rounded-b-2xl border-t">
-                            <button onClick={() => { setShowEditModal(false); setEditingEmail(null); }} className="px-6 py-3 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-100">Annuler</button>
-                            <button onClick={handleSaveEdit} className="px-6 py-3 bg-gradient-to-r from-[#0E3A5D] to-[#1E5A8E] text-white rounded-xl font-medium hover:shadow-lg">Enregistrer</button>
+                        <div className="sticky bottom-0 flex justify-end gap-3 rounded-b-2xl border-t border-slate-200 bg-slate-50 px-6 py-4">
+                            <MaterialButton onClick={() => { setShowEditModal(false); setEditingEmail(null); }} variant="outlined">Annuler</MaterialButton>
+                            <MaterialButton onClick={handleSaveEdit}>Enregistrer</MaterialButton>
                         </div>
                     </div>
                 </div>

@@ -41,19 +41,19 @@ export function FilterDropdown({ label, options, selectedValues, onChange, place
 
     return (
         <div className="relative" ref={dropdownRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
+            <label className="mb-2 block text-sm font-medium text-slate-700">{label}</label>
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between px-4 py-2.5 bg-white border border-gray-200 rounded-xl hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                className="input-modern flex w-full items-center justify-between px-4 py-2.5 text-left hover:border-slate-300"
             >
-                <span className={selectedValues.length === 0 ? 'text-gray-500' : 'text-gray-900'}>{displayText}</span>
-                <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
+                <span className={selectedValues.length === 0 ? 'text-slate-500' : 'text-slate-900'}>{displayText}</span>
+                <ChevronDown className={`h-5 w-5 text-slate-400 transition-transform ${isOpen ? 'transform rotate-180' : ''}`} />
             </button>
             {isOpen && (
-                <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-lg max-h-64 overflow-y-auto">
+                <div className="absolute z-50 mt-2 max-h-64 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-sm">
                     {options.length === 0 ? (
-                        <div className="px-4 py-3 text-sm text-gray-500 text-center">Aucune option disponible</div>
+                        <div className="px-4 py-3 text-center text-sm text-slate-500">Aucune option disponible</div>
                     ) : (
                         <div className="py-2">
                             {options.map((option) => (
@@ -61,12 +61,12 @@ export function FilterDropdown({ label, options, selectedValues, onChange, place
                                     key={option.value}
                                     type="button"
                                     onClick={() => toggleOption(option.value)}
-                                    className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors text-left"
+                                    className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-slate-50"
                                 >
-                                    <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${selectedValues.includes(option.value) ? 'bg-primary border-primary' : 'border-gray-300'}`}>
-                                        {selectedValues.includes(option.value) && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
+                                    <div className={`flex h-5 w-5 items-center justify-center rounded border transition-colors ${selectedValues.includes(option.value) ? 'border-slate-900 bg-slate-900' : 'border-slate-300 bg-white'}`}>
+                                        {selectedValues.includes(option.value) && <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />}
                                     </div>
-                                    <span className="text-sm text-gray-900">{option.label}</span>
+                                    <span className="text-sm text-slate-900">{option.label}</span>
                                 </button>
                             ))}
                         </div>

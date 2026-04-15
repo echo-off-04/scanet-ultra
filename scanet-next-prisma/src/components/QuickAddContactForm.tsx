@@ -5,6 +5,8 @@ import { X, UserPlus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { PhoneInput } from './PhoneInput';
+import { MaterialButton } from './material/MaterialButton';
+import { MaterialIconButton } from './material/MaterialIconButton';
 
 interface QuickAddContactFormProps {
     eventId: string;
@@ -50,12 +52,10 @@ export function QuickAddContactForm({ eventId, onClose, onSuccess }: QuickAddCon
     };
 
     return (
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-gray-900">Ajout rapide</h3>
-                <button onClick={onClose} className="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center">
-                    <X className="w-4 h-4" />
-                </button>
+                <h3 className="text-lg font-semibold text-slate-900">Ajout rapide</h3>
+                <MaterialIconButton ariaLabel="Fermer" onClick={onClose} icon={<X className="h-4 w-4" />} className="h-8 w-8" />
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -64,7 +64,7 @@ export function QuickAddContactForm({ eventId, onClose, onSuccess }: QuickAddCon
                     placeholder="Nom complet *"
                     value={formData.full_name}
                     onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent text-sm"
+                    className="input-modern text-sm"
                     required
                 />
 
@@ -74,7 +74,7 @@ export function QuickAddContactForm({ eventId, onClose, onSuccess }: QuickAddCon
                         placeholder="Email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent text-sm"
+                        className="input-modern text-sm"
                     />
                     <PhoneInput
                         value={formData.phone}
@@ -88,33 +88,24 @@ export function QuickAddContactForm({ eventId, onClose, onSuccess }: QuickAddCon
                         placeholder="Entreprise"
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent text-sm"
+                        className="input-modern text-sm"
                     />
                     <input
                         type="text"
                         placeholder="Poste"
                         value={formData.job_title}
                         onChange={(e) => setFormData({ ...formData, job_title: e.target.value })}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent text-sm"
+                        className="input-modern text-sm"
                     />
                 </div>
 
                 <div className="flex items-center gap-3 pt-2">
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50"
-                    >
+                    <MaterialButton type="button" onClick={onClose} variant="outlined" className="flex-1 justify-center">
                         Annuler
-                    </button>
-                    <button
-                        type="submit"
-                        disabled={loading || !formData.full_name.trim()}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#0E3A5D] text-white rounded-xl font-medium hover:bg-[#1E5A8E] disabled:opacity-50"
-                    >
-                        <UserPlus className="w-4 h-4" />
+                    </MaterialButton>
+                    <MaterialButton type="submit" disabled={loading || !formData.full_name.trim()} icon={<UserPlus className="h-4 w-4" />} className="flex-1 justify-center">
                         {loading ? 'Ajout...' : 'Ajouter'}
-                    </button>
+                    </MaterialButton>
                 </div>
             </form>
         </div>

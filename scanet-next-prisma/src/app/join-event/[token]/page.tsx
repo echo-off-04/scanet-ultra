@@ -97,10 +97,10 @@ export default function JoinEventPage({ params }: { params: Promise<{ token: str
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center">
+            <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
                 <div className="text-center">
-                    <Loader2 className="w-12 h-12 animate-spin text-[#0E3A5D] mx-auto mb-4" />
-                    <p className="text-gray-600">Chargement de l&apos;événement...</p>
+                    <Loader2 className="mx-auto mb-4 h-10 w-10 animate-spin text-slate-700" />
+                    <p className="text-sm font-medium text-slate-600">Chargement de l&apos;événement...</p>
                 </div>
             </div>
         );
@@ -108,14 +108,14 @@ export default function JoinEventPage({ params }: { params: Promise<{ token: str
 
     if (success) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center p-4">
+            <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
                 <div className="w-full max-w-md">
-                    <div className="bg-white rounded-3xl shadow-xl p-8 text-center">
-                        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <CheckCircle className="w-10 h-10 text-green-600" />
+                    <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+                        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+                            <CheckCircle className="h-10 w-10 text-green-600" />
                         </div>
-                        <h1 className="text-2xl font-bold text-gray-800 mb-2">Inscription réussie !</h1>
-                        <p className="text-gray-600">
+                        <h1 className="mb-2 text-2xl font-semibold text-slate-900">Inscription réussie !</h1>
+                        <p className="text-slate-600">
                             Vous avez été ajouté à l&apos;événement <strong>{event?.name}</strong>. L&apos;organisateur vous contactera prochainement.
                         </p>
                     </div>
@@ -126,14 +126,14 @@ export default function JoinEventPage({ params }: { params: Promise<{ token: str
 
     if (error && !event) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center p-4">
+            <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
                 <div className="w-full max-w-md">
-                    <div className="bg-white rounded-3xl shadow-xl p-8 text-center">
-                        <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <AlertCircle className="w-10 h-10 text-red-600" />
+                    <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+                        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-100">
+                            <AlertCircle className="h-10 w-10 text-red-600" />
                         </div>
-                        <h1 className="text-2xl font-bold text-gray-800 mb-2">Événement introuvable</h1>
-                        <p className="text-gray-600">{error}</p>
+                        <h1 className="mb-2 text-2xl font-semibold text-slate-900">Événement introuvable</h1>
+                        <p className="text-slate-600">{error}</p>
                     </div>
                 </div>
             </div>
@@ -141,99 +141,100 @@ export default function JoinEventPage({ params }: { params: Promise<{ token: str
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-teal-50 flex items-center justify-center p-4">
+        <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
             <div className="w-full max-w-lg">
-                <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
-                    {/* Event Header */}
-                    <div className="bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] p-6 text-white">
-                        <h1 className="text-2xl font-bold mb-2">{event?.name}</h1>
-                        {event?.description && <p className="text-blue-100 text-sm mb-4">{event.description}</p>}
-                        <div className="flex flex-wrap gap-4 text-sm">
+                <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                    <div className="border-b border-slate-200 bg-slate-50 p-6">
+                        <div className="mb-3 inline-flex rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
+                            Événement
+                        </div>
+                        <h1 className="mb-2 text-2xl font-semibold text-slate-900">{event?.name}</h1>
+                        {event?.description && <p className="mb-4 text-sm text-slate-600">{event.description}</p>}
+                        <div className="flex flex-wrap gap-2 text-sm text-slate-600">
                             {event?.startDate && (
-                                <div className="flex items-center gap-1.5">
-                                    <Calendar className="w-4 h-4" />
+                                <div className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5">
+                                    <Calendar className="h-4 w-4" />
                                     {new Date(event.startDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
                                 </div>
                             )}
                             {event?.location && (
-                                <div className="flex items-center gap-1.5">
-                                    <MapPin className="w-4 h-4" />
+                                <div className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5">
+                                    <MapPin className="h-4 w-4" />
                                     {event.location}
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    {/* Form */}
                     <div className="p-6">
-                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Rejoindre cet événement</h2>
+                        <h2 className="mb-4 text-lg font-semibold text-slate-900">Rejoindre cet événement</h2>
 
                         {error && (
-                            <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm mb-4">{error}</div>
+                            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
                         )}
 
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Prénom *</label>
+                                    <label className="mb-1 block text-sm font-medium text-slate-700">Prénom *</label>
                                     <input
                                         type="text"
                                         value={formData.firstName}
                                         onChange={(e) => setFormData(p => ({ ...p, firstName: e.target.value }))}
-                                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                        className="input-modern"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
+                                    <label className="mb-1 block text-sm font-medium text-slate-700">Nom *</label>
                                     <input
                                         type="text"
                                         value={formData.lastName}
                                         onChange={(e) => setFormData(p => ({ ...p, lastName: e.target.value }))}
-                                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                        className="input-modern"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                                <label className="mb-1 block text-sm font-medium text-slate-700">Email *</label>
                                 <input
                                     type="email"
                                     value={formData.email}
                                     onChange={(e) => setFormData(p => ({ ...p, email: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                    className="input-modern"
                                     required
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
+                                <label className="mb-1 block text-sm font-medium text-slate-700">Téléphone</label>
                                 <input
                                     type="tel"
                                     value={formData.phone}
                                     onChange={(e) => setFormData(p => ({ ...p, phone: e.target.value }))}
-                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                    className="input-modern"
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Entreprise</label>
+                                    <label className="mb-1 block text-sm font-medium text-slate-700">Entreprise</label>
                                     <input
                                         type="text"
                                         value={formData.company}
                                         onChange={(e) => setFormData(p => ({ ...p, company: e.target.value }))}
-                                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                        className="input-modern"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Poste</label>
+                                    <label className="mb-1 block text-sm font-medium text-slate-700">Poste</label>
                                     <input
                                         type="text"
                                         value={formData.jobTitle}
                                         onChange={(e) => setFormData(p => ({ ...p, jobTitle: e.target.value }))}
-                                        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E3A5D] focus:border-transparent"
+                                        className="input-modern"
                                     />
                                 </div>
                             </div>
@@ -241,11 +242,11 @@ export default function JoinEventPage({ params }: { params: Promise<{ token: str
                             <button
                                 type="submit"
                                 disabled={submitting}
-                                className="w-full bg-gradient-to-r from-[#0E3A5D] to-[#1e5a8e] text-white py-3 rounded-xl font-medium hover:opacity-90 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                                className="btn-primary w-full justify-center py-3 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                                 {submitting ? (
                                     <>
-                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                        <Loader2 className="h-5 w-5 animate-spin" />
                                         Inscription...
                                     </>
                                 ) : (
@@ -255,10 +256,6 @@ export default function JoinEventPage({ params }: { params: Promise<{ token: str
                         </form>
                     </div>
                 </div>
-
-                <p className="text-center text-xs text-gray-400 mt-4">
-                    Propulsé par <span className="font-semibold text-[#0E3A5D]">ScaNetwork</span>
-                </p>
             </div>
         </div>
     );

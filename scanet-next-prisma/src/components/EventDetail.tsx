@@ -62,31 +62,31 @@ export function EventDetail({ eventId, onClose, onContactClick, onSendOffer }: E
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50">
-            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col">
-                <div className="bg-gradient-to-r from-blue-600 to-blue-800 px-4 sm:px-6 py-4 sm:py-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-2 sm:p-4">
+            <div className="flex max-h-[95vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:max-h-[90vh]">
+                <div className="border-b border-slate-200 bg-slate-50 px-4 py-4 sm:px-6 sm:py-6">
                     <div className="flex items-center justify-between mb-4">
-                        <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-full transition-colors text-white">
-                            <ArrowLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+                        <button onClick={onClose} className="rounded-full p-2 text-slate-500 transition-colors hover:bg-white hover:text-slate-700">
+                            <ArrowLeft className="h-5 w-5 sm:h-6 sm:w-6" />
                         </button>
-                        <button onClick={onClose} className="p-2 hover:bg-white/20 rounded-full transition-colors text-white">
-                            <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                        <button onClick={onClose} className="rounded-full p-2 text-slate-500 transition-colors hover:bg-white hover:text-slate-700">
+                            <X className="h-5 w-5 sm:h-6 sm:w-6" />
                         </button>
                     </div>
 
                     {loading ? (
                         <div className="text-center py-8">
-                            <div className="animate-spin rounded-full h-12 w-12 border-4 border-white border-t-transparent mx-auto"></div>
+                            <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"></div>
                         </div>
                     ) : event ? (
-                        <div className="text-white">
+                        <div>
                             <div className="flex items-center gap-3 mb-3">
-                                <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
-                                    <Calendar className="w-7 h-7" />
+                                <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700">
+                                    <Calendar className="h-7 w-7" />
                                 </div>
                                 <div>
-                                    <h2 className="text-3xl font-bold">{event.name}</h2>
-                                    <span className="text-blue-100 text-sm">
+                                    <h2 className="text-3xl font-semibold text-slate-900">{event.name}</h2>
+                                    <span className="text-sm text-slate-500">
                                         {getEventTypeLabel(event.event_type || 'networking')}
                                     </span>
                                 </div>
@@ -94,27 +94,27 @@ export function EventDetail({ eventId, onClose, onContactClick, onSendOffer }: E
 
                             <div className="flex flex-wrap gap-4 mt-4">
                                 {event.start_date && (
-                                    <div className="flex items-center gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-xl">
-                                        <Calendar className="w-5 h-5" />
+                                    <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-slate-700">
+                                        <Calendar className="h-5 w-5" />
                                         <span className="font-medium">
                                             {new Date(event.start_date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
                                         </span>
                                     </div>
                                 )}
                                 {event.location && (
-                                    <div className="flex items-center gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-xl">
-                                        <MapPin className="w-5 h-5" />
+                                    <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-slate-700">
+                                        <MapPin className="h-5 w-5" />
                                         <span className="font-medium">{event.location}</span>
                                     </div>
                                 )}
-                                <div className="flex items-center gap-2 bg-white/20 backdrop-blur px-4 py-2 rounded-xl">
-                                    <Users className="w-5 h-5" />
+                                <div className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-slate-700">
+                                    <Users className="h-5 w-5" />
                                     <span className="font-medium">{contacts.length} contact{contacts.length > 1 ? 's' : ''}</span>
                                 </div>
                             </div>
 
                             {event.description && (
-                                <p className="mt-4 text-blue-50 leading-relaxed">{event.description}</p>
+                                <p className="mt-4 leading-relaxed text-slate-600">{event.description}</p>
                             )}
                         </div>
                     ) : null}
@@ -123,20 +123,20 @@ export function EventDetail({ eventId, onClose, onContactClick, onSendOffer }: E
                 <div className="flex-1 overflow-y-auto p-6">
                     {loading ? (
                         <div className="text-center py-16">
-                            <div className="animate-spin rounded-full h-14 w-14 border-4 border-[#0E3A5D] border-t-transparent mx-auto"></div>
-                            <p className="mt-4 text-gray-500 font-medium">Chargement des contacts...</p>
+                            <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"></div>
+                            <p className="mt-4 font-medium text-slate-500">Chargement des contacts...</p>
                         </div>
                     ) : contacts.length === 0 ? (
                         <div className="text-center py-16">
-                            <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <Users className="w-10 h-10 text-[#0E3A5D]" />
+                            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-xl border border-slate-200 bg-slate-100">
+                                <Users className="h-8 w-8 text-slate-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-3">Aucun contact pour cet événement</h3>
-                            <p className="text-gray-500">Les contacts associés à cet événement apparaîtront ici.</p>
+                            <h3 className="mb-3 text-xl font-semibold text-slate-900">Aucun contact pour cet événement</h3>
+                            <p className="text-slate-500">Les contacts associés à cet événement apparaîtront ici.</p>
                         </div>
                     ) : (
                         <div>
-                            <h3 className="text-lg font-bold text-gray-900 mb-4">
+                            <h3 className="mb-4 text-lg font-semibold text-slate-900">
                                 Contacts de l&apos;événement ({contacts.length})
                             </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
