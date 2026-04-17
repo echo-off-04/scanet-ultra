@@ -12,9 +12,9 @@ interface HeroProps {
 export function Hero({ label, children, imageUrl, imageAlt }: HeroProps) {
     return (
         <section className="relative mb-6 overflow-hidden rounded-[28px] border border-[rgba(201,212,223,0.9)] bg-white px-6 py-6 shadow-[0_24px_48px_rgba(15,35,58,0.08)] lg:px-8 lg:py-8">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,87,184,0.14),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(83,99,112,0.08),transparent_24%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,87,184,0.14),transparent_58%),radial-gradient(circle_at_bottom_left,rgba(83,99,112,0.08),transparent_24%)]" />
             <div className="absolute inset-y-0 right-0 hidden w-[42%] overflow-hidden lg:block">
-                <img src={imageUrl} alt={imageAlt} className="h-full w-full object-cover opacity-20" />
+                <img src={imageUrl} alt={imageAlt} className="h-full w-full object-cover opacity-100" />
                 <div className="absolute inset-0 bg-gradient-to-r from-white via-white/92 to-[#dbe9fb]/55" />
             </div>
             <div className="relative z-10 flex flex-col gap-6 lg:min-h-[220px] lg:flex-row lg:items-end lg:justify-between">
