@@ -79,8 +79,8 @@ export function Sidebar({
             <div className={`border-b border-slate-200 ${isCollapsed ? 'p-2' : 'p-5'}`}>
                 <div className="flex items-center justify-between">
                     <div className={`flex items-center gap-3 ${isCollapsed ? 'justify-center w-full' : ''}`}>
-                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white text-sm font-semibold text-slate-900">
-                            S
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[#0057b8] text-[16px] font-bold text-white shadow-sm">
+                            Sc
                         </div>
                         {!isCollapsed && (
                             <div>
@@ -166,12 +166,12 @@ export function Sidebar({
                         return (
                             <div key={item.id} className="relative group">
                                 <button onClick={() => onViewChange(item.id)}
-                                    className={`flex w-full items-center rounded-lg px-3 py-2.5 font-medium transition-colors ${isCollapsed ? 'justify-center' : 'justify-between'} ${isActive ? 'border border-slate-300 bg-white text-slate-900' : 'text-slate-700 hover:bg-white'}`}
+                                    className={`flex w-full items-center rounded-lg px-3 py-2.5 font-medium transition-colors ${isCollapsed ? 'justify-center' : 'justify-between'} ${isActive ? 'border border-[rgba(0,87,184,0.15)] bg-white text-[#0057b8] shadow-sm' : 'text-slate-700 hover:bg-white hover:text-slate-900'}`}
                                     title={isCollapsed ? item.label : undefined}
                                 >
                                     <div className={`flex items-center ${isCollapsed ? '' : 'gap-3'}`}><Icon className="h-5 w-5 flex-shrink-0" />{!isCollapsed && <span>{item.label}</span>}</div>
                                     {!isCollapsed && item.count !== null && item.count > 0 && (
-                                        <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${item.badge ? 'bg-red-100 text-red-600' : 'bg-slate-200 text-slate-700'}`}>{item.count}</span>
+                                        <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${isActive ? 'bg-[#0057b8] text-white' : item.badge ? 'bg-red-100 text-red-600' : 'bg-slate-200 text-slate-700'}`}>{item.count}</span>
                                     )}
                                 </button>
                                 {isCollapsed && (
@@ -194,10 +194,10 @@ export function Sidebar({
                                     const isActive = filterStatus === option.value;
                                     return (
                                         <button key={option.value} onClick={() => onFilterChange(option.value)}
-                                            className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive ? 'border border-slate-300 bg-white text-slate-900' : 'text-slate-600 hover:bg-white'}`}
+                                            className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive ? 'border border-[rgba(0,87,184,0.15)] bg-white text-[#0057b8] shadow-sm' : 'text-slate-600 hover:bg-white hover:text-slate-900'}`}
                                         >
                                             <span>{option.label}</span>
-                                            <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${isActive ? 'bg-slate-200 text-slate-800' : option.color}`}>{option.count}</span>
+                                            <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${isActive ? 'bg-[#eef5fe] text-[#0057b8]' : option.color}`}>{option.count}</span>
                                         </button>
                                     );
                                 })}

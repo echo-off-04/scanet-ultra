@@ -141,9 +141,11 @@ export default function JoinEventPage({ params }: { params: Promise<{ token: str
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
-            <div className="w-full max-w-lg">
-                <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="flex min-h-screen flex-col items-center justify-center p-4 px-4 py-10" style={{
+            background: 'radial-gradient(circle at top left, rgba(0, 87, 184, 0.08), transparent 40%), radial-gradient(circle at bottom right, rgba(83, 99, 112, 0.05), transparent 40%), linear-gradient(180deg, #f8fbfe 0%, #f0f4f8 100%)',
+        }}>
+            <div className="w-full max-w-md">
+                <div className="overflow-hidden rounded-[24px] border border-[rgba(201,212,223,0.9)] bg-white shadow-[0_24px_48px_rgba(15,35,58,0.05)]">
                     <div className="border-b border-slate-200 bg-slate-50 p-6">
                         <div className="mb-3 inline-flex rounded-full border border-slate-200 bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-600">
                             Événement

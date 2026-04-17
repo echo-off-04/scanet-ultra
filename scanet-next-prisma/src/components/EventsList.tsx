@@ -183,7 +183,7 @@ export function EventsList({ onEventClick, onCreateEvent, refreshKey = 0 }: Even
                                 <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500 lg:text-xs">Événements</p>
                                 <h3 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 lg:text-3xl">{events.length}</h3>
                             </div>
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-700"><Calendar className="h-5 w-5" strokeWidth={2} /></div>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[rgba(0,87,184,0.12)] bg-[#f4f8fe] text-[#0057b8]"><Calendar className="h-5 w-5" strokeWidth={2} /></div>
                         </div>
                     </div>
                     <div className="stat-card">
@@ -192,7 +192,7 @@ export function EventsList({ onEventClick, onCreateEvent, refreshKey = 0 }: Even
                                 <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500 lg:text-xs">Leads</p>
                                 <h3 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 lg:text-3xl">{totalLeads}</h3>
                             </div>
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-700"><Target className="h-5 w-5" strokeWidth={2} /></div>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[rgba(0,87,184,0.12)] bg-[#f4f8fe] text-[#0057b8]"><Target className="h-5 w-5" strokeWidth={2} /></div>
                         </div>
                     </div>
                     <div className="stat-card">
@@ -210,21 +210,21 @@ export function EventsList({ onEventClick, onCreateEvent, refreshKey = 0 }: Even
                                 <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500 lg:text-xs">Score</p>
                                 <h3 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 lg:text-3xl">{avgScore.toFixed(0)}</h3>
                             </div>
-                            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-700"><TrendingUp className="h-5 w-5" strokeWidth={2} /></div>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[rgba(0,87,184,0.12)] bg-[#f4f8fe] text-[#0057b8]"><TrendingUp className="h-5 w-5" strokeWidth={2} /></div>
                         </div>
                     </div>
                 </div>
             )}
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="rounded-[24px] border border-[rgba(201,212,223,0.9)] bg-white p-6 shadow-[0_12px_24px_rgba(15,35,58,0.03)]">
                 <div className="flex flex-col lg:flex-row gap-4">
                     <div className="flex-1 relative">
                         <Search className="absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
                         <input type="text" placeholder="Rechercher..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="input-modern py-4 pl-14 pr-6" />
                     </div>
-                    <button onClick={() => setShowFilters(!showFilters)} className={`flex items-center gap-3 whitespace-nowrap rounded-xl px-6 py-4 font-medium transition-colors ${showFilters || hasActiveFilters ? 'border border-slate-300 bg-slate-100 text-slate-900' : 'border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'}`}>
+                    <button onClick={() => setShowFilters(!showFilters)} className={`flex items-center gap-3 whitespace-nowrap rounded-xl px-6 py-4 font-medium transition-colors ${showFilters || hasActiveFilters ? 'border border-[rgba(0,87,184,0.2)] bg-[#eef5fe] text-[#0057b8]' : 'border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'}`}>
                         <Filter className="h-5 w-5" />Filtres
-                        {hasActiveFilters && !showFilters && <span className="h-2 w-2 rounded-full bg-slate-900"></span>}
+                        {hasActiveFilters && !showFilters && <span className="h-2 w-2 rounded-full bg-[#0057b8]"></span>}
                     </button>
                 </div>
 

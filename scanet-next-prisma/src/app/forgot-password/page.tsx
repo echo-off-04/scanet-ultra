@@ -37,11 +37,13 @@ export default function ForgotPasswordPage() {
 
     if (emailSent) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+            <div className="flex min-h-screen items-center justify-center px-4 py-10" style={{
+                background: 'radial-gradient(circle at top left, rgba(0, 87, 184, 0.08), transparent 40%), radial-gradient(circle at bottom right, rgba(83, 99, 112, 0.05), transparent 40%), linear-gradient(180deg, #f8fbfe 0%, #f0f4f8 100%)',
+            }}>
                 <div className="w-full max-w-md">
-                    <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+                    <div className="rounded-[24px] border border-[rgba(201,212,223,0.9)] bg-white p-8 shadow-[0_24px_48px_rgba(15,35,58,0.05)]">
                         <div className="mb-6 flex justify-center">
-                            <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+                            <div className="inline-flex rounded-full border border-[rgba(0,87,184,0.15)] bg-[#eef5fe] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0057b8]">
                                 Scanetwork
                             </div>
                         </div>
@@ -70,11 +72,13 @@ export default function ForgotPasswordPage() {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+        <div className="flex min-h-screen items-center justify-center px-4 py-10" style={{
+            background: 'radial-gradient(circle at top left, rgba(0, 87, 184, 0.08), transparent 40%), radial-gradient(circle at bottom right, rgba(83, 99, 112, 0.05), transparent 40%), linear-gradient(180deg, #f8fbfe 0%, #f0f4f8 100%)',
+        }}>
             <div className="w-full max-w-md">
-                <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+                <div className="rounded-[24px] border border-[rgba(201,212,223,0.9)] bg-white p-8 shadow-[0_24px_48px_rgba(15,35,58,0.05)]">
                     <div className="mb-6 flex justify-center">
-                        <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+                        <div className="inline-flex rounded-full border border-[rgba(0,87,184,0.15)] bg-[#eef5fe] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0057b8]">
                             Scanetwork
                         </div>
                     </div>

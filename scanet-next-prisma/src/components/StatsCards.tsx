@@ -19,10 +19,10 @@ export function StatsCards({ totalContacts, leads, clients, partners }: StatsCar
 
     const total = totalContacts || 1;
     const segments = [
-        { value: leads, color: '#334155' },
-        { value: clients, color: '#475569' },
-        { value: partners, color: '#64748b' },
-        { value: Math.max(0, totalContacts - leads - clients - partners), color: '#94a3b8' },
+        { value: leads, color: '#0057b8' },
+        { value: clients, color: '#4dabf5' },
+        { value: partners, color: '#90caf9' },
+        { value: Math.max(0, totalContacts - leads - clients - partners), color: '#eef5fe' },
     ];
 
     const createDonutPath = (startAngle: number, endAngle: number, radius: number = 40, cx: number = 50, cy: number = 50) => {
@@ -56,7 +56,7 @@ export function StatsCards({ totalContacts, leads, clients, partners }: StatsCar
                     return (
                         <div key={stat.label} className="stat-card">
                             <div className="flex items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-700">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[rgba(0,87,184,0.12)] bg-[#f4f8fe] text-[#0057b8]">
                                     <Icon className="h-5 w-5" />
                                 </div>
                                 <div>
