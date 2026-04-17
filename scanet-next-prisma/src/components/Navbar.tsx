@@ -57,7 +57,7 @@ export function Navbar({ view, onViewChange, onSignOut, onAddContact, userName =
                         const isActive = view === item.id;
                         return (
                             <button key={item.id} onClick={() => handleNavClick(item.id)}
-                                className={`relative flex max-w-[70px] flex-1 flex-col items-center justify-center py-3 transition-colors ${index === 1 ? 'mr-8' : ''} ${index === 2 ? 'ml-8' : ''} ${isActive ? 'text-slate-900' : 'text-slate-500'}`}
+                                className={`relative flex max-w-[70px] flex-1 flex-col items-center justify-center py-3 transition-colors ${index === 1 ? 'mr-8' : ''} ${index === 2 ? 'ml-8' : ''} ${isActive ? 'text-[#0057b8]' : 'text-slate-500'}`}
                             >
                                 <Icon className="h-6 w-6" />
                                 <span className={`mt-1 text-[10px] font-medium ${isActive ? 'font-semibold' : ''}`}>{item.label}</span>
@@ -82,10 +82,10 @@ export function Navbar({ view, onViewChange, onSignOut, onAddContact, userName =
                             </div>
                         </div>
                         <div className="p-4 space-y-2">
-                            <button onClick={() => { setShowNotifications(true); setShowMoreMenu(false); }} className="flex w-full items-center justify-between rounded-xl border border-slate-200 p-4 transition-colors hover:bg-slate-50">
+                            <button onClick={() => { setShowNotifications(true); setShowMoreMenu(false); }} className="flex w-full items-center justify-between rounded-xl border border-[rgba(0,87,184,0.12)] bg-[#f4f8fe] p-4 transition-colors hover:bg-[#eef5fe]">
                                 <div className="flex items-center gap-3">
-                                    <div className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-100">
-                                        <Bell className="h-5 w-5 text-slate-700" />
+                                    <div className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-[rgba(0,87,184,0.12)] bg-white">
+                                        <Bell className="h-5 w-5 text-[#0057b8]" />
                                         {unreadCount > 0 && <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-semibold text-white">{unreadCount > 9 ? '9+' : unreadCount}</span>}
                                     </div>
                                     <div className="text-left"><p className="font-medium text-slate-900">Notifications</p>{unreadCount > 0 && <p className="text-xs text-slate-500">{unreadCount} non lue{unreadCount > 1 ? 's' : ''}</p>}</div>
@@ -97,23 +97,23 @@ export function Navbar({ view, onViewChange, onSignOut, onAddContact, userName =
                                 const isActive = view === item.id;
                                 return (
                                     <button key={item.id} onClick={() => { onViewChange(item.id); setShowMoreMenu(false); }}
-                                        className={`flex w-full items-center justify-between rounded-xl p-4 transition-colors ${isActive ? 'border border-slate-300 bg-slate-100 text-slate-900' : 'border border-transparent hover:bg-slate-50'}`}
+                                        className={`flex w-full items-center justify-between rounded-xl p-4 transition-colors ${isActive ? 'border border-[rgba(0,87,184,0.15)] bg-[#eef5fe] text-[#0057b8]' : 'border border-transparent hover:bg-slate-50'}`}
                                     >
                                         <div className="flex items-center gap-3">
-                                            <div className={`flex h-10 w-10 items-center justify-center rounded-lg border ${isActive ? 'border-slate-300 bg-white' : 'border-slate-200 bg-slate-100'}`}><Icon className="h-5 w-5 text-slate-700" /></div>
-                                            <span className="font-medium text-slate-900">{item.label}</span>
+                                            <div className={`flex h-10 w-10 items-center justify-center rounded-lg border ${isActive ? 'border-[rgba(0,87,184,0.15)] bg-white' : 'border-slate-200 bg-slate-100'}`}><Icon className={`h-5 w-5 ${isActive ? 'text-[#0057b8]' : 'text-slate-700'}`} /></div>
+                                            <span className={`font-medium ${isActive ? 'text-[#0057b8]' : 'text-slate-900'}`}>{item.label}</span>
                                         </div>
-                                        {item.badge && <span className="rounded-full bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700">{item.badge}</span>}
+                                        {item.badge && <span className={`rounded-full px-2 py-1 text-xs font-semibold ${isActive ? 'bg-[#0057b8] text-white' : 'bg-slate-200 text-slate-700'}`}>{item.badge}</span>}
                                     </button>
                                 );
                             })}
                             <div className="my-2 h-px bg-slate-200" />
-                            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                            <div className="rounded-xl border border-[rgba(0,87,184,0.12)] bg-[#f8fbfe] p-4">
                                 <div className="flex items-center gap-3 mb-3">
-                                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-300 bg-slate-200 font-semibold text-slate-900">{getInitials(userName)}</div>
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[rgba(0,87,184,0.15)] bg-[#eef5fe] font-semibold text-[#0057b8]">{getInitials(userName)}</div>
                                     <div className="flex-1"><p className="font-semibold text-slate-900">{userName}</p><p className="text-sm text-slate-500">{userEmail}</p></div>
                                 </div>
-                                <button onClick={() => { setShowMoreMenu(false); onViewChange('settings'); }} className="mb-2 flex w-full items-center gap-2 rounded-lg border border-slate-200 bg-white p-3 transition-colors hover:bg-slate-100"><User className="h-5 w-5 text-slate-600" /><span className="text-sm font-medium text-slate-700">Mon profil</span></button>
+                                <button onClick={() => { setShowMoreMenu(false); onViewChange('settings'); }} className="mb-2 flex w-full items-center gap-2 rounded-lg border border-[rgba(0,87,184,0.12)] bg-white p-3 transition-colors hover:bg-[#eef5fe]"><User className="h-5 w-5 text-[#0057b8]" /><span className="text-sm font-medium text-slate-700">Mon profil</span></button>
                                 <button onClick={() => { setShowMoreMenu(false); onSignOut(); }} className="flex w-full items-center gap-2 rounded-lg border border-red-200 bg-white p-3 text-red-600 transition-colors hover:bg-red-50"><LogOut className="h-5 w-5" /><span className="text-sm font-medium">Déconnexion</span></button>
                             </div>
                         </div>
@@ -127,11 +127,11 @@ export function Navbar({ view, onViewChange, onSignOut, onAddContact, userName =
                 <>
                     <div className="fixed inset-0 z-50 bg-black/30 lg:hidden" onClick={() => setShowNotifications(false)} />
                     <div className="fixed bottom-0 left-0 right-0 z-50 flex max-h-[80vh] flex-col overflow-hidden rounded-t-2xl border-t border-slate-200 bg-white lg:hidden">
-                        <div className="sticky top-0 z-10 rounded-t-2xl border-b border-slate-200 bg-white">
+                        <div className="sticky top-0 z-10 rounded-t-2xl border-b border-[rgba(0,87,184,0.12)] bg-white">
                             <div className="flex items-center justify-between p-4">
                                 <h3 className="text-lg font-semibold text-slate-900">Notifications</h3>
                                 <div className="flex items-center gap-2">
-                                    {unreadCount > 0 && <button onClick={() => markAllAsRead()} className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900">Tout marquer</button>}
+                                    {unreadCount > 0 && <button onClick={() => markAllAsRead()} className="rounded-lg px-3 py-1.5 text-xs font-medium text-[#0057b8] hover:bg-[#eef5fe] hover:text-[#0057b8]">Tout marquer</button>}
                                     <button onClick={() => setShowNotifications(false)} className="rounded-full p-2 transition-colors hover:bg-slate-100"><X className="h-5 w-5 text-slate-600" /></button>
                                 </div>
                             </div>
