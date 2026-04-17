@@ -361,13 +361,14 @@ export function Dashboard() {
                                     ].map((metric) => {
                                         const Icon = metric.icon;
                                         return (
-                                            <div key={metric.label} className="stat-card">
-                                                <div className="flex items-start justify-between gap-4">
+                                            <div key={metric.label} className="stat-card relative overflow-hidden group">
+                                                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,87,184,0.03),transparent_50%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                                <div className="relative z-10 flex items-start justify-between gap-4">
                                                     <div>
                                                         <p className="text-xs font-medium uppercase tracking-[0.18em] text-slate-500">{metric.label}</p>
                                                         <p className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 lg:text-3xl">{metric.value}</p>
                                                     </div>
-                                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-700">
+                                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[rgba(0,87,184,0.12)] bg-[#f4f8fe] text-[#0057b8] transition-colors duration-300 group-hover:bg-[#eef5fe]">
                                                         <Icon className="h-5 w-5" strokeWidth={2} />
                                                     </div>
                                                 </div>
@@ -390,15 +391,15 @@ export function Dashboard() {
                                         ].map((action) => {
                                             const Icon = action.icon;
                                             return (
-                                                <button key={action.title} onClick={action.onClick} className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left transition-colors hover:bg-slate-50">
-                                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-700">
+                                                <button key={action.title} onClick={action.onClick} className="group flex items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-left transition-all duration-300 hover:bg-slate-100 hover:shadow-sm hover:scale-[1.02]">
+                                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[rgba(0,87,184,0.12)] bg-[#f4f8fe] text-[#0057b8] transition-colors group-hover:bg-[#eef5fe]">
                                                         <Icon className="h-5 w-5" />
                                                     </div>
                                                     <div className="flex-1 text-left">
-                                                        <div className="text-sm font-medium text-slate-900">{action.title}</div>
+                                                        <div className="text-sm font-medium text-slate-900 transition-colors group-hover:text-[#0057b8]">{action.title}</div>
                                                         <div className="text-xs text-slate-500">{action.desc}</div>
                                                     </div>
-                                                    <ArrowRight className="h-4 w-4 text-slate-400" />
+                                                    <ArrowRight className="h-4 w-4 text-slate-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#0057b8]" />
                                                 </button>
                                             );
                                         })}

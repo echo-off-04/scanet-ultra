@@ -1,6 +1,6 @@
 'use client';
 
-import { createElement, type MouseEventHandler, type ReactNode } from 'react';
+import { createElement, useEffect, useRef, type MouseEventHandler, type ReactNode } from 'react';
 
 type MaterialIconButtonVariant = 'standard' | 'filled' | 'tonal' | 'outlined';
 
@@ -43,16 +43,29 @@ export function MaterialIconButton({
     variant = 'outlined',
 }: MaterialIconButtonProps) {
     const tag = tagByVariant[variant];
+    const buttonRef = useRef<HTMLElement | null>(null);
+
+    useEffect(() => {
+        const button = buttonRef.current;
+
+        if (!button) return;
+
+        if (ariaLabelSelected) {
+            button.setAttribute('aria-label-selected', ariaLabelSelected);
+        } else {
+            button.removeAttribute('aria-label-selected');
+        }
+    }, [ariaLabelSelected]);
 
     return createElement(
         tag,
         {
             'aria-label': ariaLabel,
-            'aria-label-selected': ariaLabelSelected,
             className: joinClasses('material-icon-button', `material-icon-button--${variant}`, className),
             disabled,
             onClick,
             selected,
+            ref: buttonRef,
             toggle,
             type,
         },
