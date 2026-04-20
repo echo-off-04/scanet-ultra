@@ -81,10 +81,24 @@ Retourne UNIQUEMENT le JSON, sans commentaire ni markdown.`,
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
+      const errorData = await response.json().catch(() => null);
       console.error("OpenAI API error:", errorData);
+
+      if (response.status === 401) {
+        return NextResponse.json(
+          { error: "Clé API OpenAI invalide ou expirée" },
+          { status: 500 },
+        );
+      }
+      if (response.status === 429) {
+        return NextResponse.json(
+          { error: "Limite de requêtes OpenAI atteinte, réessayez plus tard" },
+          { status: 429 },
+        );
+      }
+
       return NextResponse.json(
-        { error: "Failed to process image" },
+        { error: "Échec du traitement de l'image" },
         { status: 500 },
       );
     }
