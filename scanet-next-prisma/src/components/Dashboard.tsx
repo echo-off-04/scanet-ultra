@@ -264,7 +264,7 @@ export function Dashboard() {
                 <header className="sticky top-0 z-20 border-slate-200 bg-slate-50 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
                     <div className="flex items-center justify-between">
                         <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
-                            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-[rgba(0,87,184,0.18)] bg-[#eef5fe] text-xs font-semibold text-[#0057b8] lg:hidden">Sc</div>
+                            <img src="/logo.png" alt="Scanetwork" className="h-8 w-8 flex-shrink-0 rounded-lg object-cover lg:hidden" />
                             <div className="min-w-0">
                                 <h2 className="truncate text-base font-semibold text-slate-900 sm:text-lg md:text-xl lg:text-2xl">
                                     {view === 'dashboard' && 'Tableau de bord'}

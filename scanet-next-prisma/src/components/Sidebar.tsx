@@ -79,9 +79,7 @@ export function Sidebar({
             <div className={`border-b border-slate-200 ${isCollapsed ? 'p-2' : 'p-5'}`}>
                 <div className="flex items-center justify-between">
                     <div className={`flex items-center gap-3 ${isCollapsed ? 'justify-center w-full' : ''}`}>
-                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[#0057b8] text-[16px] font-bold text-white shadow-sm">
-                            Sc
-                        </div>
+                        <img src="/logo.png" alt="Scanetwork" className="h-10 w-10 flex-shrink-0 rounded-xl object-cover" />
                         {!isCollapsed && (
                             <div>
                                 <p className="text-sm font-semibold text-slate-900">Scanetwork</p>

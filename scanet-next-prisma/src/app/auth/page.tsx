@@ -109,9 +109,7 @@ export default function AuthPage() {
             <div className="w-full max-w-md">
                 <div className={`rounded-[24px] border border-[rgba(201,212,223,0.9)] bg-white p-8 shadow-[0_24px_48px_rgba(15,35,58,0.05)] transition-all ${formShake ? 'animate-shake' : ''}`}>
                     <div className="mb-8 text-center">
-                        <div className="mx-auto mb-4 inline-flex rounded-full border border-[rgba(0,87,184,0.15)] bg-[#eef5fe] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0057b8]">
-                            Scanetwork
-                        </div>
+                        <img src="/logo.png" alt="Scanetwork" className="mx-auto mb-4 h-16 w-16 rounded-2xl object-cover" />
                         <h1 className="mb-2 text-3xl font-semibold text-slate-900">
                             {isSignUp ? 'Créer un compte' : 'Bienvenue'}
                         </h1>

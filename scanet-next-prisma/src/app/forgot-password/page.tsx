@@ -43,9 +43,7 @@ export default function ForgotPasswordPage() {
                 <div className="w-full max-w-md">
                     <div className="rounded-[24px] border border-[rgba(201,212,223,0.9)] bg-white p-8 shadow-[0_24px_48px_rgba(15,35,58,0.05)]">
                         <div className="mb-6 flex justify-center">
-                            <div className="inline-flex rounded-full border border-[rgba(0,87,184,0.15)] bg-[#eef5fe] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0057b8]">
-                                Scanetwork
-                            </div>
+                            <img src="/logo.png" alt="Scanetwork" className="h-16 w-16 rounded-2xl object-cover" />
                         </div>
                         <div className="mb-8 text-center">
                             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
@@ -78,9 +76,7 @@ export default function ForgotPasswordPage() {
             <div className="w-full max-w-md">
                 <div className="rounded-[24px] border border-[rgba(201,212,223,0.9)] bg-white p-8 shadow-[0_24px_48px_rgba(15,35,58,0.05)]">
                     <div className="mb-6 flex justify-center">
-                        <div className="inline-flex rounded-full border border-[rgba(0,87,184,0.15)] bg-[#eef5fe] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#0057b8]">
-                            Scanetwork
-                        </div>
+                        <img src="/logo.png" alt="Scanetwork" className="h-16 w-16 rounded-2xl object-cover" />
                     </div>
                     <h1 className="mb-2 text-center text-3xl font-semibold text-slate-900">Mot de passe oublié ?</h1>
                     <p className="mb-8 text-center text-sm text-slate-500">
